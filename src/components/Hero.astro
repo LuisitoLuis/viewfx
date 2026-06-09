@@ -8,11 +8,34 @@
     Hover a card to preview — click to activate, then hit the toggle.
   </p>
   <div class="code-block">
-    <span style="opacity:0.38">// all the JS you need</span>
-    <span style="color:var(--soft)">if</span> (!document.<span style="color:var(--mid)">startViewTransition</span>) switchTheme()
-    document.<span style="color:var(--mid)">startViewTransition</span>(switchTheme)
+    <button class="btn-copy-hero" id="btn-copy-hero" aria-label="Copy code to clipboard">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+      <span id="btn-copy-hero-label">Copy</span>
+    </button>
+    <pre><code><span style="opacity:0.38">// all the JS you need</span>
+<span style="color:var(--soft)">if</span> (!document.<span style="color:var(--mid)">startViewTransition</span>) switchTheme(); document.<span style="color:var(--mid)">startViewTransition</span>(switchTheme)</code></pre>
   </div>
 </section>
+
+<script>
+  const CODE_SNIPPET = `if (!document.startViewTransition) switchTheme(); document.startViewTransition(switchTheme)`
+
+  const btn = document.getElementById('btn-copy-hero')
+  const label = document.getElementById('btn-copy-hero-label')
+
+  btn?.addEventListener('click', () => {
+    navigator.clipboard.writeText(CODE_SNIPPET).then(() => {
+      btn.classList.add('copied')
+      btn.setAttribute('aria-label', 'Copied to clipboard!')
+      label!.textContent = 'Copied!'
+      setTimeout(() => {
+        btn.classList.remove('copied')
+        btn.setAttribute('aria-label', 'Copy code to clipboard')
+        label!.textContent = 'Copy'
+      }, 2000)
+    })
+  })
+</script>
 
 <style>
   .hero { margin-bottom: 3.5rem; }
@@ -25,9 +48,26 @@
   }
   .hero-sub { font-size: 0.95rem; opacity: 0.5; max-width: 44ch; line-height: 1.75; margin-bottom: 2rem; }
   .code-block {
+    position: relative;
     background: var(--code-bg); border: 1px solid var(--border);
     border-radius: 0.75rem; padding: 1.2rem 1.4rem;
     font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
     line-height: 1.75; overflow-x: auto; color: var(--fg);
   }
+  .code-block pre { margin: 0; }
+  .code-block code { font-family: inherit; }
+  .btn-copy-hero {
+    position: absolute; top: 0.6rem; right: 0.6rem;
+    height: 1.6rem; padding: 0 0.6rem; border-radius: 0.35rem;
+    border: 1px solid var(--border);
+    background: var(--card); color: var(--fg);
+    font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 500;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 0.3rem;
+    transition: border-color 0.2s, color 0.2s;
+    opacity: 0.7;
+  }
+  .btn-copy-hero:hover { border-color: var(--mid); color: var(--mid); opacity: 1; }
+  .btn-copy-hero:focus-visible { outline: 2px solid var(--mid); outline-offset: 2px; opacity: 1; }
+  .btn-copy-hero.copied { border-color: #4ade80; color: #4ade80; opacity: 1; }
 </style>
