@@ -1,0 +1,33 @@
+---
+---
+<section class="hero">
+  <span class="chip" style="display:inline-block; margin-bottom: 1.25rem;">15 effects</span>
+  <h1 class="hero-title">Theme Toggle<br />Effects</h1>
+  <p class="hero-sub">
+    Dark/light transitions using the native View Transitions API.<br />
+    Hover a card to preview — click to activate, then hit the toggle.
+  </p>
+  <div class="code-block">
+    <span style="opacity:0.38">// all the JS you need</span>
+    <span style="color:var(--soft)">if</span> (!document.<span style="color:var(--mid)">startViewTransition</span>) switchTheme()
+    document.<span style="color:var(--mid)">startViewTransition</span>(switchTheme)
+  </div>
+</section>
+
+<style>
+  .hero { margin-bottom: 3.5rem; }
+  .hero-title {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 500; color: var(--mid);
+    letter-spacing: -0.04em; line-height: 1.1;
+    margin: 1rem 0;
+  }
+  .hero-sub { font-size: 0.95rem; opacity: 0.5; max-width: 44ch; line-height: 1.75; margin-bottom: 2rem; }
+  .code-block {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 0.75rem; padding: 1.2rem 1.4rem;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.72rem;
+    line-height: 1.75; overflow-x: auto; color: var(--fg);
+  }
+</style>

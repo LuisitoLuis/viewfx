@@ -1,0 +1,262 @@
+@import "tailwindcss";
+
+/* ── Timing functions ───────────────────────────────────────── */
+:root {
+  --expo-in: linear(
+    0 0%, 0.0085 31.26%, 0.0167 40.94%,
+    0.0289 48.86%, 0.0471 55.92%,
+    0.0717 61.99%, 0.1038 67.32%,
+    0.1443 72.07%, 0.1989 76.7%,
+    0.2659 80.89%, 0.3465 84.71%,
+    0.4419 88.22%, 0.554 91.48%,
+    0.6835 94.51%, 0.8316 97.34%, 1 100%
+  );
+  --expo-out: linear(
+    0 0%, 0.1684 2.66%, 0.3165 5.49%,
+    0.446 8.52%, 0.5581 11.78%,
+    0.6535 15.29%, 0.7341 19.11%,
+    0.8011 23.3%, 0.8557 27.93%,
+    0.8962 32.68%, 0.9283 38.01%,
+    0.9529 44.08%, 0.9711 51.14%,
+    0.9833 59.06%, 0.9915 68.74%, 1 100%
+  );
+}
+
+/* ── Theme tokens ───────────────────────────────────────────── */
+:root {
+  --bg:   #f4f2ff;
+  --fg:   #1e1a2e;
+  --mid:  #7c6fe0;
+  --soft: #cba6f7;
+  --card: #ffffffcc;
+  --border: #ddd6fe;
+  --code-bg: #ede9fe;
+}
+.dark {
+  --bg:   #1e1a2e;
+  --fg:   #f4f2ff;
+  --mid:  #7c6fe0;
+  --soft: #cba6f7;
+  --card: #2a253ecc;
+  --border: #3b3260;
+  --code-bg: #2a253e;
+}
+
+/* ── Base ───────────────────────────────────────────────────── */
+html { background: var(--bg); color: var(--fg); transition: background 0.3s, color 0.3s; }
+body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Chip ───────────────────────────────────────────────────── */
+.chip {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.63rem; letter-spacing: 0.08em;
+  padding: 0.2rem 0.6rem; border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--code-bg); color: var(--soft);
+  text-transform: uppercase;
+}
+
+/* ── Divider ────────────────────────────────────────────────── */
+hr { border: none; border-top: 1px solid var(--border); }
+
+/* ── View transition reset ──────────────────────────────────── */
+::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+
+/* ── Scrollbar ──────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   KEYFRAMES (top-level — Lightning CSS strips nested @keyframes)
+   ════════════════════════════════════════════════════════════════ */
+
+@keyframes vt-scale { to { mask-size: 200vmax; } }
+@keyframes vt-scale2 { to { mask-size: 200vmax; } }
+@keyframes vt-scale3 { to { mask-size: 350vmax; } }
+@keyframes vt-scale-tr { to { mask-size: 350vmax; } }
+@keyframes vt-iris { to { mask-size: 300vmax; } }
+@keyframes vt-diamond { to { mask-size: 280vmax; } }
+@keyframes vt-hex { to { mask-size: 300vmax; } }
+@keyframes vt-ink { to { mask-size: 250vmax; } }
+
+@keyframes vt-wipe-in-h  { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0% 0 0); } }
+@keyframes vt-wipe-out-h { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 0 100%); } }
+@keyframes vt-wipe-in-v  { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0% 0 0 0); } }
+@keyframes vt-wipe-out-v { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 100% 0); } }
+@keyframes vt-zoom-in    { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+@keyframes vt-zoom-out   { from { opacity: 1; transform: scale(1); }    to { opacity: 0; transform: scale(1.15); } }
+@keyframes vt-rotate-in  { from { opacity: 0; transform: rotate(-6deg) scale(0.9); } to { opacity: 1; transform: rotate(0) scale(1); } }
+@keyframes vt-rotate-out { from { opacity: 1; transform: rotate(0) scale(1); }       to { opacity: 0; transform: rotate(6deg) scale(0.9); } }
+@keyframes vt-fade-in    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes vt-fade-out   { from { opacity: 1; } to { opacity: 0; } }
+@keyframes vt-reveal-dark  { from { clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%); } to { clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%); } }
+@keyframes vt-reveal-light { from { clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%); } to { clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%); } }
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 1 — circle
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="circle"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-scale 1s;
+    animation-fill-mode: both;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 2 — circle-blur
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="circle-blur"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="20" cy="20" r="18" fill="white" filter="url(%23b)"/></svg>') center / 0 no-repeat;
+    animation: vt-scale2 1s; animation-fill-mode: both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 3 — top-left corner
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="corner-tl"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="0" cy="0" r="18" fill="white" filter="url(%23b)"/></svg>') top left / 0 no-repeat;
+    mask-origin: content-box;
+    animation: vt-scale3 1s; animation-fill-mode: both; transform-origin: top left;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: vt-scale3 1s; animation-fill-mode: both; transform-origin: top left; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 4 — polygon diagonal wipe
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="polygon"] {
+  ::view-transition-group(root) { animation-duration: 0.7s; animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation-name: vt-reveal-light; animation-fill-mode: both; }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
+  .dark ::view-transition-new(root) { animation-name: vt-reveal-dark; animation-fill-mode: both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 5 — iris (star shape)
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="iris"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-iris 0.9s; animation-fill-mode: both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 6 — horizontal wipe
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="wipe-h"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-wipe-in-h 0.6s both; }
+  ::view-transition-old(root) { animation: vt-wipe-out-h 0.6s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 7 — vertical wipe
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="wipe-v"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-wipe-in-v 0.6s both; }
+  ::view-transition-old(root) { animation: vt-wipe-out-v 0.6s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 8 — zoom-out
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="zoom"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-zoom-in 0.7s both; }
+  ::view-transition-old(root) { animation: vt-zoom-out 0.7s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 9 — rotate-in
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="rotate"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-rotate-in 0.7s both; }
+  ::view-transition-old(root) { animation: vt-rotate-out 0.7s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 10 — diamond mask
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="diamond"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><polygon points="20,0 40,20 20,40 0,20" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-diamond 0.9s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 11 — cross-fade
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="fade"] {
+  ::view-transition-group(root) { animation-timing-function: ease-in-out; }
+  ::view-transition-new(root) { animation: vt-fade-in 0.5s both; }
+  ::view-transition-old(root) { animation: vt-fade-out 0.5s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 12 — ripple from top-right corner
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="corner-tr"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="1.5"/></filter></defs><circle cx="40" cy="0" r="18" fill="white" filter="url(%23b)"/></svg>') top right / 0 no-repeat;
+    mask-origin: content-box;
+    animation: vt-scale-tr 1s both; transform-origin: top right;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { z-index: -1; animation: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 13 — hexagon mask
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="hexagon"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-hex 1s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 14 — slide from right
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="slide"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-slide-in 0.6s both; }
+  ::view-transition-old(root) { animation: vt-slide-out 0.6s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 15 — ink bleed
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="ink"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="turbulence"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter></defs><circle cx="50" cy="50" r="50" fill="white" filter="url(%23turbulence)"/></svg>') center / 0 no-repeat;
+    animation: vt-ink 1.2s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
