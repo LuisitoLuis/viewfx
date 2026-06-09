@@ -1,5 +1,5 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import Layout from '../layouts/Layout.astro'
 import Header from '../components/Header.astro'
 import Hero from '../components/Hero.astro'
 import EffectGrid from '../components/EffectGrid.astro'
@@ -7,10 +7,10 @@ import CodeModal from '../components/CodeModal.astro'
 import Footer from '../components/Footer.astro'
 ---
 
-<BaseLayout>
+<Layout>
   <Header />
 
-  <main style="max-width: 960px; margin: 0 auto; padding: 4rem 1.5rem 6rem;">
+  <main id="main-content" style="max-width: 960px; margin: 0 auto; padding: 4rem 1.5rem 6rem;" tabindex="-1">
     <Hero />
     <hr style="margin-bottom: 3rem;" />
     <EffectGrid />
@@ -18,7 +18,7 @@ import Footer from '../components/Footer.astro'
   </main>
 
   <CodeModal />
-</BaseLayout>
+</Layout>
 
 <script>
   import { initTheme } from '../scripts/theme'
