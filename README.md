@@ -1,43 +1,62 @@
-# Astro Starter Kit: Minimal
+# ViewFX
+
+A small Astro site showcasing dark/light theme transition effects using the native View Transitions API.
+
+This project includes:
+
+- A responsive effect gallery with 21 theme toggle animations
+- Accessible keyboard interaction and status announcements
+- A code modal for viewing effect implementation details
+- Light/dark mode support with persistent local storage
+
+## 🧱 Tech stack
+
+- Astro 6.4.4
+- Tailwind CSS 4.3.0
+- Native browser `document.startViewTransition()` transitions
+- Vanilla TypeScript for UI interactivity
+
+## 📁 Project structure
+
+- `src/pages/index.astro` — main page layout
+- `src/components/` — UI components like header, hero, grid, footer and modal
+- `src/data/effects.ts` — effect metadata and preview classes
+- `src/scripts/` — client-side theme and modal logic
+- `src/styles/global.css` — global styling and theme variables
+- `public/` — static assets
+
+## 🚀 Development
+
+From the project root:
 
 ```sh
-npm create astro@latest -- --template minimal
+npm install
+npm run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+or, if you prefer pnpm:
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
+```sh
+pnpm install
+pnpm run dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+Then open the local server URL shown in the terminal.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## 🛠️ Build & preview
 
-Any static assets, like images, can be placed in the `public/` directory.
+```sh
+npm run build
+npm run preview
+```
 
-## 🧞 Commands
+## 📌 Notes
 
-All commands are run from the root of the project, from a terminal:
+- The app uses `document.startViewTransition()` when available.
+- Selected effect state is saved in `localStorage`.
+- The demo is optimized for modern browsers with native view transitions support.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## 📚 Learn more
 
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Astro docs: https://docs.astro.build
+- Tailwind CSS: https://tailwindcss.com
