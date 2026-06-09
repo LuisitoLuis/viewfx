@@ -36,10 +36,6 @@ import { EFFECTS } from '../data/effects'
         </div>
 
         <div class="ec-footer">
-          <button class="btn-preview" data-preview={e.id} aria-label={`Preview ${e.name} effect`}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5,3 19,12 5,21"/></svg>
-            Preview
-          </button>
           <button class="btn-code" data-code={e.id} aria-label={`View ${e.name} CSS code`}>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             Code
@@ -53,7 +49,6 @@ import { EFFECTS } from '../data/effects'
 
 <script>
   import { EFFECTS } from '../data/effects'
-  import { fireToggle } from '../scripts/theme'
   import { openEffectModal, initModal } from '../scripts/modal'
 
   let activeEffect = localStorage.getItem('tt-effect') || 'circle'
@@ -92,29 +87,6 @@ import { EFFECTS } from '../data/effects'
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault()
           activateEffect((card as HTMLElement).dataset.id!)
-        }
-      })
-    })
-
-    grid.querySelectorAll('.btn-preview').forEach(btn => {
-      btn.addEventListener('click', e => {
-        e.stopPropagation()
-        const id = (btn as HTMLElement).dataset.preview!
-        activateEffect(id)
-
-        const html = document.documentElement
-        if (!html.classList.contains('dark')) {
-          html.classList.add('dark')
-          document.getElementById('icon-sun')!.style.display = 'none'
-          document.getElementById('icon-moon')!.style.display = 'block'
-        }
-
-        if (document.startViewTransition) {
-          document.startViewTransition(() => {
-            html.classList.remove('dark')
-            document.getElementById('icon-sun')!.style.display = 'block'
-            document.getElementById('icon-moon')!.style.display = 'none'
-          })
         }
       })
     })
@@ -254,35 +226,19 @@ import { EFFECTS } from '../data/effects'
 
   .ec-footer {
     padding: 0 1.1rem 0.9rem;
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 0.5rem;
+    display: flex; align-items: center;
   }
-  .btn-preview {
+  .btn-code {
     flex: 1;
     height: 1.9rem; border-radius: 0.45rem;
-    border: 1px solid var(--border);
-    background: transparent; color: var(--fg);
-    font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
-    cursor: pointer;
-    display: flex; align-items: center; justify-content: center; gap: 0.3rem;
-    transition: border-color 0.18s, background 0.18s, color 0.18s;
-    opacity: 0.7;
-  }
-  .btn-preview:hover { border-color: var(--mid); color: var(--mid); background: var(--code-bg); opacity: 1; }
-  .btn-preview:focus-visible { border-color: var(--mid); color: var(--mid); opacity: 1; outline: 2px solid var(--mid); outline-offset: 2px; }
-  .ec.active .btn-preview { border-color: var(--mid); color: var(--mid); opacity: 1; }
-
-  .btn-code {
-    height: 1.9rem; padding: 0 0.75rem; border-radius: 0.45rem;
     border: 1px solid var(--border);
     background: transparent; color: var(--soft);
     font-family: 'JetBrains Mono', monospace; font-size: 0.68rem; font-weight: 500;
     cursor: pointer;
-    display: flex; align-items: center; gap: 0.3rem;
+    display: flex; align-items: center; justify-content: center; gap: 0.3rem;
     transition: border-color 0.18s, background 0.18s;
-    white-space: nowrap;
   }
-  .btn-code:hover { border-color: var(--soft); background: var(--code-bg); }
+  .btn-code:hover { border-color: var(--soft); background: var(--code-bg); color: var(--fg); }
   .btn-code:focus-visible { border-color: var(--soft); outline: 2px solid var(--soft); outline-offset: 2px; }
 
   /* ── Preview animations on the mini-scene ────────────── */
