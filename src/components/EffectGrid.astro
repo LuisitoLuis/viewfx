@@ -1,14 +1,14 @@
 ---
 import { EFFECTS } from '../data/effects'
 ---
-<section style="margin-bottom: 3rem;">
-  <p class="section-label">Choose an effect</p>
-  <div id="effect-grid">
+<section aria-labelledby="effects-heading" style="margin-bottom: 3rem;">
+  <h2 id="effects-heading" class="section-label">Choose an effect</h2>
+  <div id="effect-grid" role="list" aria-label="Theme transition effects">
     {EFFECTS.map(e => (
-      <div class="ec" data-id={e.id}>
-        <div class="ec-active-badge"></div>
+      <article class="ec" data-id={e.id} role="listitem" tabindex="0" aria-label={`${e.name}: ${e.desc}`} aria-pressed="false">
+        <div class="ec-active-badge" aria-hidden="true"></div>
 
-        <div class="ec-preview">
+        <div class="ec-preview" aria-hidden="true">
           <div class="ec-scene ec-scene-dark">
             <div class="mock-moon"></div>
             <div class="mock-col">
@@ -36,18 +36,19 @@ import { EFFECTS } from '../data/effects'
         </div>
 
         <div class="ec-footer">
-          <button class="btn-preview" data-preview={e.id}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5,3 19,12 5,21"/></svg>
+          <button class="btn-preview" data-preview={e.id} aria-label={`Preview ${e.name} effect`}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polygon points="5,3 19,12 5,21"/></svg>
             Preview
           </button>
-          <button class="btn-code" data-code={e.id}>
-            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          <button class="btn-code" data-code={e.id} aria-label={`View ${e.name} CSS code`}>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
             Code
           </button>
         </div>
-      </div>
+      </article>
     ))}
   </div>
+  <div id="effect-status" role="status" aria-live="polite" class="sr-only"></div>
 </section>
 
 <script>
@@ -56,17 +57,25 @@ import { EFFECTS } from '../data/effects'
   import { openEffectModal, initModal } from '../scripts/modal'
 
   let activeEffect = localStorage.getItem('tt-effect') || 'circle'
+  const statusEl = document.getElementById('effect-status')
 
   function activateEffect(id: string) {
     activeEffect = id
     localStorage.setItem('tt-effect', id)
     document.documentElement.setAttribute('data-effect', id)
     updateActiveCard()
+
+    const eff = EFFECTS.find(e => e.id === id)
+    if (eff && statusEl) {
+      statusEl.textContent = `Active effect: ${eff.name}`
+    }
   }
 
   function updateActiveCard() {
     document.querySelectorAll('.ec').forEach(card => {
-      card.classList.toggle('active', (card as HTMLElement).dataset.id === activeEffect)
+      const isActive = (card as HTMLElement).dataset.id === activeEffect
+      card.classList.toggle('active', isActive)
+      card.setAttribute('aria-pressed', String(isActive))
     })
   }
 
@@ -75,8 +84,15 @@ import { EFFECTS } from '../data/effects'
 
     grid.querySelectorAll('.ec').forEach(card => {
       card.addEventListener('click', e => {
-        if ((e.target as HTMLElement).closest('.btn-code')) return
+        if ((e.target as HTMLElement).closest('button')) return
         activateEffect((card as HTMLElement).dataset.id!)
+      })
+
+      card.addEventListener('keydown', (e: KeyboardEvent) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          activateEffect((card as HTMLElement).dataset.id!)
+        }
       })
     })
 
@@ -85,7 +101,21 @@ import { EFFECTS } from '../data/effects'
         e.stopPropagation()
         const id = (btn as HTMLElement).dataset.preview!
         activateEffect(id)
-        fireToggle()
+
+        const html = document.documentElement
+        if (!html.classList.contains('dark')) {
+          html.classList.add('dark')
+          document.getElementById('icon-sun')!.style.display = 'none'
+          document.getElementById('icon-moon')!.style.display = 'block'
+        }
+
+        if (document.startViewTransition) {
+          document.startViewTransition(() => {
+            html.classList.remove('dark')
+            document.getElementById('icon-sun')!.style.display = 'block'
+            document.getElementById('icon-moon')!.style.display = 'none'
+          })
+        }
       })
     })
 
@@ -104,6 +134,12 @@ import { EFFECTS } from '../data/effects'
 </script>
 
 <style>
+  .sr-only {
+    position: absolute; width: 1px; height: 1px;
+    padding: 0; margin: -1px; overflow: hidden;
+    clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+  }
+
   .section-label {
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.7rem; letter-spacing: 0.12em;
@@ -132,6 +168,10 @@ import { EFFECTS } from '../data/effects'
     border-color: var(--mid);
     transform: translateY(-3px);
     box-shadow: 0 8px 32px color-mix(in srgb, var(--mid) 18%, transparent);
+  }
+  .ec:focus-visible {
+    outline: 2px solid var(--mid);
+    outline-offset: 2px;
   }
   .ec.active {
     border-color: var(--mid);
@@ -172,6 +212,7 @@ import { EFFECTS } from '../data/effects'
     pointer-events: none;
   }
   .ec:hover .ec-play { opacity: 1; background: color-mix(in srgb, var(--mid) 10%, transparent); }
+  .ec:focus-visible .ec-play { opacity: 1; background: color-mix(in srgb, var(--mid) 10%, transparent); }
   .ec-play-icon {
     width: 32px; height: 32px; border-radius: 50%;
     background: var(--mid);
@@ -228,6 +269,7 @@ import { EFFECTS } from '../data/effects'
     opacity: 0.7;
   }
   .btn-preview:hover { border-color: var(--mid); color: var(--mid); background: var(--code-bg); opacity: 1; }
+  .btn-preview:focus-visible { border-color: var(--mid); color: var(--mid); opacity: 1; outline: 2px solid var(--mid); outline-offset: 2px; }
   .ec.active .btn-preview { border-color: var(--mid); color: var(--mid); opacity: 1; }
 
   .btn-code {
@@ -241,6 +283,7 @@ import { EFFECTS } from '../data/effects'
     white-space: nowrap;
   }
   .btn-code:hover { border-color: var(--soft); background: var(--code-bg); }
+  .btn-code:focus-visible { border-color: var(--soft); outline: 2px solid var(--soft); outline-offset: 2px; }
 
   /* ── Preview animations on the mini-scene ────────────── */
   @keyframes mini-wipe-h {
@@ -295,53 +338,68 @@ import { EFFECTS } from '../data/effects'
     100% { mask-size: 0;     -webkit-mask-size: 0;     opacity: 1; }
   }
 
-  .ec:hover .mini-anim-circle {
+  .ec:hover .mini-anim-circle,
+  .ec:focus-visible .mini-anim-circle {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="white"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="white"/></svg>') center / 0 no-repeat;
     animation: mini-circle-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-circle-blur {
+  .ec:hover .mini-anim-circle-blur,
+  .ec:focus-visible .mini-anim-circle-blur {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="20" cy="20" r="18" fill="white" filter="url(%23b)"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="20" cy="20" r="18" fill="white" filter="url(%23b)"/></svg>') center / 0 no-repeat;
     animation: mini-circle-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-corner-tl {
+  .ec:hover .mini-anim-corner-tl,
+  .ec:focus-visible .mini-anim-corner-tl {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="0" cy="0" r="18" fill="white"/></svg>') top left / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="0" cy="0" r="18" fill="white"/></svg>') top left / 0 no-repeat;
     mask-origin: content-box; -webkit-mask-origin: content-box;
     animation: mini-circle-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-corner-tr {
+  .ec:hover .mini-anim-corner-tr,
+  .ec:focus-visible .mini-anim-corner-tr {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="40" cy="0" r="18" fill="white"/></svg>') top right / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="40" cy="0" r="18" fill="white"/></svg>') top right / 0 no-repeat;
     mask-origin: content-box; -webkit-mask-origin: content-box;
     animation: mini-circle-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-polygon   { animation: mini-polygon 1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-diamond {
+  .ec:hover .mini-anim-polygon,
+  .ec:focus-visible .mini-anim-polygon   { animation: mini-polygon 1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-diamond,
+  .ec:focus-visible .mini-anim-diamond {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><polygon points="20,0 40,20 20,40 0,20" fill="white"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><polygon points="20,0 40,20 20,40 0,20" fill="white"/></svg>') center / 0 no-repeat;
     animation: mini-diamond-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-hexagon {
+  .ec:hover .mini-anim-hexagon,
+  .ec:focus-visible .mini-anim-hexagon {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 93,25 93,75 50,100 7,75 7,25" fill="white"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 93,25 93,75 50,100 7,75 7,25" fill="white"/></svg>') center / 0 no-repeat;
     animation: mini-diamond-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-iris {
+  .ec:hover .mini-anim-iris,
+  .ec:focus-visible .mini-anim-iris {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="white"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="white"/></svg>') center / 0 no-repeat;
     animation: mini-diamond-mask 1.8s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-ink {
+  .ec:hover .mini-anim-ink,
+  .ec:focus-visible .mini-anim-ink {
     mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="t"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="12"/></filter></defs><circle cx="50" cy="50" r="50" fill="white" filter="url(%23t)"/></svg>') center / 0 no-repeat;
     -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="t"><feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="3" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="12"/></filter></defs><circle cx="50" cy="50" r="50" fill="white" filter="url(%23t)"/></svg>') center / 0 no-repeat;
     animation: mini-diamond-mask 2s ease-in-out infinite;
   }
-  .ec:hover .mini-anim-wipe-h    { animation: mini-wipe-h  1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-wipe-v    { animation: mini-wipe-v  1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-slide     { animation: mini-slide   1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-zoom      { animation: mini-zoom    1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-rotate    { animation: mini-rotate  1.8s ease-in-out infinite; }
-  .ec:hover .mini-anim-fade      { animation: mini-fade    1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-wipe-h,
+  .ec:focus-visible .mini-anim-wipe-h    { animation: mini-wipe-h  1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-wipe-v,
+  .ec:focus-visible .mini-anim-wipe-v    { animation: mini-wipe-v  1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-slide,
+  .ec:focus-visible .mini-anim-slide     { animation: mini-slide   1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-zoom,
+  .ec:focus-visible .mini-anim-zoom      { animation: mini-zoom    1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-rotate,
+  .ec:focus-visible .mini-anim-rotate    { animation: mini-rotate  1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-fade,
+  .ec:focus-visible .mini-anim-fade      { animation: mini-fade    1.8s ease-in-out infinite; }
 </style>

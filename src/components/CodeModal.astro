@@ -1,25 +1,115 @@
 ---
 ---
-<div id="code-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+<div id="code-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-hidden="true">
   <div class="modal-backdrop" id="modal-backdrop"></div>
-  <div class="modal-box">
+  <div class="modal-box" role="document">
     <div class="modal-header">
       <span class="modal-title" id="modal-title">circle.css</span>
       <div class="modal-actions">
-        <button class="btn-copy" id="btn-copy">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-          Copy
+        <button class="btn-copy" id="btn-copy" aria-label="Copy CSS code to clipboard">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          <span id="btn-copy-label">Copy</span>
         </button>
-        <button class="btn-close" id="btn-close-modal" aria-label="Close">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <button class="btn-close" id="btn-close-modal" aria-label="Close code viewer">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
         </button>
       </div>
     </div>
     <div class="modal-code">
-      <pre id="modal-code-content"></pre>
+      <pre id="modal-code-content" tabindex="0" role="code" aria-label="CSS code"></pre>
     </div>
   </div>
 </div>
+
+<script>
+  const FOCUSABLE = 'button, [tabindex]:not([tabindex="-1"]), pre[tabindex]'
+
+  function trapFocus(modal: HTMLElement) {
+    const focusable = modal.querySelectorAll<HTMLElement>(FOCUSABLE)
+    const first = focusable[0]
+    const last = focusable[focusable.length - 1]
+
+    function handleTab(e: KeyboardEvent) {
+      if (e.key !== 'Tab') return
+      if (e.shiftKey) {
+        if (document.activeElement === first) {
+          e.preventDefault()
+          last?.focus()
+        }
+      } else {
+        if (document.activeElement === last) {
+          e.preventDefault()
+          first?.focus()
+        }
+      }
+    }
+
+    modal.addEventListener('keydown', handleTab)
+    return () => modal.removeEventListener('keydown', handleTab)
+  }
+
+  let cleanupTrap: (() => void) | null = null
+  let triggerElement: HTMLElement | null = null
+
+  function openModal(title: string, css: string) {
+    const modal = document.getElementById('code-modal')!
+    triggerElement = document.activeElement as HTMLElement
+
+    document.getElementById('modal-title')!.textContent = title
+    document.getElementById('modal-code-content')!.textContent = css
+    modal.classList.add('open')
+    modal.setAttribute('aria-hidden', 'false')
+    document.body.style.overflow = 'hidden'
+
+    cleanupTrap = trapFocus(modal)
+    const firstBtn = modal.querySelector<HTMLElement>(FOCUSABLE)
+    firstBtn?.focus()
+  }
+
+  function closeModal() {
+    const modal = document.getElementById('code-modal')!
+    modal.classList.remove('open')
+    modal.setAttribute('aria-hidden', 'true')
+    document.body.style.overflow = ''
+
+    cleanupTrap?.()
+    cleanupTrap = null
+
+    const btn = document.getElementById('btn-copy')!
+    const label = document.getElementById('btn-copy-label')!
+    btn.classList.remove('copied')
+    btn.setAttribute('aria-label', 'Copy CSS code to clipboard')
+    label.textContent = 'Copy'
+
+    triggerElement?.focus()
+    triggerElement = null
+  }
+
+  function copyCode() {
+    const code = document.getElementById('modal-code-content')!.textContent || ''
+    navigator.clipboard.writeText(code).then(() => {
+      const btn = document.getElementById('btn-copy')!
+      const label = document.getElementById('btn-copy-label')!
+      btn.classList.add('copied')
+      btn.setAttribute('aria-label', 'Copied to clipboard!')
+      label.textContent = 'Copied!'
+      setTimeout(() => {
+        btn.classList.remove('copied')
+        btn.setAttribute('aria-label', 'Copy CSS code to clipboard')
+        label.textContent = 'Copy'
+      }, 2000)
+    })
+  }
+
+  document.getElementById('btn-close-modal')?.addEventListener('click', closeModal)
+  document.getElementById('modal-backdrop')?.addEventListener('click', closeModal)
+  document.getElementById('btn-copy')?.addEventListener('click', copyCode)
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal() })
+
+  document.addEventListener('open-effect-modal', ((e: CustomEvent) => {
+    openModal(e.detail.title, e.detail.css)
+  }) as EventListener)
+</script>
 
 <style>
   #code-modal {
@@ -66,6 +156,7 @@
     transition: border-color 0.2s, color 0.2s;
   }
   .btn-copy:hover { border-color: var(--mid); color: var(--mid); }
+  .btn-copy:focus-visible { outline: 2px solid var(--mid); outline-offset: 2px; }
   .btn-copy.copied { border-color: #4ade80; color: #4ade80; }
   .btn-close {
     width: 1.8rem; height: 1.8rem; border-radius: 50%;
@@ -75,6 +166,7 @@
     transition: opacity 0.2s, border-color 0.2s;
   }
   .btn-close:hover { opacity: 1; border-color: var(--border); }
+  .btn-close:focus-visible { opacity: 1; outline: 2px solid var(--mid); outline-offset: 2px; }
   .modal-code {
     flex: 1; overflow-y: auto;
     padding: 1.25rem;
@@ -84,4 +176,5 @@
     font-size: 0.72rem; line-height: 1.8;
     color: var(--fg); white-space: pre-wrap; word-break: break-word;
   }
+  .modal-code pre:focus-visible { outline: 2px solid var(--mid); outline-offset: 4px; border-radius: 4px; }
 </style>

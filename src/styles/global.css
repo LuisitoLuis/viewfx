@@ -43,9 +43,34 @@
 }
 
 /* ── Base ───────────────────────────────────────────────────── */
-html { background: var(--bg); color: var(--fg); transition: background 0.3s, color 0.3s; }
+html { background: var(--bg); color: var(--fg); transition: background 0.3s, color 0.3s; scroll-behavior: smooth; }
 body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Skip link ──────────────────────────────────────────────── */
+.skip-link {
+  position: absolute; top: -100%; left: 0;
+  padding: 0.5rem 1rem;
+  background: var(--mid); color: #fff;
+  font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500;
+  z-index: 1000;
+  border-radius: 0 0 0.5rem 0;
+  text-decoration: none;
+  transition: top 0.2s;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ── Focus visible (global) ─────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--mid);
+  outline-offset: 2px;
+}
+button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--mid);
+  outline-offset: 2px;
+}
 
 /* ── Chip ───────────────────────────────────────────────────── */
 .chip {

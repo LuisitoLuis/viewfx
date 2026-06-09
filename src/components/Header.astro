@@ -1,17 +1,17 @@
 ---
 ---
-<header>
+<header role="banner">
   <div class="header-inner">
     <div class="header-brand">
-      <span class="brand-icon">&lt;/&gt;</span>
+      <span class="brand-icon" aria-hidden="true">&lt;/&gt;</span>
       <span class="brand-name">theme-toggle</span>
       <span class="chip">View Transitions API</span>
     </div>
-    <button id="theme-toggle" aria-label="Toggle theme">
-      <svg id="icon-sun" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+    <button id="theme-toggle" type="button" aria-label="Toggle dark/light theme">
+      <svg id="icon-sun" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
         <circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
       </svg>
-      <svg id="icon-moon" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <svg id="icon-moon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9z"/>
       </svg>
     </button>
@@ -38,7 +38,11 @@
     width: 2.25rem; height: 2.25rem; border-radius: 50%;
     border: 1px solid var(--border); background: var(--card);
     cursor: pointer; display: grid; place-items: center;
-    transition: border-color 0.2s, background 0.2s; color: var(--fg);
+    transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; color: var(--fg);
   }
   #theme-toggle:hover { border-color: var(--mid); background: var(--code-bg); }
+  #theme-toggle:focus-visible {
+    outline: 2px solid var(--mid);
+    outline-offset: 2px;
+  }
 </style>
