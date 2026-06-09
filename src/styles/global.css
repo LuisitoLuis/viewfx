@@ -122,6 +122,29 @@ hr { border: none; border-top: 1px solid var(--border); }
 @keyframes vt-fade-out   { from { opacity: 1; } to { opacity: 0; } }
 @keyframes vt-reveal-dark  { from { clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%); } to { clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%); } }
 @keyframes vt-reveal-light { from { clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%); } to { clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%); } }
+@keyframes vt-venetian-in  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0% 0); } }
+@keyframes vt-venetian-out { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(100% 0 0 0); } }
+@keyframes vt-spiral-in    { to { mask-size: 250vmax; mask-image: conic-gradient(from 0deg, white 0%, white 100%); } }
+@keyframes vt-heart         { to { mask-size: 280vmax; } }
+@keyframes vt-mosaic        { to { mask-size: 300vmax; } }
+@keyframes vt-glitch-in {
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+  20%  { clip-path: inset(40% 0 0 0); opacity: 1; }
+  40%  { clip-path: inset(0 0 60% 0); }
+  60%  { clip-path: inset(20% 0 20% 0); }
+  80%  { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+@keyframes vt-glitch-out {
+  0%   { clip-path: inset(0 0 0 0); opacity: 1; }
+  20%  { clip-path: inset(0 0 40% 0); }
+  40%  { clip-path: inset(60% 0 0 0); }
+  60%  { clip-path: inset(20% 0 20% 0); opacity: 0.5; }
+  80%  { clip-path: inset(0 0 100% 0); opacity: 0; }
+  100% { clip-path: inset(0 0 100% 0); opacity: 0; }
+}
+@keyframes vt-slide-down-in  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes vt-slide-down-out { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 100% 0); } }
 
 /* ════════════════════════════════════════════════════════════════
    EFFECT 1 — circle
@@ -284,4 +307,67 @@ hr { border: none; border-top: 1px solid var(--border); }
     animation: vt-ink 1.2s both;
   }
   ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 16 — venetian blinds
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="venetian"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-venetian-in 0.8s both; }
+  ::view-transition-old(root) { animation: vt-venetian-out 0.8s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 17 — spiral
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="spiral"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: conic-gradient(from 0deg, white 0%, transparent 0%) center / 0 no-repeat;
+    animation: vt-spiral-in 1.2s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 18 — heart
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="heart"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C25 65 5 50 5 30 5 15 15 5 30 5 40 5 48 12 50 18 52 12 60 5 70 5 85 5 95 15 95 30 95 50 75 65 50 88Z" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-heart 1s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 19 — glitch
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="glitch"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-glitch-in 0.6s both; }
+  ::view-transition-old(root) { animation: vt-glitch-out 0.6s both; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 20 — mosaic
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="mosaic"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0" y="0" width="25" height="25" fill="white"/><rect x="50" y="0" width="25" height="25" fill="white"/><rect x="25" y="25" width="25" height="25" fill="white"/><rect x="75" y="25" width="25" height="25" fill="white"/><rect x="0" y="50" width="25" height="25" fill="white"/><rect x="50" y="50" width="25" height="25" fill="white"/><rect x="25" y="75" width="25" height="25" fill="white"/><rect x="75" y="75" width="25" height="25" fill="white"/></svg>') center / 0 no-repeat;
+    animation: vt-mosaic 0.9s both;
+  }
+  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   EFFECT 21 — slide down (inverse of wipe-v)
+   ════════════════════════════════════════════════════════════════ */
+[data-effect="slide-down"] {
+  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-new(root) { animation: vt-slide-down-in 0.6s both; }
+  ::view-transition-old(root) { animation: vt-slide-down-out 0.6s both; }
 }

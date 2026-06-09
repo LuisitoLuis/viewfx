@@ -358,4 +358,31 @@ import { EFFECTS } from '../data/effects'
   .ec:focus-visible .mini-anim-rotate    { animation: mini-rotate  1.8s ease-in-out infinite; }
   .ec:hover .mini-anim-fade,
   .ec:focus-visible .mini-anim-fade      { animation: mini-fade    1.8s ease-in-out infinite; }
+  @keyframes mini-slide-down {
+    0%   { clip-path: inset(0 0 100% 0); opacity: 1; }
+    60%  { clip-path: inset(0 0 0% 0);   opacity: 1; }
+    85%  { clip-path: inset(0 0 0% 0);   opacity: 1; }
+    100% { clip-path: inset(0 0 100% 0); opacity: 1; }
+  }
+
+  .ec:hover .mini-anim-slide-down,
+  .ec:focus-visible .mini-anim-slide-down { animation: mini-slide-down 1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-venetian,
+  .ec:focus-visible .mini-anim-venetian  { animation: mini-wipe-v  1.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-spiral,
+  .ec:focus-visible .mini-anim-spiral    { animation: mini-rotate  2s ease-in-out infinite; }
+  .ec:hover .mini-anim-heart,
+  .ec:focus-visible .mini-anim-heart {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C25 65 5 50 5 30 5 15 15 5 30 5 40 5 48 12 50 18 52 12 60 5 70 5 85 5 95 15 95 30 95 50 75 65 50 88Z" fill="white"/></svg>') center / 0 no-repeat;
+    -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C25 65 5 50 5 30 5 15 15 5 30 5 40 5 48 12 50 18 52 12 60 5 70 5 85 5 95 15 95 30 95 50 75 65 50 88Z" fill="white"/></svg>') center / 0 no-repeat;
+    animation: mini-diamond-mask 1.8s ease-in-out infinite;
+  }
+  .ec:hover .mini-anim-glitch,
+  .ec:focus-visible .mini-anim-glitch    { animation: mini-wipe-h  0.8s ease-in-out infinite; }
+  .ec:hover .mini-anim-mosaic,
+  .ec:focus-visible .mini-anim-mosaic {
+    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0" y="0" width="25" height="25" fill="white"/><rect x="50" y="0" width="25" height="25" fill="white"/><rect x="25" y="25" width="25" height="25" fill="white"/><rect x="75" y="25" width="25" height="25" fill="white"/><rect x="0" y="50" width="25" height="25" fill="white"/><rect x="50" y="50" width="25" height="25" fill="white"/><rect x="25" y="75" width="25" height="25" fill="white"/><rect x="75" y="75" width="25" height="25" fill="white"/></svg>') center / 0 no-repeat;
+    -webkit-mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0" y="0" width="25" height="25" fill="white"/><rect x="50" y="0" width="25" height="25" fill="white"/><rect x="25" y="25" width="25" height="25" fill="white"/><rect x="75" y="25" width="25" height="25" fill="white"/><rect x="0" y="50" width="25" height="25" fill="white"/><rect x="50" y="50" width="25" height="25" fill="white"/><rect x="25" y="75" width="25" height="25" fill="white"/><rect x="75" y="75" width="25" height="25" fill="white"/></svg>') center / 0 no-repeat;
+    animation: mini-diamond-mask 1.8s ease-in-out infinite;
+  }
 </style>

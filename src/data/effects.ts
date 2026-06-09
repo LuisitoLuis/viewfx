@@ -248,7 +248,7 @@ export const EFFECTS: Effect[] = [
   },
   {
     id: 'wipe-h',
-    name: 'Wipe Horizontal',
+    name: 'Slide Right',
     desc: 'New theme slides in from the right edge.',
     previewClass: 'mini-anim-wipe-h',
     css:
@@ -272,7 +272,7 @@ export const EFFECTS: Effect[] = [
   },
   {
     id: 'wipe-v',
-    name: 'Wipe Vertical',
+    name: 'Slide Down',
     desc: 'New theme drops in from the top edge.',
     previewClass: 'mini-anim-wipe-v',
     css:
@@ -295,9 +295,33 @@ export const EFFECTS: Effect[] = [
 }`
   },
   {
+    id: 'slide-down',
+    name: 'Slide Up',
+    desc: 'New theme slides in from the bottom edge.',
+    previewClass: 'mini-anim-slide-down',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  animation: slide-down-in 0.6s both;
+}
+::view-transition-old(root) {
+  animation: slide-down-out 0.6s both;
+}
+@keyframes slide-down-in {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0 0); }
+}
+@keyframes slide-down-out {
+  from { clip-path: inset(0 0 0 0); }
+  to   { clip-path: inset(0 0 100% 0); }
+}`
+  },
+  {
     id: 'slide',
-    name: 'Slide',
-    desc: 'New page slides in, old retreats left.',
+    name: 'Slide Left',
+    desc: 'New page slides in from the left, old retreats right.',
     previewClass: 'mini-anim-slide',
     css:
 `::view-transition-group(root) {
@@ -416,6 +440,138 @@ export const EFFECTS: Effect[] = [
 }
 @keyframes ink {
   to { mask-size: 250vmax; }
+}`
+  },
+  {
+    id: 'venetian',
+    name: 'Venetian Blinds',
+    desc: 'Horizontal strips revealing the new theme.',
+    previewClass: 'mini-anim-venetian',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  animation: venetian-in 0.8s both;
+}
+::view-transition-old(root) {
+  animation: venetian-out 0.8s both;
+}
+@keyframes venetian-in {
+  from { clip-path: inset(0 0 100% 0); }
+  to   { clip-path: inset(0 0 0% 0); }
+}
+@keyframes venetian-out {
+  from { clip-path: inset(0 0 0 0); }
+  to   { clip-path: inset(100% 0 0 0); }
+}`
+  },
+  {
+    id: 'spiral',
+    name: 'Spiral',
+    desc: 'Conic gradient mask spiraling from center.',
+    previewClass: 'mini-anim-spiral',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  mask: conic-gradient(from 0deg, white 0%, transparent 0%) center / 0 no-repeat;
+  animation: spiral-in 1.2s both;
+}
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+  animation: none; z-index: -1;
+}
+@keyframes spiral-in {
+  to { mask-size: 250vmax; mask-image: conic-gradient(from 0deg, white 0%, white 100%); }
+}`
+  },
+  {
+    id: 'heart',
+    name: 'Heart',
+    desc: 'Heart-shaped mask expanding from center.',
+    previewClass: 'mini-anim-heart',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <path d="M50 88 C25 65 5 50 5 30 5 15 15 5 30 5 40 5 48 12 50 18 52 12 60 5 70 5 85 5 95 15 95 30 95 50 75 65 50 88Z" fill="white"/>
+    </svg>') center / 0 no-repeat;
+  animation: heart 1s both;
+}
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+  animation: none; z-index: -1;
+}
+@keyframes heart {
+  to { mask-size: 280vmax; }
+}`
+  },
+  {
+    id: 'glitch',
+    name: 'Glitch',
+    desc: 'Digital glitch with clipped offsets.',
+    previewClass: 'mini-anim-glitch',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  animation: glitch-in 0.6s both;
+}
+::view-transition-old(root) {
+  animation: glitch-out 0.6s both;
+}
+@keyframes glitch-in {
+  0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
+  20%  { clip-path: inset(40% 0 0 0); opacity: 1; }
+  40%  { clip-path: inset(0 0 60% 0); }
+  60%  { clip-path: inset(20% 0 20% 0); }
+  80%  { clip-path: inset(0 0 0 0); }
+  100% { clip-path: inset(0 0 0 0); opacity: 1; }
+}
+@keyframes glitch-out {
+  0%   { clip-path: inset(0 0 0 0); opacity: 1; }
+  20%  { clip-path: inset(0 0 40% 0); }
+  40%  { clip-path: inset(60% 0 0 0); }
+  60%  { clip-path: inset(20% 0 20% 0); opacity: 0.5; }
+  80%  { clip-path: inset(0 0 100% 0); opacity: 0; }
+  100% { clip-path: inset(0 0 100% 0); opacity: 0; }
+}`
+  },
+  {
+    id: 'mosaic',
+    name: 'Mosaic',
+    desc: 'Grid of tiles revealing the new theme.',
+    previewClass: 'mini-anim-mosaic',
+    css:
+`::view-transition-group(root) {
+  animation-timing-function: var(--expo-out);
+}
+::view-transition-new(root) {
+  mask: url('data:image/svg+xml,
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+      <rect x="0" y="0" width="25" height="25" fill="white"/>
+      <rect x="50" y="0" width="25" height="25" fill="white"/>
+      <rect x="25" y="25" width="25" height="25" fill="white"/>
+      <rect x="75" y="25" width="25" height="25" fill="white"/>
+      <rect x="0" y="50" width="25" height="25" fill="white"/>
+      <rect x="50" y="50" width="25" height="25" fill="white"/>
+      <rect x="25" y="75" width="25" height="25" fill="white"/>
+      <rect x="75" y="75" width="25" height="25" fill="white"/>
+    </svg>') center / 0 no-repeat;
+  animation: mosaic 0.9s both;
+}
+::view-transition-old(root),
+.dark::view-transition-old(root) {
+  animation: none; z-index: -1;
+}
+@keyframes mosaic {
+  to { mask-size: 300vmax; }
 }`
   },
 ]
