@@ -1,62 +1,85 @@
 # ViewFX
 
-A small Astro site showcasing dark/light theme transition effects using the native View Transitions API.
+A specimen catalogue of 21 dark/light theme transitions built on the native
+View Transitions API. Preview an effect on a card, apply it to the page, then
+copy the CSS.
 
-This project includes:
+No runtime dependencies and no framework: every effect is CSS, and the only
+JavaScript involved is one call to `document.startViewTransition()`.
 
-- A responsive effect gallery with 21 theme toggle animations
-- Accessible keyboard interaction and status announcements
-- A code modal for viewing effect implementation details
-- Light/dark mode support with persistent local storage
+## Tech stack
 
-## 🧱 Tech stack
+- Astro 7 (static output, self-hosted fonts via the Fonts API)
+- Tailwind CSS 4 (design tokens declared with `@theme inline`)
+- Native `document.startViewTransition()`
+- Vanilla TypeScript for theme, gallery and dialog behaviour
 
-- Astro 6.4.4
-- Tailwind CSS 4.3.0
-- Native browser `document.startViewTransition()` transitions
-- Vanilla TypeScript for UI interactivity
+## Project structure
 
-## 📁 Project structure
+```
+src/
+├─ consts.ts              Site metadata — change `url` when deploying
+├─ data/
+│  ├─ effects.ts          Effect catalogue and copyable CSS snippets
+│  └─ masks.ts            Shared SVG mask shapes, emitted as --mask-* tokens
+├─ lib/highlight.ts       Build-time syntax highlighter
+├─ layouts/BaseLayout.astro
+├─ components/            Header, hero, gallery, card, code dialog, footer
+├─ pages/
+│  ├─ index.astro
+│  └─ 404.astro
+public/
+├─ favicon.svg            Brand mark (tab icon)
+└─ logo.svg               Same mark (header / footer)
+├─ scripts/               theme, gallery, dialog, clipboard, live-region
+└─ styles/
+   ├─ global.css          Tokens, base, components, utilities
+   ├─ transitions.css     The 21 view transition effects
+   └─ previews.css        Card preview animations
+```
 
-- `src/pages/index.astro` — main page layout
-- `src/components/` — UI components like header, hero, grid, footer and modal
-- `src/data/effects.ts` — effect metadata and preview classes
-- `src/scripts/` — client-side theme and modal logic
-- `src/styles/global.css` — global styling and theme variables
-- `public/` — static assets
+### How an effect is defined
 
-## 🚀 Development
+Each effect is a set of custom properties on `<html data-effect="…">`. The
+view transition pseudo-elements are styled once, in `transitions.css`, and read
+those properties — custom properties inherit into the pseudo tree, so adding an
+effect means adding tokens rather than another block of pseudo-element rules:
 
-From the project root:
+```css
+:root[data-effect='heart'] {
+  --vt-mask: var(--mask-heart);
+  --vt-mask-size: 280vmax;
+  --vt-duration: 1s;
+}
+```
+
+Mask shapes live in `data/masks.ts` as readable SVG and are emitted once as
+base64 `--mask-*` custom properties, shared by the real transitions and the
+card previews.
+
+## Development
 
 ```sh
 npm install
 npm run dev
 ```
 
-or, if you prefer pnpm:
-
-```sh
-pnpm install
-pnpm run dev
-```
-
-Then open the local server URL shown in the terminal.
-
-## 🛠️ Build & preview
+## Build and preview
 
 ```sh
 npm run build
 npm run preview
 ```
 
-## 📌 Notes
+## Notes
 
-- The app uses `document.startViewTransition()` when available.
-- Selected effect state is saved in `localStorage`.
-- The demo is optimized for modern browsers with native view transitions support.
+- Theme and selected effect are restored before first paint, so neither flashes.
+- Without `startViewTransition()` the theme still changes, just instantly.
+- `prefers-reduced-motion: reduce` disables the transitions and the looping card
+  previews.
 
-## 📚 Learn more
+## Learn more
 
-- Astro docs: https://docs.astro.build
-- Tailwind CSS: https://tailwindcss.com
+- [Astro docs](https://docs.astro.build)
+- [Tailwind CSS](https://tailwindcss.com)
+- [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API)

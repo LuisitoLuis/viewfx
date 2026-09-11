@@ -1,0 +1,410 @@
+/* ═══════════════════════════════════════════════════════════════
+   View transition effects
+
+   The pseudo-element rules are written once against :root; every effect
+   is then just a set of custom properties on `[data-effect="…"]`.
+   Custom properties inherit into the view-transition pseudo tree, which
+   is what makes this indirection work.
+
+   Mask shapes come from `data/masks.ts` via `MaskTokens.astro`.
+   ═══════════════════════════════════════════════════════════════ */
+
+:root::view-transition-group(root) {
+  animation-duration: var(--vt-duration, 0.5s);
+  animation-timing-function: var(--vt-ease, var(--expo-out));
+}
+
+:root::view-transition-old(root) {
+  animation: var(--vt-anim-old, vt-fade-out) var(--vt-duration, 0.5s)
+    var(--vt-ease, var(--expo-out)) both;
+  z-index: var(--vt-old-z, auto);
+  mix-blend-mode: normal;
+}
+
+:root::view-transition-new(root) {
+  /* `--vt-mask: none` for the clip-path and transform effects, which leaves
+     the snapshot unmasked. */
+  mask: var(--vt-mask, none) var(--vt-mask-position, center) / 0 no-repeat;
+  mask-origin: content-box;
+  animation: var(--vt-anim, vt-fade-in) var(--vt-duration, 0.5s)
+    var(--vt-ease, var(--expo-out)) both;
+  mix-blend-mode: normal;
+}
+
+/* ── Mask-driven effects ─────────────────────────────────────── */
+
+:root:is(
+    [data-effect='circle'],
+    [data-effect='circle-blur'],
+    [data-effect='corner-tl'],
+    [data-effect='corner-tr'],
+    [data-effect='iris'],
+    [data-effect='diamond'],
+    [data-effect='hexagon'],
+    [data-effect='heart'],
+    [data-effect='mosaic'],
+    [data-effect='ink'],
+    [data-effect='spiral']
+  ) {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+}
+
+:root[data-effect='circle'] {
+  --vt-mask: var(--mask-circle);
+  --vt-mask-size: 200vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='circle-blur'] {
+  --vt-mask: var(--mask-circle-blur);
+  --vt-mask-size: 200vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='corner-tl'] {
+  --vt-mask: var(--mask-corner-tl);
+  --vt-mask-position: top left;
+  --vt-mask-size: 350vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='corner-tr'] {
+  --vt-mask: var(--mask-corner-tr);
+  --vt-mask-position: top right;
+  --vt-mask-size: 350vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='iris'] {
+  --vt-mask: var(--mask-star);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 0.9s;
+}
+
+:root[data-effect='diamond'] {
+  --vt-mask: var(--mask-diamond);
+  --vt-mask-size: 280vmax;
+  --vt-duration: 0.9s;
+}
+
+:root[data-effect='hexagon'] {
+  --vt-mask: var(--mask-hexagon);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='heart'] {
+  --vt-mask: var(--mask-heart);
+  --vt-mask-size: 280vmax;
+  --vt-duration: 1s;
+}
+
+:root[data-effect='mosaic'] {
+  --vt-mask: var(--mask-mosaic);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 0.9s;
+}
+
+:root[data-effect='ink'] {
+  --vt-mask: var(--mask-ink);
+  --vt-mask-size: 250vmax;
+  --vt-duration: 1.2s;
+}
+
+:root[data-effect='spiral'] {
+  --vt-mask: conic-gradient(from 0deg, #fff 0%, transparent 0%);
+  --vt-mask-size: 250vmax;
+  --vt-duration: 1.2s;
+  --vt-anim: vt-spiral;
+}
+
+@keyframes vt-mask-grow {
+  to {
+    mask-size: var(--vt-mask-size);
+  }
+}
+
+@keyframes vt-spiral {
+  to {
+    mask-size: var(--vt-mask-size);
+    mask-image: conic-gradient(from 0deg, #fff 0%, #fff 100%);
+  }
+}
+
+/* ── clip-path effects ──────────────────────────────────────── */
+
+:root[data-effect='polygon'] {
+  --vt-anim: vt-reveal-light;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-duration: 0.7s;
+}
+
+:root.dark[data-effect='polygon'] {
+  --vt-anim: vt-reveal-dark;
+}
+
+@keyframes vt-reveal-light {
+  from {
+    clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+  }
+  to {
+    clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+  }
+}
+
+@keyframes vt-reveal-dark {
+  from {
+    clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+  }
+  to {
+    clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+  }
+}
+
+:root[data-effect='wipe-h'] {
+  --vt-anim: vt-wipe-in-h;
+  --vt-anim-old: vt-wipe-out-h;
+  --vt-duration: 0.6s;
+}
+
+@keyframes vt-wipe-in-h {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-h {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+:root[data-effect='wipe-v'] {
+  --vt-anim: vt-wipe-in-down;
+  --vt-anim-old: vt-wipe-out-down;
+  --vt-duration: 0.6s;
+}
+
+@keyframes vt-wipe-in-down {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-down {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+:root[data-effect='slide-down'] {
+  --vt-anim: vt-wipe-in-up;
+  --vt-anim-old: vt-wipe-out-up;
+  --vt-duration: 0.6s;
+}
+
+@keyframes vt-wipe-in-up {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-up {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+:root[data-effect='venetian'] {
+  --vt-anim: vt-wipe-in-up;
+  --vt-anim-old: vt-venetian-out;
+  --vt-duration: 0.8s;
+}
+
+@keyframes vt-venetian-out {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+:root[data-effect='glitch'] {
+  --vt-anim: vt-glitch-in;
+  --vt-anim-old: vt-glitch-out;
+  --vt-duration: 0.6s;
+}
+
+@keyframes vt-glitch-in {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  20% {
+    clip-path: inset(40% 0 0 0);
+    opacity: 1;
+  }
+  40% {
+    clip-path: inset(0 0 60% 0);
+  }
+  60% {
+    clip-path: inset(20% 0 20% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-glitch-out {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  20% {
+    clip-path: inset(0 0 40% 0);
+  }
+  40% {
+    clip-path: inset(60% 0 0 0);
+  }
+  60% {
+    clip-path: inset(20% 0 20% 0);
+    opacity: 0.5;
+  }
+  100% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+}
+
+/* ── transform effects ──────────────────────────────────────── */
+
+:root[data-effect='slide'] {
+  --vt-anim: vt-slide-in;
+  --vt-anim-old: vt-slide-out;
+  --vt-duration: 0.6s;
+}
+
+@keyframes vt-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes vt-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-50%);
+    opacity: 0.3;
+  }
+}
+
+:root[data-effect='zoom'] {
+  --vt-anim: vt-zoom-in;
+  --vt-anim-old: vt-zoom-out;
+  --vt-duration: 0.7s;
+}
+
+@keyframes vt-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes vt-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+:root[data-effect='rotate'] {
+  --vt-anim: vt-rotate-in;
+  --vt-anim-old: vt-rotate-out;
+  --vt-duration: 0.7s;
+}
+
+@keyframes vt-rotate-in {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes vt-rotate-out {
+  from {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(6deg) scale(0.9);
+  }
+}
+
+/* ── opacity ────────────────────────────────────────────────── */
+
+:root[data-effect='fade'] {
+  --vt-anim: vt-fade-in;
+  --vt-anim-old: vt-fade-out;
+  --vt-duration: 0.5s;
+  --vt-ease: ease-in-out;
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}

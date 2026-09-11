@@ -1,26 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import Header from '../components/Header.astro'
-import Hero from '../components/Hero.astro'
-import EffectGrid from '../components/EffectGrid.astro'
-import CodeModal from '../components/CodeModal.astro'
-import Footer from '../components/Footer.astro'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import CodeDialog from '../components/CodeDialog.astro'
+import EffectGallery from '../components/EffectGallery.astro'
+import HeroSection from '../components/HeroSection.astro'
+import UsageSection from '../components/UsageSection.astro'
 ---
 
-<Layout>
-  <Header />
-
-  <main id="main-content" style="max-width: 960px; margin: 0 auto; padding: 4rem 1.5rem 6rem; display: flex; flex-direction: column; min-height: calc(100vh - 3.5rem);" tabindex="-1">
-    <Hero />
-    <hr style="margin-bottom: 3rem;" />
-    <EffectGrid />
-    <Footer />
-  </main>
-
-  <CodeModal />
-</Layout>
+<BaseLayout>
+  <HeroSection />
+  <EffectGallery />
+  <UsageSection />
+  <CodeDialog />
+</BaseLayout>
 
 <script>
-  import { initTheme } from '../scripts/theme'
-  initTheme()
+  import { initClipboard } from '../scripts/clipboard'
+  import { initCodeDialog } from '../scripts/dialog'
+  import { initGallery } from '../scripts/gallery'
+
+  initGallery()
+  initCodeDialog()
+  initClipboard()
 </script>

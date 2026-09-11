@@ -1,373 +1,608 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
-/* ── Timing functions ───────────────────────────────────────── */
-:root {
-  --expo-in: linear(
-    0 0%, 0.0085 31.26%, 0.0167 40.94%,
-    0.0289 48.86%, 0.0471 55.92%,
-    0.0717 61.99%, 0.1038 67.32%,
-    0.1443 72.07%, 0.1989 76.7%,
-    0.2659 80.89%, 0.3465 84.71%,
-    0.4419 88.22%, 0.554 91.48%,
-    0.6835 94.51%, 0.8316 97.34%, 1 100%
-  );
-  --expo-out: linear(
-    0 0%, 0.1684 2.66%, 0.3165 5.49%,
-    0.446 8.52%, 0.5581 11.78%,
-    0.6535 15.29%, 0.7341 19.11%,
-    0.8011 23.3%, 0.8557 27.93%,
-    0.8962 32.68%, 0.9283 38.01%,
-    0.9529 44.08%, 0.9711 51.14%,
-    0.9833 59.06%, 0.9915 68.74%, 1 100%
-  );
-}
+@import './transitions.css';
+@import './previews.css';
 
-/* ── Theme tokens ───────────────────────────────────────────── */
-:root {
-  --bg:   #f4f2ff;
-  --fg:   #1e1a2e;
-  --mid:  #7c6fe0;
-  --soft: #cba6f7;
-  --card: #ffffffcc;
-  --border: #ddd6fe;
-  --code-bg: #ede9fe;
-}
-.dark {
-  --bg:   #1e1a2e;
-  --fg:   #f4f2ff;
-  --mid:  #7c6fe0;
-  --soft: #cba6f7;
-  --card: #2a253ecc;
-  --border: #3b3260;
-  --code-bg: #2a253e;
+/* Theme is user-controlled, so the dark variant follows a class on <html>
+   rather than the `prefers-color-scheme` default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens
+
+   Semantic values live in :root/.dark below so they can swap with
+   the theme; @theme inline re-exports them as Tailwind utilities
+   (bg-paper, text-ink-2, border-line, ease-expo-out, …).
+   ───────────────────────────────────────────────────────────── */
+@theme inline {
+  --font-display: var(--ff-display);
+  --font-mono: var(--ff-mono);
+
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-inset: var(--inset);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+
+  --radius-card: 0.75rem;
+
+  --ease-expo-out: var(--expo-out);
+  --ease-expo-in: var(--expo-in);
 }
 
-/* ── Base ───────────────────────────────────────────────────── */
-html { background: var(--bg); color: var(--fg); transition: background 0.3s, color 0.3s; scroll-behavior: smooth; }
-body { font-family: 'Inter', system-ui, sans-serif; min-height: 100vh; }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+@layer base {
+  :root {
+    color-scheme: light;
 
-/* ── Skip link ──────────────────────────────────────────────── */
-.skip-link {
-  position: absolute; top: -100%; left: 0;
-  padding: 0.5rem 1rem;
-  background: var(--mid); color: #fff;
-  font-family: 'Inter', sans-serif; font-size: 0.85rem; font-weight: 500;
-  z-index: 1000;
-  border-radius: 0 0 0.5rem 0;
-  text-decoration: none;
-  transition: top 0.2s;
-}
-.skip-link:focus {
-  top: 0;
+    --paper: oklch(0.977 0.006 95);
+    --surface: oklch(1 0 0);
+    --inset: oklch(0.955 0.008 95);
+
+    --ink: oklch(0.19 0.015 260);
+    --ink-2: oklch(0.44 0.012 260); /* 5.2:1 on --paper */
+    --ink-3: oklch(0.6 0.01 260); /* decorative / large text only */
+
+    --line: oklch(0.885 0.008 260);
+    --line-strong: oklch(0.78 0.012 260);
+
+    --accent: oklch(0.84 0.19 120);
+    --accent-ink: oklch(0.28 0.07 120); /* text on an --accent fill */
+    --accent-text: oklch(0.46 0.13 128); /* 4.9:1 on --paper */
+    --glow: oklch(0.84 0.19 120 / 0.22);
+
+    /* Mock scene colours used by the card previews. They mirror the page
+       palette so a preview reads as a miniature of the real transition. */
+    --scene-dark: oklch(0.165 0.015 260);
+    --scene-light: oklch(0.977 0.006 95);
+
+    /* Expressive easing curves, shared with the view transitions. */
+    --expo-out: linear(
+      0 0%,
+      0.1684 2.66%,
+      0.3165 5.49%,
+      0.446 8.52%,
+      0.5581 11.78%,
+      0.6535 15.29%,
+      0.7341 19.11%,
+      0.8011 23.3%,
+      0.8557 27.93%,
+      0.8962 32.68%,
+      0.9283 38.01%,
+      0.9529 44.08%,
+      0.9711 51.14%,
+      0.9833 59.06%,
+      0.9915 68.74%,
+      1 100%
+    );
+    --expo-in: linear(
+      0 0%,
+      0.0085 31.26%,
+      0.0167 40.94%,
+      0.0289 48.86%,
+      0.0471 55.92%,
+      0.0717 61.99%,
+      0.1038 67.32%,
+      0.1443 72.07%,
+      0.1989 76.7%,
+      0.2659 80.89%,
+      0.3465 84.71%,
+      0.4419 88.22%,
+      0.554 91.48%,
+      0.6835 94.51%,
+      0.8316 97.34%,
+      1 100%
+    );
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --paper: oklch(0.165 0.015 260);
+    --surface: oklch(0.205 0.018 260);
+    --inset: oklch(0.235 0.02 260);
+
+    --ink: oklch(0.965 0.005 260);
+    --ink-2: oklch(0.75 0.012 260); /* 7.4:1 on --paper */
+    --ink-3: oklch(0.62 0.012 260); /* 4.9:1 on --paper */
+
+    --line: oklch(0.3 0.02 260);
+    --line-strong: oklch(0.42 0.025 260);
+
+    --accent: oklch(0.87 0.2 120);
+    --accent-ink: oklch(0.2 0.06 120);
+    --accent-text: oklch(0.87 0.2 120);
+    --glow: oklch(0.87 0.2 120 / 0.16);
+  }
+
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    /* Clears the sticky header when jumping to an anchor (WCAG 2.4.11). */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    font-family: var(--font-display);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The engineering-paper grid: two hairline sets plus one accent bloom.
+     Fixed so it reads as a backdrop rather than page content. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 40rem at 85% -10%, var(--glow), transparent 70%),
+      repeating-linear-gradient(
+        to right,
+        var(--line) 0 1px,
+        transparent 1px var(--grid-step, 5.5rem)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--line) 0 1px,
+        transparent 1px var(--grid-step, 5.5rem)
+      );
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 90%);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--inset);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border: 2px solid var(--inset);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-3);
+  }
 }
 
-/* ── Focus visible (global) ─────────────────────────────────── */
-:focus-visible {
-  outline: 2px solid var(--mid);
-  outline-offset: 2px;
-}
-button:focus-visible, a:focus-visible {
-  outline: 2px solid var(--mid);
-  outline-offset: 2px;
+/* ─────────────────────────────────────────────────────────────
+   Utilities
+   ───────────────────────────────────────────────────────────── */
+
+/** Page gutter, shared by header, main and footer so columns line up. */
+@utility shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 82rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
 }
 
-/* ── Chip ───────────────────────────────────────────────────── */
-.chip {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.63rem; letter-spacing: 0.08em;
-  padding: 0.2rem 0.6rem; border-radius: 999px;
-  border: 1px solid var(--border);
-  background: var(--code-bg); color: var(--soft);
+/** Uppercase monospace micro-label used for section and metadata text. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 
-/* ── Divider ────────────────────────────────────────────────── */
-hr { border: none; border-top: 1px solid var(--border); }
+/** Staggered entrance for grid items; index comes from `--i`. */
+@utility rise {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rise 0.5s var(--expo-out) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+}
 
-/* ── View transition reset ──────────────────────────────────── */
-::view-transition-old(root), ::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
 
-/* ── Scrollbar ──────────────────────────────────────────────── */
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+/* ─────────────────────────────────────────────────────────────
+   Components
 
+   These patterns repeat across three or more components, so they live
+   here instead of being re-typed as long utility strings in markup.
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* 44px keeps pointer targets comfortable (WCAG 2.5.8). */
+    min-height: 2.75rem;
+    padding-inline: 1.125rem;
+    border: 1px solid transparent;
+    border-radius: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.18s,
+      border-color 0.18s,
+      color 0.18s,
+      transform 0.18s;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn--sm {
+    min-height: 2.25rem;
+    padding-inline: 0.75rem;
+    font-size: 0.6875rem;
+  }
+
+  .btn--icon {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding-inline: 0;
+    border-radius: 0.625rem;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .btn--primary:hover {
+    background: color-mix(in oklab, var(--accent) 88%, var(--ink));
+  }
+
+  .btn--outline {
+    border-color: var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .btn--ghost {
+    color: var(--ink-2);
+  }
+
+  .btn--ghost:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .btn[data-state='copied'] {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  /* Filter chip — a toggle button, so state rides on aria-pressed. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding-inline: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    background: var(--surface);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      background-color 0.18s,
+      border-color 0.18s,
+      color 0.18s;
+  }
+
+  .chip:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .chip[aria-pressed='true'] {
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .link {
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 0.35em;
+    transition:
+      color 0.18s,
+      text-decoration-color 0.18s;
+  }
+
+  .link:hover {
+    color: var(--accent-text);
+    text-decoration-color: var(--accent);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding-inline: 2.5rem 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 0.625rem;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .field::placeholder {
+    color: var(--ink-3);
+  }
+
+  .field:focus-visible {
+    border-color: var(--accent);
+  }
+
+  /* ── Effect card ─────────────────────────────────────────── */
+
+  .fx-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    overflow: hidden;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s var(--expo-out);
+  }
+
+  /* `display: grid` above would otherwise defeat the hidden attribute the
+     filter relies on. */
+  .fx-card[hidden] {
+    display: none;
+  }
+
+  .fx-card:is(:hover, :focus-within) {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 1rem 2rem -1rem color-mix(in oklab, var(--ink) 30%, transparent);
+  }
+
+  .fx-card.is-current {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .fx-select {
+    display: grid;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .fx-select:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .fx-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem 0;
+  }
+
+  .fx-index {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    color: var(--ink-3);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .fx-card.is-current .fx-index {
+    color: var(--accent-text);
+  }
+
+  .fx-name {
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+  }
+
+  .fx-desc {
+    padding: 0.375rem 1rem 0;
+    color: var(--ink-2);
+    font-size: 0.8125rem;
+    line-height: 1.55;
+    text-wrap: pretty;
+  }
+
+  .fx-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.875rem;
+    padding: 0.625rem 0.75rem 0.625rem 1rem;
+    border-top: 1px solid var(--line);
+    color: var(--ink-3);
+  }
+
+  .fx-flag {
+    padding: 0.25rem 0.5rem;
+    border-radius: 99px;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .fx-card:not(.is-current) .fx-flag {
+    display: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Skip link
+   ───────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  transform: translateY(-150%);
+  transition: transform 0.2s var(--expo-out);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Code dialog (native <dialog>)
+   ───────────────────────────────────────────────────────────── */
+.dialog {
+  margin: auto;
+  width: min(46rem, calc(100vw - 2rem));
+  max-height: min(46rem, calc(100dvh - 2rem));
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: color-mix(in oklab, var(--paper) 70%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.dialog[open] {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: dialog-in 0.28s var(--expo-out) both;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Syntax highlighting (tokens produced by lib/highlight.ts)
+   ───────────────────────────────────────────────────────────── */
+.code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+
+.t-com {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.t-str {
+  color: var(--ink-2);
+}
+.t-at,
+.t-sel {
+  color: var(--accent-text);
+  font-weight: 500;
+}
+.t-var {
+  color: var(--accent-text);
+}
+.t-prop {
+  color: var(--ink);
+  font-weight: 500;
+}
+.t-fn {
+  color: var(--ink-2);
+}
+.t-num {
+  color: var(--ink);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Motion preferences
+   ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(root), ::view-transition-new(root) { animation: none !important; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   KEYFRAMES (top-level — Lightning CSS strips nested @keyframes)
-   ════════════════════════════════════════════════════════════════ */
-
-@keyframes vt-scale { to { mask-size: 200vmax; } }
-@keyframes vt-scale2 { to { mask-size: 200vmax; } }
-@keyframes vt-scale3 { to { mask-size: 350vmax; } }
-@keyframes vt-scale-tr { to { mask-size: 350vmax; } }
-@keyframes vt-iris { to { mask-size: 300vmax; } }
-@keyframes vt-diamond { to { mask-size: 280vmax; } }
-@keyframes vt-hex { to { mask-size: 300vmax; } }
-@keyframes vt-ink { to { mask-size: 250vmax; } }
-
-@keyframes vt-wipe-in-h  { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0% 0 0); } }
-@keyframes vt-wipe-out-h { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 0 100%); } }
-@keyframes vt-wipe-in-v  { from { clip-path: inset(100% 0 0 0); } to { clip-path: inset(0% 0 0 0); } }
-@keyframes vt-wipe-out-v { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 100% 0); } }
-@keyframes vt-zoom-in    { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
-@keyframes vt-zoom-out   { from { opacity: 1; transform: scale(1); }    to { opacity: 0; transform: scale(1.15); } }
-@keyframes vt-rotate-in  { from { opacity: 0; transform: rotate(-6deg) scale(0.9); } to { opacity: 1; transform: rotate(0) scale(1); } }
-@keyframes vt-rotate-out { from { opacity: 1; transform: rotate(0) scale(1); }       to { opacity: 0; transform: rotate(6deg) scale(0.9); } }
-@keyframes vt-fade-in    { from { opacity: 0; } to { opacity: 1; } }
-@keyframes vt-fade-out   { from { opacity: 1; } to { opacity: 0; } }
-@keyframes vt-reveal-dark  { from { clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%); } to { clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%); } }
-@keyframes vt-reveal-light { from { clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%); } to { clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%); } }
-@keyframes vt-venetian-in  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0% 0); } }
-@keyframes vt-venetian-out { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(100% 0 0 0); } }
-@keyframes vt-spiral-in    { to { mask-size: 250vmax; mask-image: conic-gradient(from 0deg, white 0%, white 100%); } }
-@keyframes vt-heart         { to { mask-size: 280vmax; } }
-@keyframes vt-mosaic        { to { mask-size: 300vmax; } }
-@keyframes vt-glitch-in {
-  0%   { clip-path: inset(0 0 100% 0); opacity: 0; }
-  20%  { clip-path: inset(40% 0 0 0); opacity: 1; }
-  40%  { clip-path: inset(0 0 60% 0); }
-  60%  { clip-path: inset(20% 0 20% 0); }
-  80%  { clip-path: inset(0 0 0 0); }
-  100% { clip-path: inset(0 0 0 0); opacity: 1; }
-}
-@keyframes vt-glitch-out {
-  0%   { clip-path: inset(0 0 0 0); opacity: 1; }
-  20%  { clip-path: inset(0 0 40% 0); }
-  40%  { clip-path: inset(60% 0 0 0); }
-  60%  { clip-path: inset(20% 0 20% 0); opacity: 0.5; }
-  80%  { clip-path: inset(0 0 100% 0); opacity: 0; }
-  100% { clip-path: inset(0 0 100% 0); opacity: 0; }
-}
-@keyframes vt-slide-down-in  { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
-@keyframes vt-slide-down-out { from { clip-path: inset(0 0 0 0); }    to { clip-path: inset(0 0 100% 0); } }
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 1 — circle
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="circle"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><circle cx="20" cy="20" r="20" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-scale 1s;
-    animation-fill-mode: both;
+  html {
+    scroll-behavior: auto;
   }
-}
 
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 2 — circle-blur
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="circle-blur"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="20" cy="20" r="18" fill="white" filter="url(%23b)"/></svg>') center / 0 no-repeat;
-    animation: vt-scale2 1s; animation-fill-mode: both;
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
-}
 
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 3 — top-left corner
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="corner-tl"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
+  ::view-transition-group(root),
+  ::view-transition-old(root),
   ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="2"/></filter></defs><circle cx="0" cy="0" r="18" fill="white" filter="url(%23b)"/></svg>') top left / 0 no-repeat;
-    mask-origin: content-box;
-    animation: vt-scale3 1s; animation-fill-mode: both; transform-origin: top left;
+    animation: none !important;
   }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: vt-scale3 1s; animation-fill-mode: both; transform-origin: top left; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 4 — polygon diagonal wipe
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="polygon"] {
-  ::view-transition-group(root) { animation-duration: 0.7s; animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation-name: vt-reveal-light; animation-fill-mode: both; }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; animation-fill-mode: both; z-index: -1; }
-  .dark ::view-transition-new(root) { animation-name: vt-reveal-dark; animation-fill-mode: both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 5 — iris (star shape)
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="iris"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 61,35 95,35 68,57 79,91 50,70 21,91 32,57 5,35 39,35" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-iris 0.9s; animation-fill-mode: both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 6 — horizontal wipe
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="wipe-h"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-wipe-in-h 0.6s both; }
-  ::view-transition-old(root) { animation: vt-wipe-out-h 0.6s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 7 — vertical wipe
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="wipe-v"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-wipe-in-v 0.6s both; }
-  ::view-transition-old(root) { animation: vt-wipe-out-v 0.6s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 8 — zoom-out
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="zoom"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-zoom-in 0.7s both; }
-  ::view-transition-old(root) { animation: vt-zoom-out 0.7s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 9 — rotate-in
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="rotate"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-rotate-in 0.7s both; }
-  ::view-transition-old(root) { animation: vt-rotate-out 0.7s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 10 — diamond mask
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="diamond"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><polygon points="20,0 40,20 20,40 0,20" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-diamond 0.9s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 11 — cross-fade
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="fade"] {
-  ::view-transition-group(root) { animation-timing-function: ease-in-out; }
-  ::view-transition-new(root) { animation: vt-fade-in 0.5s both; }
-  ::view-transition-old(root) { animation: vt-fade-out 0.5s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 12 — ripple from top-right corner
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="corner-tr"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><defs><filter id="b"><feGaussianBlur stdDeviation="1.5"/></filter></defs><circle cx="40" cy="0" r="18" fill="white" filter="url(%23b)"/></svg>') top right / 0 no-repeat;
-    mask-origin: content-box;
-    animation: vt-scale-tr 1s both; transform-origin: top right;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { z-index: -1; animation: none; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 13 — hexagon mask
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="hexagon"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><polygon points="50,0 93.3,25 93.3,75 50,100 6.7,75 6.7,25" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-hex 1s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 14 — slide from right
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="slide"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-slide-in 0.6s both; }
-  ::view-transition-old(root) { animation: vt-slide-out 0.6s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 15 — ink bleed
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="ink"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><filter id="turbulence"><feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="noise"/><feDisplacementMap in="SourceGraphic" in2="noise" scale="15" xChannelSelector="R" yChannelSelector="G"/></filter></defs><circle cx="50" cy="50" r="50" fill="white" filter="url(%23turbulence)"/></svg>') center / 0 no-repeat;
-    animation: vt-ink 1.2s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 16 — venetian blinds
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="venetian"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-venetian-in 0.8s both; }
-  ::view-transition-old(root) { animation: vt-venetian-out 0.8s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 17 — spiral
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="spiral"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: conic-gradient(from 0deg, white 0%, transparent 0%) center / 0 no-repeat;
-    animation: vt-spiral-in 1.2s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 18 — heart
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="heart"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50 88 C25 65 5 50 5 30 5 15 15 5 30 5 40 5 48 12 50 18 52 12 60 5 70 5 85 5 95 15 95 30 95 50 75 65 50 88Z" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-heart 1s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 19 — glitch
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="glitch"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-glitch-in 0.6s both; }
-  ::view-transition-old(root) { animation: vt-glitch-out 0.6s both; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 20 — mosaic
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="mosaic"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) {
-    mask: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0" y="0" width="25" height="25" fill="white"/><rect x="50" y="0" width="25" height="25" fill="white"/><rect x="25" y="25" width="25" height="25" fill="white"/><rect x="75" y="25" width="25" height="25" fill="white"/><rect x="0" y="50" width="25" height="25" fill="white"/><rect x="50" y="50" width="25" height="25" fill="white"/><rect x="25" y="75" width="25" height="25" fill="white"/><rect x="75" y="75" width="25" height="25" fill="white"/></svg>') center / 0 no-repeat;
-    animation: vt-mosaic 0.9s both;
-  }
-  ::view-transition-old(root), .dark ::view-transition-old(root) { animation: none; z-index: -1; }
-}
-
-/* ════════════════════════════════════════════════════════════════
-   EFFECT 21 — slide down (inverse of wipe-v)
-   ════════════════════════════════════════════════════════════════ */
-[data-effect="slide-down"] {
-  ::view-transition-group(root) { animation-timing-function: var(--expo-out); }
-  ::view-transition-new(root) { animation: vt-slide-down-in 0.6s both; }
-  ::view-transition-old(root) { animation: vt-slide-down-out 0.6s both; }
 }

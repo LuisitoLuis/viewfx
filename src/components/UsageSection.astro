@@ -1,0 +1,98 @@
+---
+import CodeBlock from './CodeBlock.astro'
+import type { Language } from '../lib/highlight'
+
+interface Step {
+  title: string
+  body: string
+  filename: string
+  language: Language
+  code: string
+}
+
+const STEPS: Step[] = [
+  {
+    title: 'Paste the CSS',
+    body: 'Copy an effect from the catalogue into any global stylesheet. It targets the view transition pseudo-elements, so no markup changes.',
+    filename: 'global.css',
+    language: 'css',
+    code: `::view-transition-old(root) {
+  animation: none;
+  z-index: -1;
+}
+::view-transition-new(root) {
+  /* full data URI in the catalogue */
+  mask: url('…circle.svg') center / 0 no-repeat;
+  animation: grow 1s both;
+}
+@keyframes grow {
+  to { mask-size: 200vmax; }
+}`
+  },
+  {
+    title: 'Wrap the theme change',
+    body: 'Hand your existing toggle to startViewTransition. The browser snapshots before and after, then runs your CSS between the two.',
+    filename: 'theme.js',
+    language: 'js',
+    code: `function switchTheme() {
+  document.documentElement.classList.toggle('dark')
+}
+
+// Browsers without the API just switch instantly.
+if (document.startViewTransition) {
+  document.startViewTransition(switchTheme)
+} else {
+  switchTheme()
+}`
+  },
+  {
+    title: 'Honour reduced motion',
+    body: 'A full-screen wipe is exactly the kind of motion some visitors need to avoid. One media query opts them out without losing the theme change.',
+    filename: 'global.css',
+    language: 'css',
+    code: `@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}`
+  }
+]
+---
+
+<section id="usage" aria-labelledby="usage-heading">
+  <div class="shell py-16 sm:py-20">
+    <p class="label text-ink-3">02 — Usage</p>
+    <h2 id="usage-heading" class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+      Three steps, zero dependencies
+    </h2>
+
+    <ol class="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
+      {
+        STEPS.map((step, index) => (
+          <li class="flex flex-col gap-4">
+            <p class="flex items-center gap-3">
+              <span
+                class="grid size-7 shrink-0 place-items-center rounded-full border border-line font-mono text-xs tabular-nums"
+                aria-hidden="true"
+              >
+                {index + 1}
+              </span>
+              <span class="text-lg font-semibold tracking-tight">{step.title}</span>
+            </p>
+
+            <p class="text-sm leading-relaxed text-pretty text-ink-2">{step.body}</p>
+
+            <CodeBlock
+              code={step.code}
+              language={step.language}
+              filename={step.filename}
+              class="mt-auto"
+            />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>

@@ -1,0 +1,172 @@
+import { announce } from './live-region'
+import { playTransition } from './theme'
+
+export const EFFECT_KEY = 'viewfx:effect'
+
+const ANNOUNCE_DELAY = 500
+
+const cards = () => Array.from(document.querySelectorAll<HTMLElement>('.fx-card'))
+const visibleSelects = () =>
+  Array.from(document.querySelectorAll<HTMLButtonElement>('.fx-card:not([hidden]) .fx-select'))
+
+/**
+ * Applies an effect and, unless restoring state on load, immediately replays
+ * it by flipping the theme — the effect only exists while the theme changes,
+ * so selecting without playing would give no feedback.
+ */
+function selectEffect(id: string, { play = true } = {}): void {
+  document.documentElement.dataset.effect = id
+
+  try {
+    localStorage.setItem(EFFECT_KEY, id)
+  } catch {
+    // Preference simply will not survive a reload.
+  }
+
+  let name = id
+
+  for (const card of cards()) {
+    const isCurrent = card.dataset.fx === id
+    const select = card.querySelector('.fx-select')
+
+    card.classList.toggle('is-current', isCurrent)
+
+    if (isCurrent) {
+      name = card.dataset.name ?? id
+      select?.setAttribute('aria-current', 'true')
+    } else {
+      select?.removeAttribute('aria-current')
+    }
+  }
+
+  if (play) {
+    announce(`${name} applied`)
+    playTransition()
+  }
+}
+
+function initSelection(): void {
+  const grid = document.getElementById('effect-grid')
+  if (!grid) return
+
+  grid.addEventListener('click', (event) => {
+    const target = event.target
+    if (!(target instanceof Element)) return
+
+    const select = target.closest<HTMLElement>('.fx-select')
+    const id = select?.closest<HTMLElement>('.fx-card')?.dataset.fx
+
+    if (id) selectEffect(id)
+  })
+
+  // Arrow keys walk the gallery so it is not 21 tab stops to cross.
+  // Rows wrap, so left/up and right/down are simply previous and next.
+  grid.addEventListener('keydown', (event) => {
+    const step =
+      { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[event.key] ?? 0
+
+    if (!step && event.key !== 'Home' && event.key !== 'End') return
+
+    const selects = visibleSelects()
+    const index = selects.findIndex((select) => select === document.activeElement)
+    if (index === -1) return
+
+    event.preventDefault()
+
+    const next =
+      event.key === 'Home'
+        ? 0
+        : event.key === 'End'
+          ? selects.length - 1
+          : (index + step + selects.length) % selects.length
+
+    selects[next]?.focus()
+  })
+}
+
+function initFilters(): void {
+  const search = document.querySelector<HTMLInputElement>('#effect-search')
+  // `data-filter`, not `data-technique`: the cards carry that one.
+  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'))
+  const empty = document.getElementById('effect-empty')
+  const shuffle = document.getElementById('effect-shuffle')
+  const reset = document.getElementById('effect-reset')
+
+  let technique = 'all'
+  let announceTimer = 0
+
+  function apply(): void {
+    const query = search?.value.trim().toLowerCase() ?? ''
+    let visible = 0
+
+    for (const card of cards()) {
+      const matchesQuery = !query || (card.dataset.search ?? '').includes(query)
+      const matchesTechnique = technique === 'all' || card.dataset.technique === technique
+
+      card.hidden = !(matchesQuery && matchesTechnique)
+      if (!card.hidden) visible += 1
+    }
+
+    if (empty) empty.hidden = visible > 0
+
+    // Debounced so typing does not produce an announcement per keystroke.
+    window.clearTimeout(announceTimer)
+    announceTimer = window.setTimeout(() => {
+      announce(visible === 1 ? '1 effect shown' : `${visible} effects shown`)
+    }, ANNOUNCE_DELAY)
+  }
+
+  search?.addEventListener('input', apply)
+
+  for (const chip of chips) {
+    chip.addEventListener('click', () => {
+      technique = chip.dataset.filter ?? 'all'
+
+      for (const other of chips) {
+        other.setAttribute('aria-pressed', String(other === chip))
+      }
+
+      apply()
+    })
+  }
+
+  reset?.addEventListener('click', () => {
+    if (search) search.value = ''
+    technique = 'all'
+
+    for (const chip of chips) {
+      chip.setAttribute('aria-pressed', String(chip.dataset.filter === 'all'))
+    }
+
+    apply()
+    search?.focus()
+  })
+
+  shuffle?.addEventListener('click', () => {
+    const options = visibleSelects()
+      .map((select) => select.closest<HTMLElement>('.fx-card')?.dataset.fx)
+      .filter((id): id is string => Boolean(id) && id !== document.documentElement.dataset.effect)
+
+    const pick = options[Math.floor(Math.random() * options.length)]
+    if (pick) selectEffect(pick)
+  })
+}
+
+export function initGallery(): void {
+  let stored: string | null = null
+  try {
+    stored = localStorage.getItem(EFFECT_KEY)
+  } catch {
+    stored = null
+  }
+
+  // A stored id can outlive its effect, so fall back to the server-rendered one.
+  const isKnown =
+    stored && document.querySelector(`.fx-card[data-fx="${CSS.escape(stored)}"]`) !== null
+  const current = isKnown ? stored : document.documentElement.dataset.effect
+
+  if (current) selectEffect(current, { play: false })
+
+  initSelection()
+  initFilters()
+}

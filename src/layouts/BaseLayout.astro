@@ -1,0 +1,108 @@
+---
+import { Font } from 'astro:assets'
+
+import '../styles/global.css'
+
+import MaskTokens from '../components/MaskTokens.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import SiteFooter from '../components/SiteFooter.astro'
+import { SITE } from '../consts'
+import { DEFAULT_EFFECT_ID } from '../data/effects'
+import { EFFECT_KEY } from '../scripts/gallery'
+import { THEME_KEY } from '../scripts/theme'
+
+interface Props {
+  title?: string
+  description?: string
+  noindex?: boolean
+}
+
+const { title = SITE.title, description = SITE.description, noindex = false } = Astro.props
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url)
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: SITE.name,
+  url: SITE.url,
+  description: SITE.description,
+  inLanguage: SITE.locale,
+  author: {
+    '@type': 'Person',
+    name: SITE.author.name,
+    url: SITE.author.url
+  }
+}
+
+/**
+ * Resolves theme and effect before first paint so neither flashes. Inline and
+ * therefore unbundled, which is why the storage keys are interpolated from the
+ * modules that own them rather than repeated as literals.
+ */
+const bootstrap = `(() => {
+  const el = document.documentElement
+  try {
+    const theme = localStorage.getItem('${THEME_KEY}')
+    const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+    el.classList.toggle('dark', dark)
+    const effect = localStorage.getItem('${EFFECT_KEY}')
+    if (effect) el.dataset.effect = effect
+  } catch {}
+})()`
+---
+
+<!doctype html>
+<html lang={SITE.locale} data-effect={DEFAULT_EFFECT_ID}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f8f6f1" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <Font cssVariable="--ff-display" preload />
+    <Font cssVariable="--ff-mono" preload />
+
+    <MaskTokens />
+
+    <script is:inline set:html={bootstrap} />
+    <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
+  </head>
+
+  <body class="min-h-dvh font-display antialiased">
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <SiteHeader />
+
+    <!-- tabindex makes the skip link land focus here, not just the scroll position. -->
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <SiteFooter />
+
+    <div id="live-region" class="sr-only" role="status" aria-live="polite"></div>
+
+    <script>
+      import { initTheme } from '../scripts/theme'
+      initTheme()
+    </script>
+  </body>
+</html>

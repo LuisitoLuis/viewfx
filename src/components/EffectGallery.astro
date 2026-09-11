@@ -1,0 +1,70 @@
+---
+import EffectCard from './EffectCard.astro'
+import Icon from './Icon.astro'
+import { EFFECTS, TECHNIQUES } from '../data/effects'
+---
+
+<section id="gallery" aria-labelledby="gallery-heading" class="border-b border-line">
+  <div class="shell py-16 sm:py-20">
+    <p class="label text-ink-3">01 — Catalogue</p>
+    <h2 id="gallery-heading" class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+      Pick a transition
+    </h2>
+    <p class="mt-4 max-w-lg leading-relaxed text-ink-2">
+      Selecting a card applies the effect and plays it immediately — the page itself is the
+      preview.
+    </p>
+
+    <div class="mt-10 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+      <search class="relative w-full lg:max-w-xs">
+        <label for="effect-search" class="sr-only">Search effects</label>
+        <Icon
+          name="search"
+          class="pointer-events-none absolute top-1/2 left-3.5 -translate-y-1/2 text-ink-3"
+        />
+        <input
+          id="effect-search"
+          class="field"
+          type="search"
+          placeholder="Search effects…"
+          autocomplete="off"
+        />
+      </search>
+
+      <div class="flex flex-wrap items-center gap-2">
+        <div role="group" aria-label="Filter by technique" class="flex flex-wrap items-center gap-2">
+          <button type="button" class="chip label" data-filter="all" aria-pressed="true">All</button>
+          {
+            TECHNIQUES.map((technique) => (
+              <button type="button" class="chip label" data-filter={technique} aria-pressed="false">
+                {technique}
+              </button>
+            ))
+          }
+        </div>
+
+        <button type="button" id="effect-shuffle" class="btn btn--sm btn--outline">
+          <Icon name="shuffle" size={13} />
+          Surprise me
+        </button>
+      </div>
+    </div>
+
+    <ul
+      id="effect-grid"
+      role="list"
+      class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      {EFFECTS.map((effect, index) => <EffectCard effect={effect} index={index + 1} />)}
+    </ul>
+
+    <p
+      id="effect-empty"
+      hidden
+      class="mt-8 rounded-xl border border-dashed border-line px-6 py-12 text-center text-ink-2"
+    >
+      Nothing matches that search.
+      <button type="button" id="effect-reset" class="link">Clear the filters</button>
+    </p>
+  </div>
+</section>

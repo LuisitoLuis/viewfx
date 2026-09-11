@@ -1,0 +1,32 @@
+---
+import BrandMark from './BrandMark.astro'
+import { SITE } from '../consts'
+---
+
+<footer class="mt-24 border-t border-line">
+  <div class="shell flex flex-col gap-8 py-12 sm:flex-row sm:items-start sm:justify-between">
+    <div class="max-w-sm">
+      <p class="flex items-center gap-2.5">
+        <BrandMark size={18} class="text-accent-text" />
+        <span class="font-mono text-sm font-semibold">{SITE.name}</span>
+      </p>
+      <p class="mt-3 text-sm leading-relaxed text-ink-2">
+        Built with Astro and Tailwind CSS on top of the native View Transitions API. No runtime
+        dependencies, no framework — just CSS and one line of JavaScript.
+      </p>
+    </div>
+
+    <nav aria-label="Footer" class="flex flex-wrap gap-x-8 gap-y-3">
+      <a class="label link" href={SITE.repo} target="_blank" rel="noopener noreferrer">Source</a>
+      <a
+        class="label link"
+        href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API"
+        target="_blank"
+        rel="noopener noreferrer">Reference</a
+      >
+      <a class="label link" href={SITE.author.url} target="_blank" rel="noopener noreferrer"
+        >{new URL(SITE.author.url).host}</a
+      >
+    </nav>
+  </div>
+</footer>
