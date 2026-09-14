@@ -101,6 +101,10 @@
   opacity: 1;
 }
 
+.fx-gallery[data-play-all] .fx-play {
+  display: none;
+}
+
 .fx-play span {
   display: grid;
   place-items: center;
@@ -122,11 +126,16 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .fx-card:is(:hover, :focus-within) .fx-scene--light {
+  .fx-card:is(:hover, :focus-within) .fx-scene--light,
+  .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
     /* The resting diagonal would fight the animation. */
     clip-path: none;
     mask: var(--preview-mask) var(--preview-mask-position) / 0 no-repeat;
-    animation: var(--preview-anim) var(--preview-duration) ease-in-out infinite;
+    animation-name: var(--preview-anim);
+    animation-duration: var(--gallery-duration, var(--preview-duration));
+    animation-delay: var(--gallery-delay, 0s);
+    animation-timing-function: var(--gallery-ease, ease-in-out);
+    animation-iteration-count: infinite;
   }
 }
 

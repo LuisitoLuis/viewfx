@@ -152,6 +152,68 @@ function initFilters(): void {
   })
 }
 
+function setVar(el: HTMLElement, name: string, value: string | null): void {
+  if (value) el.style.setProperty(name, value)
+  else el.style.removeProperty(name)
+}
+
+function initPreviewControls(): void {
+  const gallery = document.querySelector<HTMLElement>('.fx-gallery')
+  const duration = document.querySelector<HTMLSelectElement>('#preview-duration')
+  const delay = document.querySelector<HTMLSelectElement>('#preview-delay')
+  const steps = document.querySelector<HTMLSelectElement>('#preview-steps')
+  const playAll = document.querySelector<HTMLInputElement>('#play-all')
+  if (!gallery || !duration || !delay || !steps || !playAll) return
+
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  function applyTiming(): void {
+    const root = document.documentElement
+    const durationValue = duration.value
+    const delayValue = delay.value
+    const stepsValue = steps.value
+    const delayOrNull = delayValue && delayValue !== '0ms' ? delayValue : null
+    const stepsOrNull = stepsValue && stepsValue !== '0' ? `steps(${stepsValue})` : null
+
+    setVar(gallery, '--gallery-duration', durationValue || null)
+    setVar(gallery, '--gallery-delay', delayOrNull)
+    setVar(gallery, '--gallery-ease', stepsOrNull)
+
+    setVar(root, '--vt-duration-override', durationValue || null)
+    setVar(root, '--vt-delay', delayOrNull)
+    setVar(root, '--vt-ease-override', stepsOrNull)
+  }
+
+  function applyPlayAll(silent = false): void {
+    if (reduced.matches) {
+      playAll.checked = false
+      playAll.disabled = true
+      gallery.toggleAttribute('data-play-all', false)
+      return
+    }
+
+    playAll.disabled = false
+    gallery.toggleAttribute('data-play-all', playAll.checked)
+
+    if (silent) return
+
+    announce(
+      playAll.checked
+        ? 'Play all enabled. All previews loop continuously.'
+        : 'Play all disabled. Previews play on hover or focus.'
+    )
+  }
+
+  duration.addEventListener('change', applyTiming)
+  delay.addEventListener('change', applyTiming)
+  steps.addEventListener('change', applyTiming)
+  playAll.addEventListener('change', () => applyPlayAll())
+  reduced.addEventListener('change', () => applyPlayAll())
+  applyTiming()
+  applyPlayAll(true)
+}
+
+
 export function initGallery(): void {
   let stored: string | null = null
   try {
@@ -169,4 +231,5 @@ export function initGallery(): void {
 
   initSelection()
   initFilters()
+  initPreviewControls()
 }

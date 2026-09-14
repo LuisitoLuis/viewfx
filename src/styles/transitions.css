@@ -10,13 +10,16 @@
    ═══════════════════════════════════════════════════════════════ */
 
 :root::view-transition-group(root) {
-  animation-duration: var(--vt-duration, 0.5s);
-  animation-timing-function: var(--vt-ease, var(--expo-out));
+  animation-duration: var(--vt-duration-override, var(--vt-duration, 0.5s));
+  animation-timing-function: var(--vt-ease-override, var(--vt-ease, var(--expo-out)));
+  animation-delay: var(--vt-delay, 0s);
 }
 
 :root::view-transition-old(root) {
-  animation: var(--vt-anim-old, vt-fade-out) var(--vt-duration, 0.5s)
-    var(--vt-ease, var(--expo-out)) both;
+  animation: var(--vt-anim-old, vt-fade-out)
+    var(--vt-duration-override, var(--vt-duration, 0.5s))
+    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
+    var(--vt-delay, 0s) both;
   z-index: var(--vt-old-z, auto);
   mix-blend-mode: normal;
 }
@@ -26,8 +29,10 @@
      the snapshot unmasked. */
   mask: var(--vt-mask, none) var(--vt-mask-position, center) / 0 no-repeat;
   mask-origin: content-box;
-  animation: var(--vt-anim, vt-fade-in) var(--vt-duration, 0.5s)
-    var(--vt-ease, var(--expo-out)) both;
+  animation: var(--vt-anim, vt-fade-in)
+    var(--vt-duration-override, var(--vt-duration, 0.5s))
+    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
+    var(--vt-delay, 0s) both;
   mix-blend-mode: normal;
 }
 

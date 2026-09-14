@@ -2,9 +2,15 @@
 import EffectCard from './EffectCard.astro'
 import Icon from './Icon.astro'
 import { EFFECTS, TECHNIQUES } from '../data/effects'
+import {
+  ANIMATION_DELAY,
+  ANIMATION_DURATION,
+  ANIMATION_STEPS,
+  DEFAULT_DURATION_KEY
+} from '../data/timing'
 ---
 
-<section id="gallery" aria-labelledby="gallery-heading" class="border-b border-line">
+<section id="gallery" class="fx-gallery border-b border-line" aria-labelledby="gallery-heading">
   <div class="shell py-16 sm:py-20">
     <p class="label text-ink-3">01 — Catalogue</p>
     <h2 id="gallery-heading" class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
@@ -48,6 +54,70 @@ import { EFFECTS, TECHNIQUES } from '../data/effects'
           Surprise me
         </button>
       </div>
+    </div>
+
+    <div class="sticky top-20 z-30 mt-8">
+      <fieldset class="timing-bar" aria-label="Animation preview options">
+        <legend class="sr-only">Customize animation duration, delay, and steps for previews</legend>
+
+        <label class="timing-item">
+          <span class="label text-ink-3">
+            <span class="sm:hidden">Dur</span>
+            <span class="hidden sm:inline">Duration</span>
+          </span>
+          <select id="preview-duration" class="timing-select" name="duration">
+            {
+              Object.entries(ANIMATION_DURATION).map(([key, value]) => (
+                <option value={value} selected={key === DEFAULT_DURATION_KEY}>
+                  {key}
+                </option>
+              ))
+            }
+          </select>
+        </label>
+
+        <span class="timing-rule hidden sm:block" aria-hidden="true"></span>
+
+        <label class="timing-item">
+          <span class="label text-ink-3">Delay</span>
+          <select id="preview-delay" class="timing-select" name="delay">
+            {Object.entries(ANIMATION_DELAY).map(([key, value]) => (
+              <option value={value}>{key}</option>
+            ))}
+          </select>
+        </label>
+
+        <span class="timing-rule hidden sm:block" aria-hidden="true"></span>
+
+        <label class="timing-item">
+          <span class="label text-ink-3">Steps</span>
+          <select id="preview-steps" class="timing-select" name="steps">
+            {Object.entries(ANIMATION_STEPS).map(([key, value]) => (
+              <option value={value}>{key}</option>
+            ))}
+          </select>
+        </label>
+
+        <span class="timing-rule" aria-hidden="true"></span>
+
+        <label class="timing-item" for="play-all">
+          <span class="switch">
+            <input
+              id="play-all"
+              class="peer sr-only"
+              type="checkbox"
+              aria-describedby="play-all-help"
+            />
+            <span class="switch-track" aria-hidden="true"></span>
+            <span class="switch-thumb" aria-hidden="true"></span>
+          </span>
+          <span class="text-sm font-medium text-ink-2">Play all</span>
+        </label>
+        <p id="play-all-help" class="sr-only">
+          When enabled, every animation preview plays in a continuous loop. When disabled, previews
+          play on hover or keyboard focus.
+        </p>
+      </fieldset>
     </div>
 
     <ul
