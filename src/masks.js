@@ -7,25 +7,13 @@
  * when written literally into a stylesheet.
  */
 
-type MaskName =
-  | 'circle'
-  | 'circle-blur'
-  | 'corner-tl'
-  | 'corner-tr'
-  | 'diamond'
-  | 'hexagon'
-  | 'star'
-  | 'ink'
-  | 'heart'
-  | 'mosaic'
-
-const svg = (viewBox: string, body: string) =>
+const svg = (viewBox, body) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}">${body}</svg>`
 
-const blur = (deviation: number) =>
+const blur = (deviation) =>
   `<defs><filter id="b"><feGaussianBlur stdDeviation="${deviation}"/></filter></defs>`
 
-const MASK_SVG: Record<MaskName, string> = {
+const MASK_SVG = {
   circle: svg('0 0 40 40', '<circle cx="20" cy="20" r="20" fill="#fff"/>'),
 
   'circle-blur': svg(
@@ -87,8 +75,8 @@ const MASK_SVG: Record<MaskName, string> = {
 }
 
 /** `:root` declaration block exposing every shape as `--mask-<name>`. */
-export function maskCustomProperties(): string {
-  const declarations = (Object.entries(MASK_SVG) as [MaskName, string][])
+export function maskCustomProperties() {
+  const declarations = Object.entries(MASK_SVG)
     .map(([name, markup]) => `--mask-${name}:url("data:image/svg+xml;base64,${btoa(markup)}")`)
     .join(';')
 

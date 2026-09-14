@@ -1,10 +1,10 @@
 ---
 import Icon from './Icon.astro'
-import { highlight, type Language } from '../lib/highlight'
+import { highlight } from '../lib/highlight'
 
 interface Props {
   code: string
-  language?: Language
+  language?: string
   /** Shown in the header strip; also the filename a visitor would paste into. */
   filename?: string
   copyable?: boolean

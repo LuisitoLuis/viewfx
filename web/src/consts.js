@@ -16,4 +16,4 @@ export const SITE = {
     url: 'https://luismc.dev'
   },
   repo: 'https://github.com/LuisitoLuis/viewfx'
-} as const
+}

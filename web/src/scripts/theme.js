@@ -1,24 +1,15 @@
 export const THEME_KEY = 'viewfx:theme'
 
-type ViewTransition = {
-  ready?: Promise<void>
-  updateCallbackDone?: Promise<void>
-  finished?: Promise<void>
-}
-
-type StartViewTransition = (callback: () => void) => ViewTransition
-
 const root = () => document.documentElement
 
-const startViewTransition = () =>
-  (document as Document & { startViewTransition?: StartViewTransition }).startViewTransition
+const startViewTransition = () => document.startViewTransition
 
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 export const isDark = () => root().classList.contains('dark')
 
-function commit(dark: boolean, persist: boolean): void {
+function commit(dark, persist) {
   root().classList.toggle('dark', dark)
   syncToggle()
   syncBrowserChrome()
@@ -40,7 +31,7 @@ function commit(dark: boolean, persist: boolean): void {
  * `persist` is false when the change comes from the OS rather than the
  * visitor, so following the system preference stays sticky.
  */
-export function playTransition(dark = !isDark(), persist = true): void {
+export function playTransition(dark = !isDark(), persist = true) {
   const start = startViewTransition()
 
   if (!start || prefersReducedMotion()) {
@@ -60,15 +51,15 @@ export function playTransition(dark = !isDark(), persist = true): void {
 }
 
 /** Keeps the mobile browser UI tinted to match the page. */
-function syncBrowserChrome(): void {
-  const meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+function syncBrowserChrome() {
+  const meta = document.querySelector('meta[name="theme-color"]')
   if (!meta) return
 
   const paper = getComputedStyle(root()).getPropertyValue('--paper').trim()
   if (paper) meta.content = paper
 }
 
-function syncToggle(): void {
+function syncToggle() {
   const toggle = document.getElementById('theme-toggle')
   if (!toggle) return
 
@@ -77,7 +68,7 @@ function syncToggle(): void {
   toggle.setAttribute('title', label)
 }
 
-export function initTheme(): void {
+export function initTheme() {
   syncToggle()
   syncBrowserChrome()
 
@@ -95,7 +86,7 @@ export function initTheme(): void {
 
   // Follow the OS while the visitor has not expressed a preference.
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-    let stored: string | null = null
+    let stored = null
     try {
       stored = localStorage.getItem(THEME_KEY)
     } catch {

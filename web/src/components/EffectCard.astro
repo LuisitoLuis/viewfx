@@ -1,9 +1,16 @@
 ---
 import Icon from './Icon.astro'
-import type { Effect } from '../data/effects'
 
 interface Props {
-  effect: Effect
+  effect: {
+    id: string
+    className: string
+    name: string
+    desc: string
+    technique: string
+    durationMs: number
+    css: string
+  }
   index: number
 }
 

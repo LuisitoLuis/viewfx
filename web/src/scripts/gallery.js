@@ -5,15 +5,15 @@ export const EFFECT_KEY = 'viewfx:effect'
 
 const EFFECT_CLASS = /^vt-(?!duration-|delay-|steps-)/
 
-function rootEffectClass(): string | undefined {
+function rootEffectClass() {
   return [...document.documentElement.classList].find((cls) => EFFECT_CLASS.test(cls))
 }
 
-function rootEffectId(): string | undefined {
+function rootEffectId() {
   return rootEffectClass()?.slice(3)
 }
 
-function setRootEffect(id: string): void {
+function setRootEffect(id) {
   const root = document.documentElement
   const next = `vt-${id}`
 
@@ -26,16 +26,16 @@ function setRootEffect(id: string): void {
 
 const ANNOUNCE_DELAY = 500
 
-const cards = () => Array.from(document.querySelectorAll<HTMLElement>('.fx-card'))
+const cards = () => Array.from(document.querySelectorAll('.fx-card'))
 const visibleSelects = () =>
-  Array.from(document.querySelectorAll<HTMLButtonElement>('.fx-card:not([hidden]) .fx-select'))
+  Array.from(document.querySelectorAll('.fx-card:not([hidden]) .fx-select'))
 
 /**
  * Applies an effect and, unless restoring state on load, immediately replays
  * it by flipping the theme — the effect only exists while the theme changes,
  * so selecting without playing would give no feedback.
  */
-function selectEffect(id: string, { play = true } = {}): void {
+function selectEffect(id, { play = true } = {}) {
   setRootEffect(id)
 
   try {
@@ -70,7 +70,7 @@ function selectEffect(id: string, { play = true } = {}): void {
   }
 }
 
-function initSelection(): void {
+function initSelection() {
   const grid = document.getElementById('effect-grid')
   if (!grid) return
 
@@ -78,8 +78,8 @@ function initSelection(): void {
     const target = event.target
     if (!(target instanceof Element)) return
 
-    const select = target.closest<HTMLElement>('.fx-select')
-    const id = select?.closest<HTMLElement>('.fx-card')?.dataset.fx
+    const select = target.closest('.fx-select')
+    const id = select?.closest('.fx-card')?.dataset.fx
 
     if (id) selectEffect(id)
   })
@@ -109,17 +109,17 @@ function initSelection(): void {
   })
 }
 
-function initFilters(): void {
-  const search = document.querySelector<HTMLInputElement>('#effect-search')
+function initFilters() {
+  const search = document.querySelector('#effect-search')
   // `data-filter`, not `data-technique`: the cards carry that one.
-  const chips = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'))
+  const chips = Array.from(document.querySelectorAll('[data-filter]'))
   const empty = document.getElementById('effect-empty')
   const reset = document.getElementById('effect-reset')
 
   let technique = 'all'
   let announceTimer = 0
 
-  function apply(): void {
+  function apply() {
     const query = search?.value.trim().toLowerCase() ?? ''
     let visible = 0
 
@@ -167,22 +167,22 @@ function initFilters(): void {
   })
 }
 
-function setVar(el: HTMLElement, name: string, value: string | null): void {
+function setVar(el, name, value) {
   if (value) el.style.setProperty(name, value)
   else el.style.removeProperty(name)
 }
 
-function initPreviewControls(): void {
-  const gallery = document.querySelector<HTMLElement>('.fx-gallery')
-  const duration = document.querySelector<HTMLSelectElement>('#preview-duration')
-  const delay = document.querySelector<HTMLSelectElement>('#preview-delay')
-  const steps = document.querySelector<HTMLSelectElement>('#preview-steps')
-  const playAll = document.querySelector<HTMLInputElement>('#play-all')
+function initPreviewControls() {
+  const gallery = document.querySelector('.fx-gallery')
+  const duration = document.querySelector('#preview-duration')
+  const delay = document.querySelector('#preview-delay')
+  const steps = document.querySelector('#preview-steps')
+  const playAll = document.querySelector('#play-all')
   if (!gallery || !duration || !delay || !steps || !playAll) return
 
   const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
 
-  function applyTiming(): void {
+  function applyTiming() {
     const root = document.documentElement
     const durationValue = duration.value
     const delayValue = delay.value
@@ -199,7 +199,7 @@ function initPreviewControls(): void {
     setVar(root, '--vt-ease-override', stepsOrNull)
   }
 
-  function applyPlayAll(silent = false): void {
+  function applyPlayAll(silent = false) {
     if (reduced.matches) {
       playAll.checked = false
       playAll.disabled = true
@@ -229,8 +229,8 @@ function initPreviewControls(): void {
 }
 
 
-export function initGallery(): void {
-  let stored: string | null = null
+export function initGallery() {
+  let stored = null
   try {
     stored = localStorage.getItem(EFFECT_KEY)
   } catch {

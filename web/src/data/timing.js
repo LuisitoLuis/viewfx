@@ -4,7 +4,7 @@
  *
  * @see https://github.com/midudev/tailwind-animations
  */
-export const ANIMATION_DURATION: Record<string, string> = {
+export const ANIMATION_DURATION = {
   none: '0ms',
   slower: '500ms',
   slow: '400ms',
@@ -25,7 +25,7 @@ export const ANIMATION_DURATION: Record<string, string> = {
   1000: '1000ms'
 }
 
-export const ANIMATION_DELAY: Record<string, string> = {
+export const ANIMATION_DELAY = {
   none: '0ms',
   0: '0ms',
   100: '100ms',
@@ -41,7 +41,7 @@ export const ANIMATION_DELAY: Record<string, string> = {
   1000: '1000ms'
 }
 
-export const ANIMATION_STEPS: Record<string, string> = {
+export const ANIMATION_STEPS = {
   none: '0',
   retro: '8',
   normal: '16',

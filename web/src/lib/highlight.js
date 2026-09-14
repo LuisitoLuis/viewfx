@@ -7,18 +7,16 @@
  * catalogue, and it keeps a highlighting library out of the bundle.
  */
 
-export type Language = 'css' | 'js' | 'html'
-
-const HTML_ESCAPES: Record<string, string> = {
+const HTML_ESCAPES = {
   '&': '&amp;',
   '<': '&lt;',
   '>': '&gt;'
 }
 
-const escapeHtml = (value: string) => value.replace(/[&<>]/g, (char) => HTML_ESCAPES[char]!)
+const escapeHtml = (value) => value.replace(/[&<>]/g, (char) => HTML_ESCAPES[char])
 
 /** Token name → class name consumed by the `.t-*` rules in `global.css`. */
-const TOKEN_CLASS: Record<string, string> = {
+const TOKEN_CLASS = {
   comment: 't-com',
   string: 't-str',
   atrule: 't-at',
@@ -34,7 +32,7 @@ const NUMBER = String.raw`(?<number>-?\d*\.?\d+(?:ms|s|%|deg|vmax|vmin|dvh|vh|vw
 const COMMENT = String.raw`(?<comment>/\*[\s\S]*?\*/|//[^\n]*)`
 const STRING = String.raw`(?<string>'[^'\n]*'|"[^"\n]*"|\`[^\`]*\`)`
 
-const GRAMMARS: Record<Language, RegExp> = {
+const GRAMMARS = {
   css: new RegExp(
     [
       COMMENT,
@@ -71,9 +69,9 @@ const GRAMMARS: Record<Language, RegExp> = {
 const TOKEN_NAMES = Object.keys(TOKEN_CLASS)
 
 /** Returns HTML with `<span class="t-*">` wrappers. Safe to use with `set:html`. */
-export function highlight(source: string, language: Language = 'css'): string {
+export function highlight(source, language = 'css') {
   return escapeHtml(source).replace(GRAMMARS[language], (match, ...rest) => {
-    const groups = rest.at(-1) as Record<string, string | undefined>
+    const groups = rest.at(-1)
     const name = TOKEN_NAMES.find((token) => groups[token] !== undefined)
 
     return name ? `<span class="${TOKEN_CLASS[name]}">${match}</span>` : match

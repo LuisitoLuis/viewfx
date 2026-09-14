@@ -113,9 +113,9 @@ module.exports = {
 </section>
 
 <script>
-  function initPackageManagers(): void {
+  function initPackageManagers() {
     const command = document.getElementById('install-command')
-    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-pm]'))
+    const buttons = Array.from(document.querySelectorAll('[data-pm]'))
     if (!command || buttons.length === 0) return
 
     for (const button of buttons) {
@@ -130,9 +130,9 @@ module.exports = {
     }
   }
 
-  function initTailwindVersions(): void {
-    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tw-version]'))
-    const copy = document.querySelector<HTMLButtonElement>('[data-tw-copy]')
+  function initTailwindVersions() {
+    const buttons = Array.from(document.querySelectorAll('[data-tw-version]'))
+    const copy = document.querySelector('[data-tw-copy]')
     const v4 = document.getElementById('install-v4')
     const v3 = document.getElementById('install-v3')
     if (!copy || !v4 || !v3 || buttons.length === 0) return

@@ -1,12 +1,11 @@
 ---
 import CodeBlock from './CodeBlock.astro'
-import type { Language } from '../lib/highlight'
 
 interface Step {
   title: string
   body: string
   filename: string
-  language: Language
+  language: string
   code: string
 }
 

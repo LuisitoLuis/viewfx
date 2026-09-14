@@ -4,28 +4,14 @@
  * can scan it; `css` is the snippet shown in the code dialog.
  */
 
-export const TECHNIQUES = ['mask', 'clip-path', 'transform', 'opacity'] as const
-
-export type Technique = (typeof TECHNIQUES)[number]
-
-export interface Effect {
-  id: string
-  /** Tailwind utility applied to `<html>`. Keep as a string literal. */
-  className: string
-  name: string
-  desc: string
-  technique: Technique
-  /** Length of the transition, used for the card metadata line. */
-  durationMs: number
-  css: string
-}
+export const TECHNIQUES = ['mask', 'clip-path', 'transform', 'opacity']
 
 export const DEFAULT_EFFECT_ID = 'circle'
 export const DEFAULT_EFFECT_CLASS = 'vt-circle'
 
-const usage = (className: string) => `<html class="${className}">`
+const usage = (className) => `<html class="${className}">`
 
-export const EFFECTS: Effect[] = [
+export const EFFECTS = [
   {
     id: 'circle',
     className: 'vt-circle',

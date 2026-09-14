@@ -21,7 +21,7 @@
     "build": "pnpm --dir web build",
     "preview": "pnpm --dir web preview",
     "astro": "pnpm --dir web astro",
-    "emit:masks": "node --experimental-strip-types scripts/emit-masks.mjs"
+    "emit:masks": "node scripts/emit-masks.mjs"
   },
   "keywords": [
     "tailwind",

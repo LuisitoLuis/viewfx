@@ -8,12 +8,12 @@ const RESET_DELAY = 2000
  *
  * `data-copy` holds a selector resolved inside the nearest `[data-copy-scope]`.
  */
-export function initClipboard(): void {
+export function initClipboard() {
   document.addEventListener('click', (event) => {
     const target = event.target
     if (!(target instanceof Element)) return
 
-    const button = target.closest<HTMLButtonElement>('[data-copy]')
+    const button = target.closest('[data-copy]')
 
     // Ignore repeat clicks while the confirmation is still showing, otherwise
     // the restore step would capture "Copied" as the original label.
@@ -21,8 +21,8 @@ export function initClipboard(): void {
   })
 }
 
-async function copy(button: HTMLButtonElement): Promise<void> {
-  const scope = button.closest<HTMLElement>('[data-copy-scope]') ?? document
+async function copy(button) {
+  const scope = button.closest('[data-copy-scope]') ?? document
   const source = scope.querySelector(button.dataset.copy || '')
   const text = source?.textContent?.trim()
 
@@ -38,8 +38,8 @@ async function copy(button: HTMLButtonElement): Promise<void> {
   }
 }
 
-function flash(button: HTMLButtonElement, message: string, state: string): void {
-  const label = button.querySelector<HTMLElement>('[data-copy-label]')
+function flash(button, message, state) {
+  const label = button.querySelector('[data-copy-label]')
   const original = label?.textContent ?? ''
 
   button.dataset.state = state

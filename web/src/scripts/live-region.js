@@ -13,7 +13,7 @@ let pending = 0
  * uses a timer rather than `requestAnimationFrame`: frame callbacks are
  * throttled or skipped outright in background tabs.
  */
-export function announce(message: string): void {
+export function announce(message) {
   const region = document.getElementById(REGION_ID)
   if (!region) return
 

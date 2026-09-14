@@ -88,21 +88,21 @@ An effect is a `@utility vt-…` block that sets `--vt-*` tokens. The view-trans
 | Step | File | What to add |
 |------|------|-------------|
 | 1 | `src/index.css` | `@utility vt-name { … }` plus keyframes if needed |
-| 2 | `src/masks.ts` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
-| 3 | `web/src/data/effects.ts` | Catalogue entry with a **string-literal** `className` |
+| 2 | `src/masks.js` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
+| 3 | `web/src/data/effects.js` | Catalogue entry with a **string-literal** `className` |
 | 4 | `web/src/styles/previews.css` | `--preview-*` tokens so the card preview matches |
 
-Mask shapes are declared as readable SVG in `src/masks.ts` and emitted once as base64 `--mask-*` properties. The live transitions and the card previews share them.
+Mask shapes are declared as readable SVG in `src/masks.js` and emitted once as base64 `--mask-*` properties. The live transitions and the card previews share them.
 
 ## Layout of the repo
 
 | Path | Role |
 |------|------|
 | `src/index.css` | Tailwind v4 plugin (published) |
-| `src/masks.ts` | Shared mask shapes |
+| `src/masks.js` | Shared mask shapes |
 | `src/masks.css` | Generated base64 mask tokens |
 | `web/` | Catalogue site |
-| `web/src/data/effects.ts` | Catalogue and copyable snippets |
+| `web/src/data/effects.js` | Catalogue and copyable snippets |
 | `web/src/styles/previews.css` | Looping animations on the cards |
 | `web/src/scripts/` | Theme, gallery, dialog, clipboard |
 
@@ -118,4 +118,4 @@ Mask shapes are declared as readable SVG in `src/masks.ts` and emitted once as b
 | --- | --- |
 | [![Astro](https://img.shields.io/badge/Astro-fff?style=for-the-badge&logo=astro&logoColor=bd303a&color=352563)](https://astro.build/) | Catalogue site. |
 | [![Tailwind CSS](https://img.shields.io/badge/Tailwind-ffffff?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8)](https://tailwindcss.com/) | v4 CSS-first plugin + catalogue UI. |
-| [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) | Static typing for JavaScript. |
+| [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | Catalogue scripts and data. |
