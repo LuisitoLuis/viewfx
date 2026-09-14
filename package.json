@@ -1,19 +1,40 @@
 {
   "name": "viewfx",
-  "type": "module",
   "version": "0.0.1",
+  "description": "Tailwind CSS v4 plugin for View Transitions theme effects",
+  "style": "./src/index.css",
+  "exports": {
+    ".": "./src/index.css",
+    "./index.css": "./src/index.css"
+  },
+  "files": [
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LuisitoLuis/viewfx.git"
+  },
+  "homepage": "https://viewfx.luismc.dev",
+  "type": "module",
+  "scripts": {
+    "dev": "pnpm --dir web dev",
+    "build": "pnpm --dir web build",
+    "preview": "pnpm --dir web preview",
+    "astro": "pnpm --dir web astro",
+    "emit:masks": "node --experimental-strip-types scripts/emit-masks.mjs"
+  },
+  "keywords": [
+    "tailwind",
+    "css",
+    "view-transitions",
+    "theme",
+    "plugin"
+  ],
+  "license": "MIT",
   "engines": {
     "node": ">=22.12.0"
   },
-  "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview",
-    "astro": "astro"
-  },
-  "dependencies": {
-    "@tailwindcss/vite": "4.3.3",
-    "astro": "7.3.1",
-    "tailwindcss": "4.3.3"
+  "peerDependencies": {
+    "tailwindcss": "4"
   }
 }
