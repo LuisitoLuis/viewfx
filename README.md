@@ -125,6 +125,6 @@ Mask shapes are declared as readable SVG in `src/masks.cjs` and emitted once as 
 
 ## Behaviour to know
 
-- Theme and selected effect are restored from `localStorage` before first paint, so neither flashes.
+- Theme is restored from `localStorage` before first paint, so it does not flash. The catalogue always uses `vt-polygon` for the page theme toggle; card previews do not change the site theme.
 - The OS color scheme is followed until the visitor toggles the theme themselves.
 - `prefers-reduced-motion: reduce` turns off both the page transitions and the looping card previews.

@@ -13,10 +13,12 @@
 .fx-preview {
   position: relative;
   display: block;
+  width: 100%;
   overflow: hidden;
-  aspect-ratio: 16 / 9;
-  border-bottom: 1px solid var(--line);
+  aspect-ratio: 5 / 4;
+  border-radius: 1.35rem;
   background: var(--scene-dark);
+  transition: box-shadow 0.25s var(--expo-out);
 }
 
 .fx-scene {

@@ -6,8 +6,8 @@
 
 export const TECHNIQUES = ['mask', 'clip-path', 'transform', 'opacity']
 
-export const DEFAULT_EFFECT_ID = 'circle'
-export const DEFAULT_EFFECT_CLASS = 'vt-circle'
+export const DEFAULT_EFFECT_ID = 'polygon'
+export const DEFAULT_EFFECT_CLASS = 'vt-polygon'
 
 const usage = (className) => `<html class="${className}">`
 

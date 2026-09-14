@@ -7,7 +7,6 @@ import SiteHeader from '../components/SiteHeader.astro'
 import SiteFooter from '../components/SiteFooter.astro'
 import { SITE } from '../consts'
 import { DEFAULT_EFFECT_CLASS } from '../data/effects'
-import { EFFECT_KEY } from '../scripts/gallery'
 import { THEME_KEY } from '../scripts/theme'
 
 interface Props {
@@ -35,9 +34,9 @@ const structuredData = {
 }
 
 /**
- * Resolves theme and effect before first paint so neither flashes. Inline and
- * therefore unbundled, which is why the storage keys are interpolated from the
- * modules that own them rather than repeated as literals.
+ * Resolves the theme before first paint so it does not flash. Inline and
+ * therefore unbundled, which is why the storage key is interpolated from the
+ * module that owns it rather than repeated as a literal.
  */
 const bootstrap = `(() => {
   const el = document.documentElement
@@ -45,15 +44,6 @@ const bootstrap = `(() => {
     const theme = localStorage.getItem('${THEME_KEY}')
     const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
     el.classList.toggle('dark', dark)
-    const effect = localStorage.getItem('${EFFECT_KEY}')
-    if (effect) {
-      for (const cls of [...el.classList]) {
-        if (cls.startsWith('vt-') && !cls.startsWith('vt-duration-') && !cls.startsWith('vt-delay-') && !cls.startsWith('vt-steps-')) {
-          el.classList.remove(cls)
-        }
-      }
-      el.classList.add('vt-' + effect)
-    }
   } catch {}
 })()`
 ---

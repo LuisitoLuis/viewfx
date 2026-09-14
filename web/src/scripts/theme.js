@@ -1,5 +1,7 @@
 export const THEME_KEY = 'viewfx:theme'
 
+const PAGE_EFFECT = 'vt-polygon'
+
 const root = () => document.documentElement
 
 const startViewTransition = () => document.startViewTransition
@@ -24,7 +26,7 @@ function commit(dark, persist) {
 }
 
 /**
- * Flips the theme through the active `vt-*` transition.
+ * Flips the theme through `vt-polygon` on `<html>`.
  * Falls back to an instant swap when the API is missing or the visitor has
  * asked for reduced motion.
  *
@@ -32,6 +34,14 @@ function commit(dark, persist) {
  * visitor, so following the system preference stays sticky.
  */
 export function playTransition(dark = !isDark(), persist = true) {
+  const el = root()
+  for (const cls of [...el.classList]) {
+    if (/^vt-(?!duration-|delay-|steps-)/.test(cls) && cls !== PAGE_EFFECT) {
+      el.classList.remove(cls)
+    }
+  }
+  el.classList.add(PAGE_EFFECT)
+
   const start = startViewTransition()
 
   if (!start || prefersReducedMotion()) {
