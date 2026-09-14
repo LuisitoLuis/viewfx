@@ -1,0 +1,15 @@
+# Package contents are controlled by package.json "files".
+.agents
+.github
+.claude
+web
+scripts
+*.tgz
+pnpm-lock.yaml
+pnpm-workspace.yaml
+skills-lock.json
+package-lock.json
+.atl
+.vscode
+.astro
+dist
