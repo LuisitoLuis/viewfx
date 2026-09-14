@@ -1,0 +1,14 @@
+---
+import Icon from './Icon.astro'
+---
+
+<!-- The accessible name is kept in sync with the current theme by scripts/theme.ts. -->
+<button
+  id="theme-toggle"
+  type="button"
+  class="btn btn--icon btn--outline"
+  aria-label="Switch the theme"
+>
+  <Icon name="moon" class="dark:hidden" />
+  <Icon name="sun" class="hidden dark:block" />
+</button>

@@ -1,0 +1,54 @@
+---
+import Icon from './Icon.astro'
+import type { Effect } from '../data/effects'
+
+interface Props {
+  effect: Effect
+  index: number
+}
+
+const { effect, index } = Astro.props
+
+const descriptionId = `fx-${effect.id}-desc`
+
+const haystack = [effect.name, effect.id, effect.className, effect.technique, effect.desc]
+  .join(' ')
+  .toLowerCase()
+---
+
+<li
+  class="fx-card rise"
+  data-fx={effect.id}
+  data-class={effect.className}
+  data-name={effect.name}
+  data-technique={effect.technique}
+  data-search={haystack}
+  style={`--i:${index}`}
+>
+  <button
+    type="button"
+    class="fx-select"
+    aria-describedby={descriptionId}
+    aria-label={`Copy class ${effect.className}. Hover or focus to preview.`}
+  >
+    <span class="fx-preview">
+      <span class="fx-scene fx-scene--dark">
+        <span class="fx-orb"></span>
+        <span class="fx-bars"><i></i><i></i></span>
+      </span>
+      <span class="fx-scene fx-scene--light">
+        <span class="fx-orb"></span>
+        <span class="fx-bars"><i></i><i></i></span>
+      </span>
+    </span>
+
+    <span class="fx-heading">
+      <span class="fx-name font-mono">{effect.className}</span>
+      <span class="fx-copy-hint" aria-hidden="true">
+        <Icon name="copy" size={13} />
+      </span>
+    </span>
+  </button>
+
+  <p id={descriptionId} class="fx-desc">{effect.name} · {effect.technique}</p>
+</li>

@@ -1,0 +1,156 @@
+---
+import Icon from './Icon.astro'
+import PackageMark from './PackageMark.astro'
+import { EFFECTS } from '../data/effects'
+import { highlight } from '../lib/highlight'
+
+const PACKAGE_MANAGERS = [
+  { name: 'npm', command: 'npm install viewfx' },
+  { name: 'pnpm', command: 'pnpm add viewfx' },
+  { name: 'yarn', command: 'yarn add viewfx' },
+  { name: 'bun', command: 'bun add viewfx' },
+  { name: 'dino', command: 'deno add npm:viewfx' }
+] as const
+
+const IMPORT_V4 = `@import 'tailwindcss';
+@import 'viewfx';`
+
+const IMPORT_V3 = `/** @type {import('tailwindcss').Config} */
+module.exports = {
+  plugins: [
+    require('viewfx')
+  ]
+}`
+---
+
+<section class="border-b border-line">
+  <div class="shell flex flex-col items-center py-16 text-center sm:py-20">
+    <p class="label flex items-center gap-2.5 text-ink-3">
+      <span class="inline-block size-1.5 rounded-full bg-accent"></span>
+      Tailwind CSS v4 plugin
+    </p>
+
+    <h1
+      class="mt-6 max-w-3xl text-[clamp(2.25rem,6vw,4.25rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance"
+    >
+      {EFFECTS.length} theme transitions, one class on
+      <em class="font-normal text-accent-text italic">&lt;html&gt;</em>
+    </h1>
+
+    <p class="mt-6 max-w-xl text-base leading-relaxed text-pretty text-ink-2 sm:text-lg">
+      Hover a card to preview, click to apply it and copy the class. Same idea as a Tailwind
+      animation catalogue — built for the View Transitions API.
+    </p>
+
+    <div class="mt-10 flex w-full max-w-xl flex-col gap-3">
+      <div data-copy-scope class="install-card">
+        <div class="install-card__bar">
+          <div class="install-card__tabs" role="group" aria-label="Package manager">
+            {
+              PACKAGE_MANAGERS.map((pm, index) => (
+                <button
+                  type="button"
+                  class="install-tab"
+                  data-pm
+                  data-command={pm.command}
+                  aria-pressed={index === 0 ? 'true' : 'false'}
+                >
+                  <span class="install-tab__mark">
+                    <PackageMark name={pm.name} />
+                  </span>
+                  {pm.name}
+                </button>
+              ))
+            }
+          </div>
+          <button
+            type="button"
+            class="btn btn--icon btn--ghost install-card__copy"
+            data-copy="#install-command"
+            aria-label="Copy install command"
+          >
+            <Icon name="copy" size={15} />
+            <span class="sr-only" data-copy-label>Copy</span>
+          </button>
+        </div>
+        <p class="install-card__body">
+          <span class="install-prompt" aria-hidden="true">$</span>
+          <code id="install-command">{PACKAGE_MANAGERS[0].command}</code>
+        </p>
+      </div>
+
+      <div data-copy-scope class="install-card">
+        <div class="install-card__bar">
+          <div class="install-card__tabs" role="group" aria-label="Tailwind version">
+            <button type="button" class="install-tab" data-tw-version="v4" aria-pressed="true">
+              Tailwind v4
+            </button>
+            <button type="button" class="install-tab" data-tw-version="v3" aria-pressed="false">
+              Tailwind v3
+            </button>
+          </div>
+          <button
+            type="button"
+            class="btn btn--icon btn--ghost install-card__copy"
+            data-copy="#install-v4"
+            data-tw-copy
+            aria-label="Copy usage snippet"
+          >
+            <Icon name="copy" size={15} />
+            <span class="sr-only" data-copy-label>Copy</span>
+          </button>
+        </div>
+        <pre id="install-v4" class="install-card__body code" set:html={highlight(IMPORT_V4, 'css')} />
+        <pre
+          id="install-v3"
+          class="install-card__body code"
+          hidden
+          set:html={highlight(IMPORT_V3, 'js')}
+        />
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  function initPackageManagers(): void {
+    const command = document.getElementById('install-command')
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-pm]'))
+    if (!command || buttons.length === 0) return
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const next = button.dataset.command
+        if (next) command.textContent = next
+
+        for (const other of buttons) {
+          other.setAttribute('aria-pressed', String(other === button))
+        }
+      })
+    }
+  }
+
+  function initTailwindVersions(): void {
+    const buttons = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-tw-version]'))
+    const copy = document.querySelector<HTMLButtonElement>('[data-tw-copy]')
+    const v4 = document.getElementById('install-v4')
+    const v3 = document.getElementById('install-v3')
+    if (!copy || !v4 || !v3 || buttons.length === 0) return
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        const version = button.dataset.twVersion
+        v4.hidden = version !== 'v4'
+        v3.hidden = version !== 'v3'
+        copy.dataset.copy = version === 'v3' ? '#install-v3' : '#install-v4'
+
+        for (const other of buttons) {
+          other.setAttribute('aria-pressed', String(other === button))
+        }
+      })
+    }
+  }
+
+  initPackageManagers()
+  initTailwindVersions()
+</script>

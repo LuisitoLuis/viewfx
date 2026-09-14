@@ -1,0 +1,26 @@
+---
+import Icon from './Icon.astro'
+---
+
+<!-- Native <dialog>: the focus trap, Escape key, inert background and focus
+     restore all come from the platform. Content is injected by scripts/dialog.ts. -->
+<dialog id="code-dialog" class="dialog" aria-labelledby="code-dialog-title">
+  <div class="flex items-center justify-between gap-3 border-b border-line px-4 py-3">
+    <h2 id="code-dialog-title" class="font-mono text-sm font-semibold"></h2>
+
+    <form method="dialog">
+      <button type="submit" class="btn btn--icon btn--ghost" aria-label="Close the code viewer">
+        <Icon name="close" />
+      </button>
+    </form>
+  </div>
+
+  <div
+    data-dialog-body
+    role="region"
+    aria-labelledby="code-dialog-title"
+    tabindex="0"
+    class="max-h-[70dvh] overflow-auto"
+  >
+  </div>
+</dialog>

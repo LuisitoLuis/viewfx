@@ -1,0 +1,81 @@
+---
+import CodeBlock from './CodeBlock.astro'
+import type { Language } from '../lib/highlight'
+
+interface Step {
+  title: string
+  body: string
+  filename: string
+  language: Language
+  code: string
+}
+
+const STEPS: Step[] = [
+  {
+    title: 'Import the plugin',
+    body: 'Add ViewFX next to Tailwind in your global stylesheet. The package is CSS-only — no JavaScript plugin to register.',
+    filename: 'global.css',
+    language: 'css',
+    code: `@import 'tailwindcss';
+@import 'viewfx';`
+  },
+  {
+    title: 'Put the effect on html',
+    body: 'Each effect is a utility class. Apply it to the document element, then wrap your theme toggle in startViewTransition.',
+    filename: 'index.html',
+    language: 'html',
+    code: `<html class="dark vt-circle">`
+  },
+  {
+    title: 'Wrap the theme change',
+    body: 'The browser snapshots before and after, then runs the CSS between the two. Browsers without the API just switch instantly. Reduced motion is honoured by the plugin.',
+    filename: 'theme.js',
+    language: 'js',
+    code: `function switchTheme() {
+  document.documentElement.classList.toggle('dark')
+}
+
+if (document.startViewTransition) {
+  document.startViewTransition(switchTheme)
+} else {
+  switchTheme()
+}`
+  }
+]
+---
+
+<section id="usage" aria-labelledby="usage-heading">
+  <div class="shell py-16 sm:py-20">
+    <p class="label text-ink-3">02 — Usage</p>
+    <h2 id="usage-heading" class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
+      Install, class, one line of JavaScript
+    </h2>
+
+    <ol class="mt-12 grid gap-10 lg:grid-cols-3 lg:gap-8">
+      {
+        STEPS.map((step, index) => (
+          <li class="flex flex-col gap-4">
+            <p class="flex items-center gap-3">
+              <span
+                class="grid size-7 shrink-0 place-items-center rounded-full border border-line font-mono text-xs tabular-nums"
+                aria-hidden="true"
+              >
+                {index + 1}
+              </span>
+              <span class="text-lg font-semibold tracking-tight">{step.title}</span>
+            </p>
+
+            <p class="text-sm leading-relaxed text-pretty text-ink-2">{step.body}</p>
+
+            <CodeBlock
+              code={step.code}
+              language={step.language}
+              filename={step.filename}
+              class="mt-auto"
+            />
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
