@@ -1,4 +1,5 @@
 import { announce } from './live-region'
+import { toastSuccess } from './toast'
 import { DEFAULT_EFFECT_ID } from '../data/effects'
 
 export const EFFECT_KEY = 'viewfx:effect'
@@ -27,7 +28,7 @@ function markCurrent(id) {
 }
 
 function selectEffect(id, { copy = true } = {}) {
-  const name = markCurrent(id)
+  markCurrent(id)
 
   try {
     localStorage.setItem(EFFECT_KEY, id)
@@ -39,8 +40,8 @@ function selectEffect(id, { copy = true } = {}) {
 
   const className = `vt-${id}`
   void navigator.clipboard.writeText(className).then(
-    () => announce(`${name} copied as ${className}`),
-    () => announce(`${name} selected`)
+    () => toastSuccess(`Copied "${id}"`),
+    () => toastSuccess('Could not copy')
   )
 }
 
@@ -51,6 +52,12 @@ function initSelection() {
   grid.addEventListener('click', (event) => {
     const target = event.target
     if (!(target instanceof Element)) return
+
+    if (target.closest('[data-copy]')) {
+      const id = target.closest('.fx-card')?.dataset.fx
+      if (id) selectEffect(id, { copy: false })
+      return
+    }
 
     const select = target.closest('.fx-select')
     const id = select?.closest('.fx-card')?.dataset.fx

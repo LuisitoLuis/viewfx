@@ -90,6 +90,12 @@ const bootstrap = `(() => {
     <SiteFooter />
 
     <div id="live-region" class="sr-only" role="status" aria-live="polite"></div>
+    <div
+      id="site-toasts"
+      class="pointer-events-none fixed inset-x-0 top-2 z-[100] flex flex-col items-center gap-3 px-4 sm:top-2.5"
+      aria-live="polite"
+      aria-atomic="true"
+    ></div>
 
     <script>
       import { initTheme } from '../scripts/theme'

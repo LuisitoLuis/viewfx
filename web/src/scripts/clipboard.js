@@ -1,4 +1,4 @@
-import { announce } from './live-region'
+import { toastSuccess } from './toast'
 
 const RESET_DELAY = 2000
 
@@ -7,6 +7,7 @@ const RESET_DELAY = 2000
  * cloned into the code dialog at runtime work without re-initialising.
  *
  * `data-copy` holds a selector resolved inside the nearest `[data-copy-scope]`.
+ * Optional `data-toast` overrides the success message.
  */
 export function initClipboard() {
   document.addEventListener('click', (event) => {
@@ -31,10 +32,10 @@ async function copy(button) {
   try {
     await navigator.clipboard.writeText(text)
     flash(button, 'Copied', 'copied')
-    announce('Copied to clipboard')
+    toastSuccess(button.dataset.toast || 'Copied to clipboard')
   } catch {
     flash(button, 'Press ⌘C', 'error')
-    announce('Copying failed. Select the code and copy it manually.')
+    toastSuccess('Could not copy')
   }
 }
 

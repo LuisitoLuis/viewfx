@@ -1,4 +1,6 @@
 ---
+import Icon from './Icon.astro'
+
 interface Props {
   effect: {
     id: string
@@ -13,9 +15,11 @@ interface Props {
 }
 
 const { effect, index } = Astro.props
+const copyId = `fx-copy-${effect.id}`
 ---
 
 <li
+  data-copy-scope
   class="fx-card rise"
   data-fx={effect.id}
   data-class={effect.className}
@@ -26,7 +30,7 @@ const { effect, index } = Astro.props
   <button
     type="button"
     class="fx-select"
-    aria-label={`Copy class ${effect.className}. Hover or focus to preview.`}
+    aria-label={`Preview ${effect.id}. Hover or focus to play.`}
   >
     <span class="fx-preview">
       <span class="fx-scene fx-scene--dark">
@@ -38,6 +42,25 @@ const { effect, index } = Astro.props
         <span class="fx-bars"><i></i><i></i></span>
       </span>
     </span>
-    <span class="fx-name">{effect.id}</span>
   </button>
+
+  <div class="fx-meta">
+    <span class="fx-name">{effect.id}</span>
+    <code id={copyId} hidden>{effect.className}</code>
+    <button
+      type="button"
+      class="fx-copy"
+      data-copy={`#${copyId}`}
+      data-toast={`Copied "${effect.id}"`}
+      aria-label={`Copy class ${effect.className}`}
+    >
+      <span class="fx-copy__idle" aria-hidden="true">
+        <Icon name="copy" size={13} />
+      </span>
+      <span class="fx-copy__done" aria-hidden="true">
+        <Icon name="check" size={13} />
+      </span>
+      <span class="sr-only" data-copy-label>Copy</span>
+    </button>
+  </div>
 </li>

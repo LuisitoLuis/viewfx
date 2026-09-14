@@ -515,13 +515,135 @@
     outline-offset: 3px;
   }
 
+  .fx-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    margin-top: 0.75rem;
+  }
+
   .fx-name {
-    margin-top: 0.85rem;
     color: var(--ink-2);
     font-family: var(--font-mono);
     font-size: 0.8125rem;
     font-weight: 500;
     letter-spacing: -0.02em;
+  }
+
+  .fx-copy {
+    display: grid;
+    place-items: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    padding: 0;
+    border: 0;
+    border-radius: 0.375rem;
+    background: transparent;
+    color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .fx-copy:hover,
+  .fx-card:is(:hover, :focus-within) .fx-copy {
+    color: var(--ink);
+  }
+
+  .fx-copy:focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 2px;
+  }
+
+  .fx-copy__done {
+    display: none;
+  }
+
+  .fx-copy[data-state='copied'] {
+    color: var(--accent-text);
+  }
+
+  .fx-copy[data-state='copied'] .fx-copy__idle {
+    display: none;
+  }
+
+  .fx-copy[data-state='copied'] .fx-copy__done {
+    display: grid;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Copy toasts (same behaviour as tailwind-animations)
+   ───────────────────────────────────────────────────────────── */
+.site-toast {
+  pointer-events: auto;
+  display: flex;
+  max-width: 24rem;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  background: color-mix(in oklab, var(--surface) 95%, transparent);
+  color: var(--ink);
+  font-size: 0.875rem;
+  font-weight: 500;
+  box-shadow: 0 1rem 2.5rem -1rem color-mix(in oklab, var(--ink) 28%, transparent);
+  backdrop-filter: blur(12px);
+}
+
+.site-toast__mark {
+  display: grid;
+  place-items: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--accent) 18%, transparent);
+  color: var(--accent-text);
+}
+
+.site-toast-enter {
+  animation: site-toast-in 0.45s ease-out both;
+}
+
+.site-toast-exit {
+  animation: site-toast-out 0.4s ease-in forwards;
+}
+
+@keyframes site-toast-in {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(-0.75rem);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+
+@keyframes site-toast-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translateY(-0.65rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-toast-enter {
+    animation-name: site-toast-in;
+    animation-duration: 0.2s;
+  }
+
+  .site-toast-exit {
+    animation-duration: 0.2s;
   }
 }
 
