@@ -46,6 +46,14 @@
   :root {
     color-scheme: light;
 
+    /* Same face as midudev/tailwind-animations (Geist Mono for UI and code). */
+    --ff-display:
+      'Geist Mono Variable', 'Geist Mono', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+      'Helvetica Neue', Arial, sans-serif;
+    --ff-mono:
+      'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+      'Liberation Mono', 'Courier New', monospace;
+
     --paper: oklch(0.977 0.006 95);
     --surface: oklch(1 0 0);
     --inset: oklch(0.955 0.008 95);

@@ -1,10 +1,10 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro'
+import Layout from '../layouts/Layout.astro'
 import Icon from '../components/Icon.astro'
 import { SITE } from '../consts'
 ---
 
-<BaseLayout title={`Page not found — ${SITE.name}`} description="That page does not exist." noindex>
+<Layout title={`Page not found — ${SITE.name}`} description="That page does not exist." noindex>
   <div class="shell flex min-h-[60vh] flex-col justify-center py-20">
     <p class="label text-ink-3">Error 404</p>
     <h1 class="mt-5 text-[clamp(2.25rem,6vw,4rem)] leading-none font-semibold tracking-[-0.04em]">
@@ -21,4 +21,4 @@ import { SITE } from '../consts'
       </a>
     </p>
   </div>
-</BaseLayout>
+</Layout>
