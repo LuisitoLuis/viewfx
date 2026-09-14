@@ -1,0 +1,539 @@
+/**
+ * viewfx
+ * Tailwind CSS v4 plugin — CSS-only View Transitions theme effects
+ */
+
+@import './masks.css';
+
+/* ============================================
+   Theme Configuration
+   ============================================ */
+
+@theme inline {
+  --vt-duration-none: 0ms;
+  --vt-duration-slower: 500ms;
+  --vt-duration-slow: 400ms;
+  --vt-duration-normal: 300ms;
+  --vt-duration-fast: 200ms;
+  --vt-duration-faster: 100ms;
+  --vt-duration-0: 0ms;
+  --vt-duration-100: 100ms;
+  --vt-duration-150: 150ms;
+  --vt-duration-200: 200ms;
+  --vt-duration-250: 250ms;
+  --vt-duration-300: 300ms;
+  --vt-duration-400: 400ms;
+  --vt-duration-500: 500ms;
+  --vt-duration-700: 700ms;
+  --vt-duration-800: 800ms;
+  --vt-duration-900: 900ms;
+  --vt-duration-1000: 1000ms;
+
+  --vt-delay-none: 0ms;
+  --vt-delay-0: 0ms;
+  --vt-delay-100: 100ms;
+  --vt-delay-150: 150ms;
+  --vt-delay-200: 200ms;
+  --vt-delay-250: 250ms;
+  --vt-delay-300: 300ms;
+  --vt-delay-400: 400ms;
+  --vt-delay-500: 500ms;
+  --vt-delay-700: 700ms;
+  --vt-delay-800: 800ms;
+  --vt-delay-900: 900ms;
+  --vt-delay-1000: 1000ms;
+
+  --vt-steps-none: 0;
+  --vt-steps-retro: 8;
+  --vt-steps-normal: 16;
+  --vt-steps-modern: 24;
+
+  --ease-expo-out: var(--expo-out);
+  --ease-expo-in: var(--expo-in);
+}
+
+/* ============================================
+   Engine
+   Custom properties inherit into the view-transition
+   pseudo tree from the document element.
+   ============================================ */
+
+:root {
+  --expo-out: linear(
+    0 0%,
+    0.1684 2.66%,
+    0.3165 5.49%,
+    0.446 8.52%,
+    0.5581 11.78%,
+    0.6535 15.29%,
+    0.7341 19.11%,
+    0.8011 23.3%,
+    0.8557 27.93%,
+    0.8962 32.68%,
+    0.9283 38.01%,
+    0.9529 44.08%,
+    0.9711 51.14%,
+    0.9833 59.06%,
+    0.9915 68.74%,
+    1 100%
+  );
+  --expo-in: linear(
+    0 0%,
+    0.0085 31.26%,
+    0.0167 40.94%,
+    0.0289 48.86%,
+    0.0471 55.92%,
+    0.0717 61.99%,
+    0.1038 67.32%,
+    0.1443 72.07%,
+    0.1989 76.7%,
+    0.2659 80.89%,
+    0.3465 84.71%,
+    0.4419 88.22%,
+    0.554 91.48%,
+    0.6835 94.51%,
+    0.8316 97.34%,
+    1 100%
+  );
+}
+
+:root::view-transition-group(root) {
+  animation-duration: var(--vt-duration-override, var(--vt-duration, 0.5s));
+  animation-timing-function: var(--vt-ease-override, var(--vt-ease, var(--expo-out)));
+  animation-delay: var(--vt-delay, 0s);
+}
+
+:root::view-transition-old(root) {
+  animation: var(--vt-anim-old, vt-fade-out)
+    var(--vt-duration-override, var(--vt-duration, 0.5s))
+    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
+    var(--vt-delay, 0s) both;
+  z-index: var(--vt-old-z, auto);
+  mix-blend-mode: normal;
+}
+
+:root::view-transition-new(root) {
+  mask: var(--vt-mask, none) var(--vt-mask-position, center) / 0 no-repeat;
+  mask-origin: content-box;
+  animation: var(--vt-anim, vt-fade-in)
+    var(--vt-duration-override, var(--vt-duration, 0.5s))
+    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
+    var(--vt-delay, 0s) both;
+  mix-blend-mode: normal;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
+
+/* ============================================
+   Keyframes
+   ============================================ */
+
+@keyframes vt-mask-grow {
+  to {
+    mask-size: var(--vt-mask-size);
+  }
+}
+
+@keyframes vt-spiral {
+  to {
+    mask-size: var(--vt-mask-size);
+    mask-image: conic-gradient(from 0deg, #fff 0%, #fff 100%);
+  }
+}
+
+@keyframes vt-reveal-light {
+  from {
+    clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+  }
+  to {
+    clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+  }
+}
+
+@keyframes vt-reveal-dark {
+  from {
+    clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
+  }
+  to {
+    clip-path: polygon(50% -71%, -50% 71%, 50% 171%, 171% 50%);
+  }
+}
+
+@keyframes vt-wipe-in-h {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-h {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 100%);
+  }
+}
+
+@keyframes vt-wipe-in-down {
+  from {
+    clip-path: inset(100% 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-down {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes vt-wipe-in-up {
+  from {
+    clip-path: inset(0 0 100% 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-wipe-out-up {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(0 0 100% 0);
+  }
+}
+
+@keyframes vt-venetian-out {
+  from {
+    clip-path: inset(0 0 0 0);
+  }
+  to {
+    clip-path: inset(100% 0 0 0);
+  }
+}
+
+@keyframes vt-glitch-in {
+  0% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+  20% {
+    clip-path: inset(40% 0 0 0);
+    opacity: 1;
+  }
+  40% {
+    clip-path: inset(0 0 60% 0);
+  }
+  60% {
+    clip-path: inset(20% 0 20% 0);
+  }
+  100% {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes vt-glitch-out {
+  0% {
+    clip-path: inset(0 0 0 0);
+    opacity: 1;
+  }
+  20% {
+    clip-path: inset(0 0 40% 0);
+  }
+  40% {
+    clip-path: inset(60% 0 0 0);
+  }
+  60% {
+    clip-path: inset(20% 0 20% 0);
+    opacity: 0.5;
+  }
+  100% {
+    clip-path: inset(0 0 100% 0);
+    opacity: 0;
+  }
+}
+
+@keyframes vt-slide-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes vt-slide-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(-50%);
+    opacity: 0.3;
+  }
+}
+
+@keyframes vt-zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.85);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes vt-zoom-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.15);
+  }
+}
+
+@keyframes vt-rotate-in {
+  from {
+    opacity: 0;
+    transform: rotate(-6deg) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+}
+
+@keyframes vt-rotate-out {
+  from {
+    opacity: 1;
+    transform: rotate(0) scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: rotate(6deg) scale(0.9);
+  }
+}
+
+@keyframes vt-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes vt-fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   Effect utilities — put on <html>
+   ============================================ */
+
+@utility vt-circle {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-circle);
+  --vt-mask-size: 200vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-circle-blur {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-circle-blur);
+  --vt-mask-size: 200vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-corner-tl {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-corner-tl);
+  --vt-mask-position: top left;
+  --vt-mask-size: 350vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-corner-tr {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-corner-tr);
+  --vt-mask-position: top right;
+  --vt-mask-size: 350vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-iris {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-star);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 0.9s;
+}
+
+@utility vt-diamond {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-diamond);
+  --vt-mask-size: 280vmax;
+  --vt-duration: 0.9s;
+}
+
+@utility vt-hexagon {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-hexagon);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-heart {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-heart);
+  --vt-mask-size: 280vmax;
+  --vt-duration: 1s;
+}
+
+@utility vt-mosaic {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-mosaic);
+  --vt-mask-size: 300vmax;
+  --vt-duration: 0.9s;
+}
+
+@utility vt-ink {
+  --vt-anim: vt-mask-grow;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: var(--mask-ink);
+  --vt-mask-size: 250vmax;
+  --vt-duration: 1.2s;
+}
+
+@utility vt-spiral {
+  --vt-anim: vt-spiral;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-mask: conic-gradient(from 0deg, #fff 0%, transparent 0%);
+  --vt-mask-size: 250vmax;
+  --vt-duration: 1.2s;
+}
+
+@utility vt-polygon {
+  --vt-anim: vt-reveal-light;
+  --vt-anim-old: none;
+  --vt-old-z: -1;
+  --vt-duration: 0.7s;
+}
+
+.dark.vt-polygon {
+  --vt-anim: vt-reveal-dark;
+}
+
+@utility vt-wipe-h {
+  --vt-anim: vt-wipe-in-h;
+  --vt-anim-old: vt-wipe-out-h;
+  --vt-duration: 0.6s;
+}
+
+@utility vt-wipe-v {
+  --vt-anim: vt-wipe-in-down;
+  --vt-anim-old: vt-wipe-out-down;
+  --vt-duration: 0.6s;
+}
+
+@utility vt-slide-down {
+  --vt-anim: vt-wipe-in-up;
+  --vt-anim-old: vt-wipe-out-up;
+  --vt-duration: 0.6s;
+}
+
+@utility vt-venetian {
+  --vt-anim: vt-wipe-in-up;
+  --vt-anim-old: vt-venetian-out;
+  --vt-duration: 0.8s;
+}
+
+@utility vt-glitch {
+  --vt-anim: vt-glitch-in;
+  --vt-anim-old: vt-glitch-out;
+  --vt-duration: 0.6s;
+}
+
+@utility vt-slide {
+  --vt-anim: vt-slide-in;
+  --vt-anim-old: vt-slide-out;
+  --vt-duration: 0.6s;
+}
+
+@utility vt-zoom {
+  --vt-anim: vt-zoom-in;
+  --vt-anim-old: vt-zoom-out;
+  --vt-duration: 0.7s;
+}
+
+@utility vt-rotate {
+  --vt-anim: vt-rotate-in;
+  --vt-anim-old: vt-rotate-out;
+  --vt-duration: 0.7s;
+}
+
+@utility vt-fade {
+  --vt-anim: vt-fade-in;
+  --vt-anim-old: vt-fade-out;
+  --vt-duration: 0.5s;
+  --vt-ease: ease-in-out;
+}
+
+/* ============================================
+   Timing utilities
+   ============================================ */
+
+@utility vt-duration-* {
+  --vt-duration-override: --value(--vt-duration-*, [*]);
+}
+
+@utility vt-delay-* {
+  --vt-delay: --value(--vt-delay-*, [*]);
+}
+
+@utility vt-steps-* {
+  --vt-ease-override: steps(--value(--vt-steps-*, integer, [integer]));
+}
