@@ -188,22 +188,6 @@
     border: 0;
     border-top: 1px solid var(--line);
   }
-
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 10px;
-  }
-  ::-webkit-scrollbar-track {
-    background: var(--inset);
-  }
-  ::-webkit-scrollbar-thumb {
-    background: var(--line-strong);
-    border: 2px solid var(--inset);
-    border-radius: 99px;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    background: var(--ink-3);
-  }
 }
 
 /* ─────────────────────────────────────────────────────────────

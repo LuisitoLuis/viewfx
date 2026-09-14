@@ -49,7 +49,10 @@ const bootstrap = `(() => {
 ---
 
 <!doctype html>
-<html lang={SITE.locale} class={DEFAULT_EFFECT_CLASS}>
+<html
+  lang={SITE.locale}
+  class={`${DEFAULT_EFFECT_CLASS} scrollbar-thin scrollbar-thumb-accent scrollbar-track-paper`}
+>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
