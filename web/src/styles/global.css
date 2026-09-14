@@ -139,6 +139,7 @@
     color: var(--ink);
     /* Clears the sticky header when jumping to an anchor (WCAG 2.4.11). */
     scroll-padding-top: 6rem;
+    scroll-behavior: smooth;
   }
 
   body {

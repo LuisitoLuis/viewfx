@@ -1,0 +1,52 @@
+---
+import { FAQ } from '../data/faq'
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQ.map(({ q, a }) => ({
+    '@type': 'Question',
+    name: q,
+    acceptedAnswer: {
+      '@type': 'Answer',
+      text: a
+    }
+  }))
+}
+---
+
+<section id="faq" class="border-t border-line" aria-labelledby="faq-heading">
+  <div class="shell py-16 sm:py-20">
+    <div class="mx-auto mb-12 max-w-3xl text-center">
+      <h2 id="faq-heading" class="text-3xl font-semibold tracking-tight sm:text-4xl">
+        Frequently Asked Questions
+      </h2>
+      <p class="mx-auto mt-3 max-w-lg text-balance text-ink-2">
+        Everything you need to know about the ViewFX Tailwind plugin.
+      </p>
+    </div>
+
+    <div class="mx-auto flex max-w-3xl flex-col gap-4">
+      {
+        FAQ.map(({ q, a }) => (
+          <details class="group rounded-2xl border border-line bg-surface/60 p-5 open:shadow-[0_1rem_2rem_-1rem_color-mix(in_oklab,var(--ink)_22%,transparent)]">
+            <summary class="cursor-pointer list-none rounded-lg text-left text-base font-semibold marker:content-none focus-visible:ring-2 focus-visible:ring-accent-text focus-visible:outline-none [&::-webkit-details-marker]:hidden">
+              <span class="flex items-center justify-between gap-4">
+                {q}
+                <span
+                  class="shrink-0 text-ink-3 transition-transform group-open:rotate-45"
+                  aria-hidden="true"
+                >
+                  +
+                </span>
+              </span>
+            </summary>
+            <p class="mt-3 text-sm leading-relaxed text-pretty text-ink-2">{a}</p>
+          </details>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />
