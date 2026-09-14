@@ -34,7 +34,7 @@ module.exports = {
 Put an effect class on `<html>`, then wrap your theme toggle:
 
 ```html
-<html class="dark vt-circle">
+<html class="dark circle">
 ```
 
 ```js
@@ -52,31 +52,31 @@ document.startViewTransition
 
 | Class | Technique |
 | --- | --- |
-| `vt-circle` | mask |
-| `vt-circle-blur` | mask |
-| `vt-corner-tl` | mask |
-| `vt-corner-tr` | mask |
-| `vt-iris` | mask |
-| `vt-diamond` | mask |
-| `vt-hexagon` | mask |
-| `vt-heart` | mask |
-| `vt-mosaic` | mask |
-| `vt-ink` | mask |
-| `vt-spiral` | mask |
-| `vt-polygon` | clip-path |
-| `vt-wipe-h` | clip-path |
-| `vt-wipe-v` | clip-path |
-| `vt-slide-down` | clip-path |
-| `vt-venetian` | clip-path |
-| `vt-glitch` | clip-path |
-| `vt-slide` | transform |
-| `vt-zoom` | transform |
-| `vt-rotate` | transform |
-| `vt-fade` | opacity |
+| `circle` | mask |
+| `circle-blur` | mask |
+| `corner-tl` | mask |
+| `corner-tr` | mask |
+| `iris` | mask |
+| `diamond` | mask |
+| `hexagon` | mask |
+| `heart` | mask |
+| `mosaic` | mask |
+| `ink` | mask |
+| `spiral` | mask |
+| `polygon` | clip-path |
+| `wipe-h` | clip-path |
+| `wipe-v` | clip-path |
+| `slide-down` | clip-path |
+| `venetian` | clip-path |
+| `glitch` | clip-path |
+| `slide` | transform |
+| `zoom` | transform |
+| `rotate` | transform |
+| `fade` | opacity |
 
-Optional timing utilities on the same element: `vt-duration-1000`, `vt-delay-300`, `vt-steps-modern`.
+Optional timing utilities on the same element: `fx-duration-1000`, `fx-delay-300`, `fx-steps-modern`.
 
-Theme is expected as a `.dark` class on `<html>` (the `vt-polygon` wipe reverses in dark).
+Theme is expected as a `.dark` class on `<html>` (the `polygon` wipe reverses in dark).
 
 ## Run the catalogue locally
 
@@ -96,11 +96,11 @@ pnpm preview  # serve the production build
 
 ## Add an effect
 
-An effect is a `@utility vt-…` block that sets `--vt-*` tokens. The view-transition pseudo-elements are styled once in `src/index.css` and inherit those tokens.
+An effect is a `@utility` block that sets `--fx-*` tokens. The view-transition pseudo-elements are styled once in `src/index.css` and inherit those tokens.
 
 | Step | File | What to add |
 |------|------|-------------|
-| 1 | `src/index.css` | `@utility vt-name { … }` plus keyframes if needed |
+| 1 | `src/index.css` | `@utility name { … }` plus keyframes if needed |
 | 1b | `src/effects.cjs` / `src/engine.cjs` | Same tokens for the Tailwind v3 JS plugin |
 | 2 | `src/masks.cjs` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
 | 3 | `web/src/data/effects.js` | Catalogue entry with a **string-literal** `className` |
@@ -125,6 +125,6 @@ Mask shapes are declared as readable SVG in `src/masks.cjs` and emitted once as 
 
 ## Behaviour to know
 
-- Theme is restored from `localStorage` before first paint, so it does not flash. The catalogue always uses `vt-polygon` for the page theme toggle; card previews do not change the site theme.
+- Theme is restored from `localStorage` before first paint, so it does not flash. The catalogue always uses `polygon` for the page theme toggle; card previews do not change the site theme.
 - The OS color scheme is followed until the visitor toggles the theme themselves.
 - `prefers-reduced-motion: reduce` turns off both the page transitions and the looping card previews.

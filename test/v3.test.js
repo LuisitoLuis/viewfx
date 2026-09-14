@@ -6,102 +6,102 @@ import { maskCustomProperties } from '../src/masks.js'
 describe('viewfx tailwind v3 plugin', () => {
   it('use a predefined mask effect', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-circle"></html>'
+      content: '<html class="circle"></html>'
     })
 
-    expect(css).toContain('.vt-circle{')
-    expect(css).toContain('--vt-anim:vt-mask-grow')
-    expect(css).toContain('--vt-mask:var(--mask-circle)')
-    expect(css).toContain('@keyframes vt-mask-grow')
+    expect(css).toContain('.circle{')
+    expect(css).toContain('--fx-anim:fx-mask-grow')
+    expect(css).toContain('--fx-mask:var(--mask-circle)')
+    expect(css).toContain('@keyframes fx-mask-grow')
   })
 
   it('use a predefined fade effect', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-fade"></html>'
+      content: '<html class="fade"></html>'
     })
 
-    expect(css).toContain('--vt-anim:vt-fade-in')
-    expect(css).toContain('--vt-anim-old:vt-fade-out')
-    expect(css).toContain('--vt-duration:0.5s')
-    expect(css).toContain('@keyframes vt-fade-in')
-    expect(css).toContain('@keyframes vt-fade-out')
+    expect(css).toContain('--fx-anim:fx-fade-in')
+    expect(css).toContain('--fx-anim-old:fx-fade-out')
+    expect(css).toContain('--fx-duration:0.5s')
+    expect(css).toContain('@keyframes fx-fade-in')
+    expect(css).toContain('@keyframes fx-fade-out')
   })
 
   it('flips the polygon clip with the dark class', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="dark vt-polygon"></html>'
+      content: '<html class="dark polygon"></html>'
     })
 
-    expect(css).toContain('--vt-anim:vt-reveal-light')
-    expect(css).toContain('.dark.vt-polygon{--vt-anim:vt-reveal-dark')
-    expect(css).toContain('@keyframes vt-reveal-light')
-    expect(css).toContain('@keyframes vt-reveal-dark')
+    expect(css).toContain('--fx-anim:fx-reveal-light')
+    expect(css).toContain('.dark.polygon{--fx-anim:fx-reveal-dark')
+    expect(css).toContain('@keyframes fx-reveal-light')
+    expect(css).toContain('@keyframes fx-reveal-dark')
   })
 
   it('use a predefined transition delay', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-delay-100"></html>'
+      content: '<html class="fx-delay-100"></html>'
     })
 
-    expect(css).toContain('--vt-delay:100ms')
+    expect(css).toContain('--fx-delay:100ms')
   })
 
   it('use a custom transition delay', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-delay-[777ms]"></html>'
+      content: '<html class="fx-delay-[777ms]"></html>'
     })
 
-    expect(css).toContain('--vt-delay:777ms')
+    expect(css).toContain('--fx-delay:777ms')
   })
 
   it('use a predefined transition duration', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-duration-100"></html>'
+      content: '<html class="fx-duration-100"></html>'
     })
 
-    expect(css).toContain('--vt-duration-override:100ms')
+    expect(css).toContain('--fx-duration-override:100ms')
   })
 
   it('use a predefined named transition duration', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-duration-faster"></html>'
+      content: '<html class="fx-duration-faster"></html>'
     })
 
-    expect(css).toContain('--vt-duration-override:100ms')
+    expect(css).toContain('--fx-duration-override:100ms')
   })
 
   it('use a custom transition duration', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-duration-[777ms]"></html>'
+      content: '<html class="fx-duration-[777ms]"></html>'
     })
 
-    expect(css).toContain('--vt-duration-override:777ms')
+    expect(css).toContain('--fx-duration-override:777ms')
   })
 
   it('use not custom transition steps', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-steps-retro"></html>'
+      content: '<html class="fx-steps-retro"></html>'
     })
 
-    expect(css).toContain('--vt-ease-override:steps(8)')
+    expect(css).toContain('--fx-ease-override:steps(8)')
   })
 
   it('use a custom transition steps', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-steps-[33]"></html>'
+      content: '<html class="fx-steps-[33]"></html>'
     })
 
-    expect(css).toContain('--vt-ease-override:steps(33)')
+    expect(css).toContain('--fx-ease-override:steps(33)')
   })
 
   it('ships the view-transition engine', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-fade"></html>'
+      content: '<html class="fade"></html>'
     })
 
     expect(css).toContain(':root::view-transition-old(root)')
     expect(css).toContain(':root::view-transition-new(root)')
-    expect(css).toContain('animation-delay:var(--vt-delay, 0s)')
+    expect(css).toContain('animation-delay:var(--fx-delay, 0s)')
     expect(css).toContain('@media (prefers-reduced-motion: reduce)')
   })
 
@@ -113,13 +113,13 @@ describe('viewfx tailwind v3 plugin', () => {
 
     for (const effect of EFFECTS) {
       expect(css).toContain(`.${effect.className}{`)
-      expect(css).toContain('--vt-anim:')
+      expect(css).toContain('--fx-anim:')
     }
   })
 
   it('exposes mask tokens as base64 data URIs', async () => {
     const css = await generatePluginCSSv3({
-      content: '<html class="vt-circle"></html>'
+      content: '<html class="circle"></html>'
     })
 
     expect(css).toContain('--mask-circle:url("data:image/svg+xml;base64,')

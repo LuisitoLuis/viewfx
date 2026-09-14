@@ -38,7 +38,7 @@ function selectEffect(id, { copy = true } = {}) {
 
   if (!copy) return
 
-  const className = `vt-${id}`
+  const className = id
   void navigator.clipboard.writeText(className).then(
     () => toastSuccess(`Copied "${id}"`),
     () => toastSuccess('Could not copy')

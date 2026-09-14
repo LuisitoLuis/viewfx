@@ -1,204 +1,204 @@
 /**
  * Effect catalogue. `id` is the `data-fx` value on cards and the suffix of
- * the `vt-*` class on `<html>`. `className` is a string literal so Tailwind
+ * the class on `<html>`. `className` is a string literal so Tailwind
  * can scan it; `css` is the snippet shown in the code dialog.
  */
 
 export const TECHNIQUES = ['mask', 'clip-path', 'transform', 'opacity']
 
 export const DEFAULT_EFFECT_ID = 'polygon'
-export const DEFAULT_EFFECT_CLASS = 'vt-polygon'
+export const DEFAULT_EFFECT_CLASS = 'polygon'
 
 const usage = (className) => `<html class="${className}">`
 
 export const EFFECTS = [
   {
     id: 'circle',
-    className: 'vt-circle',
+    className: 'circle',
     name: 'Circle',
     desc: 'An SVG circle mask expanding from the centre of the viewport.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-circle')
+    css: usage('circle')
   },
   {
     id: 'circle-blur',
-    className: 'vt-circle-blur',
+    className: 'circle-blur',
     name: 'Circle Blur',
     desc: 'The same circle, softened with an feGaussianBlur edge.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-circle-blur')
+    css: usage('circle-blur')
   },
   {
     id: 'polygon',
-    className: 'vt-polygon',
+    className: 'polygon',
     name: 'Diagonal Wipe',
     desc: 'A clip-path polygon sweeping corner to corner.',
     technique: 'clip-path',
     durationMs: 700,
-    css: usage('vt-polygon')
+    css: usage('polygon')
   },
   {
     id: 'corner-tl',
-    className: 'vt-corner-tl',
+    className: 'corner-tl',
     name: 'Corner Top-Left',
     desc: 'A soft ripple growing out of the top-left corner.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-corner-tl')
+    css: usage('corner-tl')
   },
   {
     id: 'corner-tr',
-    className: 'vt-corner-tr',
+    className: 'corner-tr',
     name: 'Corner Top-Right',
     desc: 'The mirrored ripple, anchored to the top-right corner.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-corner-tr')
+    css: usage('corner-tr')
   },
   {
     id: 'iris',
-    className: 'vt-iris',
+    className: 'iris',
     name: 'Star Iris',
     desc: 'A five-pointed star opening like a camera iris.',
     technique: 'mask',
     durationMs: 900,
-    css: usage('vt-iris')
+    css: usage('iris')
   },
   {
     id: 'diamond',
-    className: 'vt-diamond',
+    className: 'diamond',
     name: 'Diamond',
     desc: 'A rotated square mask scaling out from the centre.',
     technique: 'mask',
     durationMs: 900,
-    css: usage('vt-diamond')
+    css: usage('diamond')
   },
   {
     id: 'hexagon',
-    className: 'vt-hexagon',
+    className: 'hexagon',
     name: 'Hexagon',
     desc: 'A six-sided mask — subtler than the circle, still geometric.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-hexagon')
+    css: usage('hexagon')
   },
   {
     id: 'heart',
-    className: 'vt-heart',
+    className: 'heart',
     name: 'Heart',
     desc: 'A heart-shaped path mask. Use responsibly.',
     technique: 'mask',
     durationMs: 1000,
-    css: usage('vt-heart')
+    css: usage('heart')
   },
   {
     id: 'mosaic',
-    className: 'vt-mosaic',
+    className: 'mosaic',
     name: 'Mosaic',
     desc: 'A checkerboard of tiles blooming into the new theme.',
     technique: 'mask',
     durationMs: 900,
-    css: usage('vt-mosaic')
+    css: usage('mosaic')
   },
   {
     id: 'ink',
-    className: 'vt-ink',
+    className: 'ink',
     name: 'Ink Bleed',
     desc: 'feTurbulence warps the circle edge like ink on paper.',
     technique: 'mask',
     durationMs: 1200,
-    css: usage('vt-ink')
+    css: usage('ink')
   },
   {
     id: 'spiral',
-    className: 'vt-spiral',
+    className: 'spiral',
     name: 'Spiral',
     desc: 'A conic-gradient mask unwinding around the centre.',
     technique: 'mask',
     durationMs: 1200,
-    css: usage('vt-spiral')
+    css: usage('spiral')
   },
   {
     id: 'wipe-h',
-    className: 'vt-wipe-h',
+    className: 'wipe-h',
     name: 'Wipe Right',
     desc: 'A hard inset edge travelling left to right.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('vt-wipe-h')
+    css: usage('wipe-h')
   },
   {
     id: 'wipe-v',
-    className: 'vt-wipe-v',
+    className: 'wipe-v',
     name: 'Wipe Down',
     desc: 'The same edge, falling from the top of the viewport.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('vt-wipe-v')
+    css: usage('wipe-v')
   },
   {
     id: 'slide-down',
-    className: 'vt-slide-down',
+    className: 'slide-down',
     name: 'Wipe Up',
     desc: 'The edge rising from the bottom instead.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('vt-slide-down')
+    css: usage('slide-down')
   },
   {
     id: 'venetian',
-    className: 'vt-venetian',
+    className: 'venetian',
     name: 'Venetian',
     desc: 'A slower vertical reveal, like opening a blind.',
     technique: 'clip-path',
     durationMs: 800,
-    css: usage('vt-venetian')
+    css: usage('venetian')
   },
   {
     id: 'glitch',
-    className: 'vt-glitch',
+    className: 'glitch',
     name: 'Glitch',
     desc: 'Stepped clip offsets for a broken-signal feel.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('vt-glitch')
+    css: usage('glitch')
   },
   {
     id: 'slide',
-    className: 'vt-slide',
+    className: 'slide',
     name: 'Slide Left',
     desc: 'The new theme pushes the old one off screen.',
     technique: 'transform',
     durationMs: 600,
-    css: usage('vt-slide')
+    css: usage('slide')
   },
   {
     id: 'zoom',
-    className: 'vt-zoom',
+    className: 'zoom',
     name: 'Zoom',
     desc: 'The old view scales away while the new one settles in.',
     technique: 'transform',
     durationMs: 700,
-    css: usage('vt-zoom')
+    css: usage('zoom')
   },
   {
     id: 'rotate',
-    className: 'vt-rotate',
+    className: 'rotate',
     name: 'Rotate',
     desc: 'A few degrees of tilt on the way in and out.',
     technique: 'transform',
     durationMs: 700,
-    css: usage('vt-rotate')
+    css: usage('rotate')
   },
   {
     id: 'fade',
-    className: 'vt-fade',
+    className: 'fade',
     name: 'Cross-fade',
     desc: 'The safe default. Works everywhere, surprises nobody.',
     technique: 'opacity',
     durationMs: 500,
-    css: usage('vt-fade')
+    css: usage('fade')
   }
 ]

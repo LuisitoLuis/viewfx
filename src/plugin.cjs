@@ -10,30 +10,30 @@ module.exports = plugin(
 
     matchUtilities(
       {
-        'vt-duration': (value) => ({ '--vt-duration-override': value })
+        'fx-duration': (value) => ({ '--fx-duration-override': value })
       },
-      { values: theme('vtDuration') }
+      { values: theme('fxDuration') }
     )
 
     matchUtilities(
       {
-        'vt-delay': (value) => ({ '--vt-delay': value })
+        'fx-delay': (value) => ({ '--fx-delay': value })
       },
-      { values: theme('vtDelay') }
+      { values: theme('fxDelay') }
     )
 
     matchUtilities(
       {
-        'vt-steps': (value) => ({ '--vt-ease-override': `steps(${value})` })
+        'fx-steps': (value) => ({ '--fx-ease-override': `steps(${value})` })
       },
-      { values: theme('vtSteps') }
+      { values: theme('fxSteps') }
     )
   },
   {
     theme: {
-      vtDuration: duration,
-      vtDelay: delay,
-      vtSteps: steps
+      fxDuration: duration,
+      fxDelay: delay,
+      fxSteps: steps
     }
   }
 )

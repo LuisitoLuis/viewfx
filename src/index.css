@@ -12,43 +12,43 @@
    ============================================ */
 
 @theme inline {
-  --vt-duration-none: 0ms;
-  --vt-duration-slower: 500ms;
-  --vt-duration-slow: 400ms;
-  --vt-duration-normal: 300ms;
-  --vt-duration-fast: 200ms;
-  --vt-duration-faster: 100ms;
-  --vt-duration-0: 0ms;
-  --vt-duration-100: 100ms;
-  --vt-duration-150: 150ms;
-  --vt-duration-200: 200ms;
-  --vt-duration-250: 250ms;
-  --vt-duration-300: 300ms;
-  --vt-duration-400: 400ms;
-  --vt-duration-500: 500ms;
-  --vt-duration-700: 700ms;
-  --vt-duration-800: 800ms;
-  --vt-duration-900: 900ms;
-  --vt-duration-1000: 1000ms;
+  --fx-duration-none: 0ms;
+  --fx-duration-slower: 500ms;
+  --fx-duration-slow: 400ms;
+  --fx-duration-normal: 300ms;
+  --fx-duration-fast: 200ms;
+  --fx-duration-faster: 100ms;
+  --fx-duration-0: 0ms;
+  --fx-duration-100: 100ms;
+  --fx-duration-150: 150ms;
+  --fx-duration-200: 200ms;
+  --fx-duration-250: 250ms;
+  --fx-duration-300: 300ms;
+  --fx-duration-400: 400ms;
+  --fx-duration-500: 500ms;
+  --fx-duration-700: 700ms;
+  --fx-duration-800: 800ms;
+  --fx-duration-900: 900ms;
+  --fx-duration-1000: 1000ms;
 
-  --vt-delay-none: 0ms;
-  --vt-delay-0: 0ms;
-  --vt-delay-100: 100ms;
-  --vt-delay-150: 150ms;
-  --vt-delay-200: 200ms;
-  --vt-delay-250: 250ms;
-  --vt-delay-300: 300ms;
-  --vt-delay-400: 400ms;
-  --vt-delay-500: 500ms;
-  --vt-delay-700: 700ms;
-  --vt-delay-800: 800ms;
-  --vt-delay-900: 900ms;
-  --vt-delay-1000: 1000ms;
+  --fx-delay-none: 0ms;
+  --fx-delay-0: 0ms;
+  --fx-delay-100: 100ms;
+  --fx-delay-150: 150ms;
+  --fx-delay-200: 200ms;
+  --fx-delay-250: 250ms;
+  --fx-delay-300: 300ms;
+  --fx-delay-400: 400ms;
+  --fx-delay-500: 500ms;
+  --fx-delay-700: 700ms;
+  --fx-delay-800: 800ms;
+  --fx-delay-900: 900ms;
+  --fx-delay-1000: 1000ms;
 
-  --vt-steps-none: 0;
-  --vt-steps-retro: 8;
-  --vt-steps-normal: 16;
-  --vt-steps-modern: 24;
+  --fx-steps-none: 0;
+  --fx-steps-retro: 8;
+  --fx-steps-normal: 16;
+  --fx-steps-modern: 24;
 
   --ease-expo-out: var(--expo-out);
   --ease-expo-in: var(--expo-in);
@@ -100,27 +100,27 @@
 }
 
 :root::view-transition-group(root) {
-  animation-duration: var(--vt-duration-override, var(--vt-duration, 0.5s));
-  animation-timing-function: var(--vt-ease-override, var(--vt-ease, var(--expo-out)));
-  animation-delay: var(--vt-delay, 0s);
+  animation-duration: var(--fx-duration-override, var(--fx-duration, 0.5s));
+  animation-timing-function: var(--fx-ease-override, var(--fx-ease, var(--expo-out)));
+  animation-delay: var(--fx-delay, 0s);
 }
 
 :root::view-transition-old(root) {
-  animation: var(--vt-anim-old, vt-fade-out)
-    var(--vt-duration-override, var(--vt-duration, 0.5s))
-    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
-    var(--vt-delay, 0s) both;
-  z-index: var(--vt-old-z, auto);
+  animation: var(--fx-anim-old, fx-fade-out)
+    var(--fx-duration-override, var(--fx-duration, 0.5s))
+    var(--fx-ease-override, var(--fx-ease, var(--expo-out)))
+    var(--fx-delay, 0s) both;
+  z-index: var(--fx-old-z, auto);
   mix-blend-mode: normal;
 }
 
 :root::view-transition-new(root) {
-  mask: var(--vt-mask, none) var(--vt-mask-position, center) / 0 no-repeat;
+  mask: var(--fx-mask, none) var(--fx-mask-position, center) / 0 no-repeat;
   mask-origin: content-box;
-  animation: var(--vt-anim, vt-fade-in)
-    var(--vt-duration-override, var(--vt-duration, 0.5s))
-    var(--vt-ease-override, var(--vt-ease, var(--expo-out)))
-    var(--vt-delay, 0s) both;
+  animation: var(--fx-anim, fx-fade-in)
+    var(--fx-duration-override, var(--fx-duration, 0.5s))
+    var(--fx-ease-override, var(--fx-ease, var(--expo-out)))
+    var(--fx-delay, 0s) both;
   mix-blend-mode: normal;
 }
 
@@ -136,20 +136,20 @@
    Keyframes
    ============================================ */
 
-@keyframes vt-mask-grow {
+@keyframes fx-mask-grow {
   to {
-    mask-size: var(--vt-mask-size);
+    mask-size: var(--fx-mask-size);
   }
 }
 
-@keyframes vt-spiral {
+@keyframes fx-spiral {
   to {
-    mask-size: var(--vt-mask-size);
+    mask-size: var(--fx-mask-size);
     mask-image: conic-gradient(from 0deg, #fff 0%, #fff 100%);
   }
 }
 
-@keyframes vt-reveal-light {
+@keyframes fx-reveal-light {
   from {
     clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
   }
@@ -158,7 +158,7 @@
   }
 }
 
-@keyframes vt-reveal-dark {
+@keyframes fx-reveal-dark {
   from {
     clip-path: polygon(50% -71%, -50% 71%, -50% 71%, 50% -71%);
   }
@@ -167,7 +167,7 @@
   }
 }
 
-@keyframes vt-wipe-in-h {
+@keyframes fx-wipe-in-h {
   from {
     clip-path: inset(0 100% 0 0);
   }
@@ -176,7 +176,7 @@
   }
 }
 
-@keyframes vt-wipe-out-h {
+@keyframes fx-wipe-out-h {
   from {
     clip-path: inset(0 0 0 0);
   }
@@ -185,7 +185,7 @@
   }
 }
 
-@keyframes vt-wipe-in-down {
+@keyframes fx-wipe-in-down {
   from {
     clip-path: inset(100% 0 0 0);
   }
@@ -194,7 +194,7 @@
   }
 }
 
-@keyframes vt-wipe-out-down {
+@keyframes fx-wipe-out-down {
   from {
     clip-path: inset(0 0 0 0);
   }
@@ -203,7 +203,7 @@
   }
 }
 
-@keyframes vt-wipe-in-up {
+@keyframes fx-wipe-in-up {
   from {
     clip-path: inset(0 0 100% 0);
   }
@@ -212,7 +212,7 @@
   }
 }
 
-@keyframes vt-wipe-out-up {
+@keyframes fx-wipe-out-up {
   from {
     clip-path: inset(0 0 0 0);
   }
@@ -221,7 +221,7 @@
   }
 }
 
-@keyframes vt-venetian-out {
+@keyframes fx-venetian-out {
   from {
     clip-path: inset(0 0 0 0);
   }
@@ -230,7 +230,7 @@
   }
 }
 
-@keyframes vt-glitch-in {
+@keyframes fx-glitch-in {
   0% {
     clip-path: inset(0 0 100% 0);
     opacity: 0;
@@ -250,7 +250,7 @@
   }
 }
 
-@keyframes vt-glitch-out {
+@keyframes fx-glitch-out {
   0% {
     clip-path: inset(0 0 0 0);
     opacity: 1;
@@ -271,7 +271,7 @@
   }
 }
 
-@keyframes vt-slide-in {
+@keyframes fx-slide-in {
   from {
     transform: translateX(100%);
   }
@@ -280,7 +280,7 @@
   }
 }
 
-@keyframes vt-slide-out {
+@keyframes fx-slide-out {
   from {
     transform: translateX(0);
     opacity: 1;
@@ -291,7 +291,7 @@
   }
 }
 
-@keyframes vt-zoom-in {
+@keyframes fx-zoom-in {
   from {
     opacity: 0;
     transform: scale(0.85);
@@ -302,7 +302,7 @@
   }
 }
 
-@keyframes vt-zoom-out {
+@keyframes fx-zoom-out {
   from {
     opacity: 1;
     transform: scale(1);
@@ -313,7 +313,7 @@
   }
 }
 
-@keyframes vt-rotate-in {
+@keyframes fx-rotate-in {
   from {
     opacity: 0;
     transform: rotate(-6deg) scale(0.9);
@@ -324,7 +324,7 @@
   }
 }
 
-@keyframes vt-rotate-out {
+@keyframes fx-rotate-out {
   from {
     opacity: 1;
     transform: rotate(0) scale(1);
@@ -335,7 +335,7 @@
   }
 }
 
-@keyframes vt-fade-in {
+@keyframes fx-fade-in {
   from {
     opacity: 0;
   }
@@ -344,7 +344,7 @@
   }
 }
 
-@keyframes vt-fade-out {
+@keyframes fx-fade-out {
   from {
     opacity: 1;
   }
@@ -357,185 +357,185 @@
    Effect utilities — put on <html>
    ============================================ */
 
-@utility vt-circle {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-circle);
-  --vt-mask-size: 200vmax;
-  --vt-duration: 1s;
+@utility circle {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-circle);
+  --fx-mask-size: 200vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-circle-blur {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-circle-blur);
-  --vt-mask-size: 200vmax;
-  --vt-duration: 1s;
+@utility circle-blur {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-circle-blur);
+  --fx-mask-size: 200vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-corner-tl {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-corner-tl);
-  --vt-mask-position: top left;
-  --vt-mask-size: 350vmax;
-  --vt-duration: 1s;
+@utility corner-tl {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-corner-tl);
+  --fx-mask-position: top left;
+  --fx-mask-size: 350vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-corner-tr {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-corner-tr);
-  --vt-mask-position: top right;
-  --vt-mask-size: 350vmax;
-  --vt-duration: 1s;
+@utility corner-tr {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-corner-tr);
+  --fx-mask-position: top right;
+  --fx-mask-size: 350vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-iris {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-star);
-  --vt-mask-size: 300vmax;
-  --vt-duration: 0.9s;
+@utility iris {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-star);
+  --fx-mask-size: 300vmax;
+  --fx-duration: 0.9s;
 }
 
-@utility vt-diamond {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-diamond);
-  --vt-mask-size: 280vmax;
-  --vt-duration: 0.9s;
+@utility diamond {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-diamond);
+  --fx-mask-size: 280vmax;
+  --fx-duration: 0.9s;
 }
 
-@utility vt-hexagon {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-hexagon);
-  --vt-mask-size: 300vmax;
-  --vt-duration: 1s;
+@utility hexagon {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-hexagon);
+  --fx-mask-size: 300vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-heart {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-heart);
-  --vt-mask-size: 280vmax;
-  --vt-duration: 1s;
+@utility heart {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-heart);
+  --fx-mask-size: 280vmax;
+  --fx-duration: 1s;
 }
 
-@utility vt-mosaic {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-mosaic);
-  --vt-mask-size: 300vmax;
-  --vt-duration: 0.9s;
+@utility mosaic {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-mosaic);
+  --fx-mask-size: 300vmax;
+  --fx-duration: 0.9s;
 }
 
-@utility vt-ink {
-  --vt-anim: vt-mask-grow;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: var(--mask-ink);
-  --vt-mask-size: 250vmax;
-  --vt-duration: 1.2s;
+@utility ink {
+  --fx-anim: fx-mask-grow;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: var(--mask-ink);
+  --fx-mask-size: 250vmax;
+  --fx-duration: 1.2s;
 }
 
-@utility vt-spiral {
-  --vt-anim: vt-spiral;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-mask: conic-gradient(from 0deg, #fff 0%, transparent 0%);
-  --vt-mask-size: 250vmax;
-  --vt-duration: 1.2s;
+@utility spiral {
+  --fx-anim: fx-spiral;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-mask: conic-gradient(from 0deg, #fff 0%, transparent 0%);
+  --fx-mask-size: 250vmax;
+  --fx-duration: 1.2s;
 }
 
-@utility vt-polygon {
-  --vt-anim: vt-reveal-light;
-  --vt-anim-old: none;
-  --vt-old-z: -1;
-  --vt-duration: 0.7s;
+@utility polygon {
+  --fx-anim: fx-reveal-light;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-duration: 0.7s;
 }
 
-.dark.vt-polygon {
-  --vt-anim: vt-reveal-dark;
+.dark.polygon {
+  --fx-anim: fx-reveal-dark;
 }
 
-@utility vt-wipe-h {
-  --vt-anim: vt-wipe-in-h;
-  --vt-anim-old: vt-wipe-out-h;
-  --vt-duration: 0.6s;
+@utility wipe-h {
+  --fx-anim: fx-wipe-in-h;
+  --fx-anim-old: fx-wipe-out-h;
+  --fx-duration: 0.6s;
 }
 
-@utility vt-wipe-v {
-  --vt-anim: vt-wipe-in-down;
-  --vt-anim-old: vt-wipe-out-down;
-  --vt-duration: 0.6s;
+@utility wipe-v {
+  --fx-anim: fx-wipe-in-down;
+  --fx-anim-old: fx-wipe-out-down;
+  --fx-duration: 0.6s;
 }
 
-@utility vt-slide-down {
-  --vt-anim: vt-wipe-in-up;
-  --vt-anim-old: vt-wipe-out-up;
-  --vt-duration: 0.6s;
+@utility slide-down {
+  --fx-anim: fx-wipe-in-up;
+  --fx-anim-old: fx-wipe-out-up;
+  --fx-duration: 0.6s;
 }
 
-@utility vt-venetian {
-  --vt-anim: vt-wipe-in-up;
-  --vt-anim-old: vt-venetian-out;
-  --vt-duration: 0.8s;
+@utility venetian {
+  --fx-anim: fx-wipe-in-up;
+  --fx-anim-old: fx-venetian-out;
+  --fx-duration: 0.8s;
 }
 
-@utility vt-glitch {
-  --vt-anim: vt-glitch-in;
-  --vt-anim-old: vt-glitch-out;
-  --vt-duration: 0.6s;
+@utility glitch {
+  --fx-anim: fx-glitch-in;
+  --fx-anim-old: fx-glitch-out;
+  --fx-duration: 0.6s;
 }
 
-@utility vt-slide {
-  --vt-anim: vt-slide-in;
-  --vt-anim-old: vt-slide-out;
-  --vt-duration: 0.6s;
+@utility slide {
+  --fx-anim: fx-slide-in;
+  --fx-anim-old: fx-slide-out;
+  --fx-duration: 0.6s;
 }
 
-@utility vt-zoom {
-  --vt-anim: vt-zoom-in;
-  --vt-anim-old: vt-zoom-out;
-  --vt-duration: 0.7s;
+@utility zoom {
+  --fx-anim: fx-zoom-in;
+  --fx-anim-old: fx-zoom-out;
+  --fx-duration: 0.7s;
 }
 
-@utility vt-rotate {
-  --vt-anim: vt-rotate-in;
-  --vt-anim-old: vt-rotate-out;
-  --vt-duration: 0.7s;
+@utility rotate {
+  --fx-anim: fx-rotate-in;
+  --fx-anim-old: fx-rotate-out;
+  --fx-duration: 0.7s;
 }
 
-@utility vt-fade {
-  --vt-anim: vt-fade-in;
-  --vt-anim-old: vt-fade-out;
-  --vt-duration: 0.5s;
-  --vt-ease: ease-in-out;
+@utility fade {
+  --fx-anim: fx-fade-in;
+  --fx-anim-old: fx-fade-out;
+  --fx-duration: 0.5s;
+  --fx-ease: ease-in-out;
 }
 
 /* ============================================
    Timing utilities
    ============================================ */
 
-@utility vt-duration-* {
-  --vt-duration-override: --value(--vt-duration-*, [*]);
+@utility fx-duration-* {
+  --fx-duration-override: --value(--fx-duration-*, [*]);
 }
 
-@utility vt-delay-* {
-  --vt-delay: --value(--vt-delay-*, [*]);
+@utility fx-delay-* {
+  --fx-delay: --value(--fx-delay-*, [*]);
 }
 
-@utility vt-steps-* {
-  --vt-ease-override: steps(--value(--vt-steps-*, integer, [integer]));
+@utility fx-steps-* {
+  --fx-ease-override: steps(--value(--fx-steps-*, integer, [integer]));
 }
