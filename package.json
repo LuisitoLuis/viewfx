@@ -1,11 +1,22 @@
 {
   "name": "viewfx",
   "version": "0.0.1",
-  "description": "Tailwind CSS v4 plugin for View Transitions theme effects",
+  "description": "Tailwind CSS v3/v4 plugin for View Transitions theme effects",
   "style": "./src/index.css",
+  "main": "./src/plugin.cjs",
   "exports": {
-    ".": "./src/index.css",
-    "./index.css": "./src/index.css"
+    ".": {
+      "style": "./src/index.css",
+      "require": "./src/plugin.cjs",
+      "import": "./src/plugin.js",
+      "default": "./src/plugin.cjs"
+    },
+    "./index.css": "./src/index.css",
+    "./plugin": {
+      "require": "./src/plugin.cjs",
+      "import": "./src/plugin.js",
+      "default": "./src/plugin.cjs"
+    }
   },
   "files": [
     "src"
@@ -21,7 +32,9 @@
     "build": "pnpm --dir web build",
     "preview": "pnpm --dir web preview",
     "astro": "pnpm --dir web astro",
-    "emit:masks": "node scripts/emit-masks.mjs"
+    "emit:masks": "node scripts/emit-masks.mjs",
+    "test": "vitest",
+    "test:ci": "vitest run"
   },
   "keywords": [
     "tailwind",
@@ -35,6 +48,14 @@
     "node": ">=22.12.0"
   },
   "peerDependencies": {
-    "tailwindcss": "4"
+    "tailwindcss": "^3.0.0 || ^4.0.0"
+  },
+  "devDependencies": {
+    "@csstools/postcss-minify": "3.0.0",
+    "@tailwindcss/postcss": "4.3.3",
+    "postcss": "8.5.25",
+    "tailwindcss": "4.3.3",
+    "tailwindcss-v3": "npm:tailwindcss@3.4.17",
+    "vitest": "4.1.10"
   }
 }

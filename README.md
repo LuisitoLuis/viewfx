@@ -1,6 +1,6 @@
 # ViewFX
 
-A [Tailwind CSS](https://tailwindcss.com/) v4 plugin of **21 dark/light theme transitions** built with the native [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API).
+A [Tailwind CSS](https://tailwindcss.com/) v3 and v4 plugin of **21 dark/light theme transitions** built with the native [View Transitions API](https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API).
 
 Visit the [catalogue](https://viewfx.luismc.dev) to preview each effect.
 
@@ -10,10 +10,23 @@ Visit the [catalogue](https://viewfx.luismc.dev) to preview each effect.
 pnpm add viewfx
 ```
 
+**Tailwind CSS v4** — CSS-first import:
+
 ```css
 /* global.css */
 @import 'tailwindcss';
 @import 'viewfx';
+```
+
+**Tailwind CSS v3** — JavaScript plugin:
+
+```js
+/** @type {import('tailwindcss').Config} */
+module.exports = {
+  plugins: [
+    require('viewfx')
+  ]
+}
 ```
 
 ## Usage
@@ -88,34 +101,30 @@ An effect is a `@utility vt-…` block that sets `--vt-*` tokens. The view-trans
 | Step | File | What to add |
 |------|------|-------------|
 | 1 | `src/index.css` | `@utility vt-name { … }` plus keyframes if needed |
-| 2 | `src/masks.js` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
+| 1b | `src/effects.cjs` / `src/engine.cjs` | Same tokens for the Tailwind v3 JS plugin |
+| 2 | `src/masks.cjs` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
 | 3 | `web/src/data/effects.js` | Catalogue entry with a **string-literal** `className` |
 | 4 | `web/src/styles/previews.css` | `--preview-*` tokens so the card preview matches |
 
-Mask shapes are declared as readable SVG in `src/masks.js` and emitted once as base64 `--mask-*` properties. The live transitions and the card previews share them.
+Mask shapes are declared as readable SVG in `src/masks.cjs` and emitted once as base64 `--mask-*` properties. The live transitions and the card previews share them.
 
 ## Layout of the repo
 
 | Path | Role |
 |------|------|
-| `src/index.css` | Tailwind v4 plugin (published) |
-| `src/masks.js` | Shared mask shapes |
+| `src/index.css` | Tailwind v4 CSS plugin (published) |
+| `src/plugin.cjs` | Tailwind v3 JS plugin (`require('viewfx')`) |
+| `src/masks.cjs` | Shared mask shapes |
+| `src/masks.js` | ESM re-export for `emit:masks` |
 | `src/masks.css` | Generated base64 mask tokens |
 | `web/` | Catalogue site |
 | `web/src/data/effects.js` | Catalogue and copyable snippets |
 | `web/src/styles/previews.css` | Looping animations on the cards |
 | `web/src/scripts/` | Theme, gallery, dialog, clipboard |
+| `test/` | Plugin CSS tests (Vitest, same pattern as tailwind-animations) |
 
 ## Behaviour to know
 
 - Theme and selected effect are restored from `localStorage` before first paint, so neither flashes.
 - The OS color scheme is followed until the visitor toggles the theme themselves.
 - `prefers-reduced-motion: reduce` turns off both the page transitions and the looping card previews.
-
-## Stack
-
-| | |
-| --- | --- |
-| [![Astro](https://img.shields.io/badge/Astro-fff?style=for-the-badge&logo=astro&logoColor=bd303a&color=352563)](https://astro.build/) | Catalogue site. |
-| [![Tailwind CSS](https://img.shields.io/badge/Tailwind-ffffff?style=for-the-badge&logo=tailwindcss&logoColor=38bdf8)](https://tailwindcss.com/) | v4 CSS-first plugin + catalogue UI. |
-| [![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=111)](https://developer.mozilla.org/en-US/docs/Web/JavaScript) | Catalogue scripts and data. |

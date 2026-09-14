@@ -12,7 +12,7 @@ interface Step {
 const STEPS: Step[] = [
   {
     title: 'Import the plugin',
-    body: 'Add ViewFX next to Tailwind in your global stylesheet. The package is CSS-only — no JavaScript plugin to register.',
+    body: 'On Tailwind v4, import ViewFX next to Tailwind in your global stylesheet. On v3, add require("viewfx") to plugins in tailwind.config.js.',
     filename: 'global.css',
     language: 'css',
     code: `@import 'tailwindcss';

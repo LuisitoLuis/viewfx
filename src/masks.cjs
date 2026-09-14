@@ -13,7 +13,7 @@ const svg = (viewBox, body) =>
 const blur = (deviation) =>
   `<defs><filter id="b"><feGaussianBlur stdDeviation="${deviation}"/></filter></defs>`
 
-export const MASK_SVG = {
+const MASK_SVG = {
   circle: svg('0 0 40 40', '<circle cx="20" cy="20" r="20" fill="#fff"/>'),
 
   'circle-blur': svg(
@@ -78,7 +78,7 @@ function toBase64(markup) {
   return Buffer.from(markup, 'utf8').toString('base64')
 }
 
-export function maskVariables() {
+function maskVariables() {
   const vars = {}
   for (const [name, markup] of Object.entries(MASK_SVG)) {
     vars[`--mask-${name}`] = `url("data:image/svg+xml;base64,${toBase64(markup)}")`
@@ -87,10 +87,12 @@ export function maskVariables() {
 }
 
 /** `:root` declaration block exposing every shape as `--mask-<name>`. */
-export function maskCustomProperties() {
+function maskCustomProperties() {
   const declarations = Object.entries(maskVariables())
     .map(([name, value]) => `${name}:${value}`)
     .join(';')
 
   return `:root{${declarations}}`
 }
+
+module.exports = { MASK_SVG, maskCustomProperties, maskVariables }
