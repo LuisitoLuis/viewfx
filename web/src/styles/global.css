@@ -1,0 +1,799 @@
+@import 'tailwindcss';
+@import 'viewfx';
+@import './previews.css';
+
+/* String literals so JIT emits every effect, including those applied at runtime. */
+@source inline("vt-circle vt-circle-blur vt-polygon vt-corner-tl vt-corner-tr vt-iris vt-diamond vt-hexagon vt-heart vt-mosaic vt-ink vt-spiral vt-wipe-h vt-wipe-v vt-slide-down vt-venetian vt-glitch vt-slide vt-zoom vt-rotate vt-fade");
+
+
+/* Theme is user-controlled, so the dark variant follows a class on <html>
+   rather than the `prefers-color-scheme` default. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ─────────────────────────────────────────────────────────────
+   Design tokens
+
+   Semantic values live in :root/.dark below so they can swap with
+   the theme; @theme inline re-exports them as Tailwind utilities
+   (bg-paper, text-ink-2, border-line, ease-expo-out, …).
+   ───────────────────────────────────────────────────────────── */
+@theme inline {
+  --font-display: var(--ff-display);
+  --font-mono: var(--ff-mono);
+
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-inset: var(--inset);
+
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-text: var(--accent-text);
+
+  --radius-card: 0.75rem;
+
+  --ease-expo-out: var(--expo-out);
+  --ease-expo-in: var(--expo-in);
+}
+
+@layer base {
+  :root {
+    color-scheme: light;
+
+    --paper: oklch(0.977 0.006 95);
+    --surface: oklch(1 0 0);
+    --inset: oklch(0.955 0.008 95);
+
+    --ink: oklch(0.19 0.015 260);
+    --ink-2: oklch(0.44 0.012 260); /* 5.2:1 on --paper */
+    --ink-3: oklch(0.6 0.01 260); /* decorative / large text only */
+
+    --line: oklch(0.885 0.008 260);
+    --line-strong: oklch(0.78 0.012 260);
+
+    --accent: oklch(0.84 0.19 120);
+    --accent-ink: oklch(0.28 0.07 120); /* text on an --accent fill */
+    --accent-text: oklch(0.46 0.13 128); /* 4.9:1 on --paper */
+    --glow: oklch(0.84 0.19 120 / 0.22);
+
+    /* Mock scene colours used by the card previews. They mirror the page
+       palette so a preview reads as a miniature of the real transition. */
+    --scene-dark: oklch(0.165 0.015 260);
+    --scene-light: oklch(0.977 0.006 95);
+
+    /* Expressive easing curves, shared with the view transitions. */
+    --expo-out: linear(
+      0 0%,
+      0.1684 2.66%,
+      0.3165 5.49%,
+      0.446 8.52%,
+      0.5581 11.78%,
+      0.6535 15.29%,
+      0.7341 19.11%,
+      0.8011 23.3%,
+      0.8557 27.93%,
+      0.8962 32.68%,
+      0.9283 38.01%,
+      0.9529 44.08%,
+      0.9711 51.14%,
+      0.9833 59.06%,
+      0.9915 68.74%,
+      1 100%
+    );
+    --expo-in: linear(
+      0 0%,
+      0.0085 31.26%,
+      0.0167 40.94%,
+      0.0289 48.86%,
+      0.0471 55.92%,
+      0.0717 61.99%,
+      0.1038 67.32%,
+      0.1443 72.07%,
+      0.1989 76.7%,
+      0.2659 80.89%,
+      0.3465 84.71%,
+      0.4419 88.22%,
+      0.554 91.48%,
+      0.6835 94.51%,
+      0.8316 97.34%,
+      1 100%
+    );
+  }
+
+  .dark {
+    color-scheme: dark;
+
+    --paper: oklch(0.165 0.015 260);
+    --surface: oklch(0.205 0.018 260);
+    --inset: oklch(0.235 0.02 260);
+
+    --ink: oklch(0.965 0.005 260);
+    --ink-2: oklch(0.75 0.012 260); /* 7.4:1 on --paper */
+    --ink-3: oklch(0.62 0.012 260); /* 4.9:1 on --paper */
+
+    --line: oklch(0.3 0.02 260);
+    --line-strong: oklch(0.42 0.025 260);
+
+    --accent: oklch(0.87 0.2 120);
+    --accent-ink: oklch(0.2 0.06 120);
+    --accent-text: oklch(0.87 0.2 120);
+    --glow: oklch(0.87 0.2 120 / 0.16);
+  }
+
+  html {
+    background-color: var(--paper);
+    color: var(--ink);
+    /* Clears the sticky header when jumping to an anchor (WCAG 2.4.11). */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    font-family: var(--font-display);
+    font-synthesis-weight: none;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* The engineering-paper grid: two hairline sets plus one accent bloom.
+     Fixed so it reads as a backdrop rather than page content. */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(60rem 40rem at 85% -10%, var(--glow), transparent 70%),
+      repeating-linear-gradient(
+        to right,
+        var(--line) 0 1px,
+        transparent 1px var(--grid-step, 5.5rem)
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        var(--line) 0 1px,
+        transparent 1px var(--grid-step, 5.5rem)
+      );
+    opacity: 0.55;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 40%, transparent 90%);
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  hr {
+    border: 0;
+    border-top: 1px solid var(--line);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--inset);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--line-strong);
+    border: 2px solid var(--inset);
+    border-radius: 99px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--ink-3);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Utilities
+   ───────────────────────────────────────────────────────────── */
+
+/** Page gutter, shared by header, main and footer so columns line up. */
+@utility shell {
+  margin-inline: auto;
+  width: 100%;
+  max-width: 82rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+}
+
+/** Uppercase monospace micro-label used for section and metadata text. */
+@utility label {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/** Staggered entrance for grid items; index comes from `--i`. */
+@utility rise {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: rise 0.5s var(--expo-out) both;
+    animation-delay: calc(var(--i, 0) * 35ms);
+  }
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Components
+
+   These patterns repeat across three or more components, so they live
+   here instead of being re-typed as long utility strings in markup.
+   ───────────────────────────────────────────────────────────── */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    /* 44px keeps pointer targets comfortable (WCAG 2.5.8). */
+    min-height: 2.75rem;
+    padding-inline: 1.125rem;
+    border: 1px solid transparent;
+    border-radius: 0.625rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    cursor: pointer;
+    transition:
+      background-color 0.18s,
+      border-color 0.18s,
+      color 0.18s,
+      transform 0.18s;
+  }
+
+  .btn:active {
+    transform: translateY(1px);
+  }
+
+  .btn--sm {
+    min-height: 2.25rem;
+    padding-inline: 0.75rem;
+    font-size: 0.6875rem;
+  }
+
+  .btn--icon {
+    min-width: 2.5rem;
+    min-height: 2.5rem;
+    padding-inline: 0;
+    border-radius: 0.625rem;
+  }
+
+  .btn--primary {
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .btn--primary:hover {
+    background: color-mix(in oklab, var(--accent) 88%, var(--ink));
+  }
+
+  .btn--outline {
+    border-color: var(--line-strong);
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  .btn--outline:hover {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .btn--ghost {
+    color: var(--ink-2);
+  }
+
+  .btn--ghost:hover {
+    background: var(--inset);
+    color: var(--ink);
+  }
+
+  .btn[data-state='copied'] {
+    border-color: var(--accent);
+    color: var(--accent-text);
+  }
+
+  /* Filter chip — a toggle button, so state rides on aria-pressed. */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding-inline: 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 99px;
+    background: var(--surface);
+    color: var(--ink-2);
+    cursor: pointer;
+    transition:
+      background-color 0.18s,
+      border-color 0.18s,
+      color 0.18s;
+  }
+
+  .chip:hover {
+    border-color: var(--line-strong);
+    color: var(--ink);
+  }
+
+  .chip[aria-pressed='true'],
+  .chip:has(:checked) {
+    border-color: transparent;
+    background: var(--accent);
+    color: var(--accent-ink);
+  }
+
+  .chip:has(:disabled) {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  .link {
+    color: var(--ink-2);
+    text-decoration: underline;
+    text-decoration-color: var(--line-strong);
+    text-underline-offset: 0.35em;
+    transition:
+      color 0.18s,
+      text-decoration-color 0.18s;
+  }
+
+  .link:hover {
+    color: var(--accent-text);
+    text-decoration-color: var(--accent);
+  }
+
+  .field {
+    width: 100%;
+    min-height: 2.75rem;
+    padding-inline: 2.5rem 0.875rem;
+    border: 1px solid var(--line);
+    border-radius: 0.625rem;
+    background: var(--surface);
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+  }
+
+  .field::placeholder {
+    color: var(--ink-3);
+  }
+
+  .field:focus-visible {
+    border-color: var(--accent);
+  }
+
+  /* Compact pill bar: Duration / Delay / Steps / Play all */
+  .timing-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.125rem 0.25rem;
+    width: fit-content;
+    max-width: 100%;
+    margin-inline: auto;
+    padding: 0.375rem;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: color-mix(in oklab, var(--surface) 82%, transparent);
+    backdrop-filter: blur(16px);
+  }
+
+  .timing-item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    min-height: 2.25rem;
+    padding-inline: 0.5rem 0.375rem;
+    border-radius: 999px;
+    cursor: pointer;
+  }
+
+  .timing-item:hover {
+    background: var(--inset);
+  }
+
+  .timing-item:focus-within {
+    outline: 2px solid var(--accent-text);
+    outline-offset: 2px;
+  }
+
+  .timing-select {
+    height: 2rem;
+    min-width: 4.25rem;
+    padding: 0.125rem 1.15rem 0.125rem 0.125rem;
+    border: 0;
+    border-radius: 0.375rem;
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2.25' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.1rem center;
+    color: var(--ink);
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    cursor: pointer;
+    appearance: none;
+  }
+
+  .timing-select:focus-visible {
+    outline: none;
+  }
+
+  .timing-rule {
+    width: 1px;
+    height: 1rem;
+    background: var(--line);
+    flex-shrink: 0;
+  }
+
+  .switch {
+    position: relative;
+    display: inline-flex;
+    width: 2.25rem;
+    height: 1.25rem;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  .switch-track {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background: var(--line-strong);
+    transition: background-color 0.2s;
+  }
+
+  .switch-thumb {
+    position: absolute;
+    top: 0.125rem;
+    left: 0.125rem;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: #fff;
+    box-shadow: 0 1px 2px color-mix(in oklab, var(--ink) 20%, transparent);
+    transition: transform 0.2s var(--expo-out);
+  }
+
+  .switch:has(:checked) .switch-track {
+    background: var(--accent);
+  }
+
+  .switch:has(:checked) .switch-thumb {
+    transform: translateX(1rem);
+  }
+
+  .switch:has(:disabled) {
+    opacity: 0.45;
+  }
+
+  /* ── Effect card ─────────────────────────────────────────── */
+
+  .fx-card {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    border: 1px solid var(--line);
+    border-radius: var(--radius-card);
+    background: var(--surface);
+    overflow: hidden;
+    transition:
+      border-color 0.2s,
+      box-shadow 0.2s,
+      transform 0.2s var(--expo-out);
+  }
+
+  /* `display: grid` above would otherwise defeat the hidden attribute the
+     filter relies on. */
+  .fx-card[hidden] {
+    display: none;
+  }
+
+  .fx-card:is(:hover, :focus-within) {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+    box-shadow: 0 1rem 2rem -1rem color-mix(in oklab, var(--ink) 30%, transparent);
+  }
+
+  .fx-card.is-current {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
+  }
+
+  .fx-select {
+    display: grid;
+    width: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .fx-select:focus-visible {
+    outline-offset: -3px;
+  }
+
+  .fx-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.625rem;
+    padding: 0.875rem 1rem 0;
+  }
+
+  .fx-copy-hint {
+    display: grid;
+    place-items: center;
+    color: var(--ink-3);
+  }
+
+  .fx-card:is(:hover, :focus-within) .fx-copy-hint {
+    color: var(--ink);
+  }
+
+  .fx-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+  }
+
+  .fx-desc {
+    padding: 0.25rem 1rem 1rem;
+    color: var(--ink-2);
+    font-size: 0.75rem;
+    line-height: 1.45;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Skip link
+   ───────────────────────────────────────────────────────────── */
+.skip-link {
+  position: fixed;
+  top: 0.5rem;
+  left: 0.5rem;
+  z-index: 100;
+  padding: 0.625rem 1rem;
+  border-radius: 0.5rem;
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  transform: translateY(-150%);
+  transition: transform 0.2s var(--expo-out);
+}
+
+.skip-link:focus-visible {
+  transform: none;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Code dialog (native <dialog>)
+   ───────────────────────────────────────────────────────────── */
+.dialog {
+  margin: auto;
+  width: min(46rem, calc(100vw - 2rem));
+  max-height: min(46rem, calc(100dvh - 2rem));
+  padding: 0;
+  border: 1px solid var(--line-strong);
+  border-radius: 1rem;
+  background: var(--surface);
+  color: var(--ink);
+  overflow: hidden;
+}
+
+.dialog::backdrop {
+  background: color-mix(in oklab, var(--paper) 70%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.dialog[open] {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: dialog-in 0.28s var(--expo-out) both;
+  }
+}
+
+@keyframes dialog-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Syntax highlighting (tokens produced by lib/highlight.ts)
+   ───────────────────────────────────────────────────────────── */
+.code {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  line-height: 1.85;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  tab-size: 2;
+}
+
+.t-com {
+  color: var(--ink-3);
+  font-style: italic;
+}
+.t-str {
+  color: var(--ink-2);
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Hero install widget (package manager + Tailwind v4/v3 cards)
+   ───────────────────────────────────────────────────────────── */
+.install-card {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 1.25rem;
+  background: var(--surface);
+  text-align: left;
+}
+
+.install-card__bar {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.5rem 0.5rem 0.625rem;
+}
+
+.install-card__tabs {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  align-items: center;
+  gap: 0.125rem;
+  overflow-x: auto;
+}
+
+.install-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  min-height: 2rem;
+  padding: 0.25rem 0.7rem;
+  border: 0;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink-2);
+  font-family: inherit;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.install-tab:hover {
+  color: var(--ink);
+}
+
+.install-tab[aria-pressed='true'] {
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.install-tab__mark {
+  display: block;
+  width: 0.9rem;
+  height: 0.9rem;
+  flex-shrink: 0;
+}
+
+.install-tab__mark svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.install-card__copy {
+  flex-shrink: 0;
+  min-width: 2rem;
+  min-height: 2rem;
+  color: var(--ink-3);
+}
+
+.install-card__body {
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding: 1rem 1.15rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.875rem;
+  line-height: 1.7;
+  color: var(--ink);
+}
+
+.install-prompt {
+  margin-right: 0.55rem;
+  color: var(--ink-3);
+}
+
+.t-at,
+.t-sel {
+  color: var(--accent-text);
+  font-weight: 500;
+}
+.t-var {
+  color: var(--accent-text);
+}
+.t-prop {
+  color: var(--ink);
+  font-weight: 500;
+}
+.t-fn {
+  color: var(--ink-2);
+}
+.t-num {
+  color: var(--ink);
+}
+
+.install-card .t-at {
+  color: #e6c35c;
+  font-weight: 500;
+}
+
+.install-card .t-str {
+  color: #e88848;
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Motion preferences
+   ───────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  ::view-transition-group(root),
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+  }
+}
