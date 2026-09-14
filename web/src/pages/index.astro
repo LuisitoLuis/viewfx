@@ -1,0 +1,18 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import EffectGallery from '../components/EffectGallery.astro'
+import HeroSection from '../components/HeroSection.astro'
+---
+
+<BaseLayout>
+  <HeroSection />
+  <EffectGallery />
+</BaseLayout>
+
+<script>
+  import { initClipboard } from '../scripts/clipboard'
+  import { initGallery } from '../scripts/gallery'
+
+  initGallery()
+  initClipboard()
+</script>
