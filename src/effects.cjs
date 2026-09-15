@@ -100,6 +100,9 @@ module.exports = {
   '.dark.polygon': {
     '--fx-anim': 'fx-reveal-dark'
   },
+  '.dark[class*="polygon-duration"]': {
+    '--fx-anim': 'fx-reveal-dark'
+  },
   '.wipe-h': {
     '--fx-anim': 'fx-wipe-in-h',
     '--fx-anim-old': 'fx-wipe-out-h',

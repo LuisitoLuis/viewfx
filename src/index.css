@@ -6,6 +6,7 @@
  */
 
 @import './masks.css';
+@plugin './compound.cjs';
 
 /* ============================================
    Theme Configuration
@@ -466,6 +467,10 @@
 }
 
 .dark.polygon {
+  --fx-anim: fx-reveal-dark;
+}
+
+.dark[class*='polygon-duration'] {
   --fx-anim: fx-reveal-dark;
 }
 

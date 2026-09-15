@@ -35,6 +35,7 @@ Put an effect class on `<html>`, then wrap your theme toggle:
 
 ```html
 <html class="dark circle">
+<html class="dark circle-duration-1000-delay-300">
 ```
 
 ```js
@@ -74,7 +75,7 @@ document.startViewTransition
 | `rotate` | transform |
 | `fade` | opacity |
 
-Optional timing utilities on the same element: `fx-duration-1000`, `fx-delay-300`, `fx-steps-modern`.
+Timing can sit in the same class (`circle-duration-1000`, `circle-duration-1000-delay-300`) or as separate utilities: `fx-duration-1000`, `fx-delay-300`, `fx-steps-modern`.
 
 Theme is expected as a `.dark` class on `<html>` (the `polygon` wipe reverses in dark).
 
@@ -101,7 +102,7 @@ An effect is a `@utility` block that sets `--fx-*` tokens. The view-transition p
 | Step | File | What to add |
 |------|------|-------------|
 | 1 | `src/index.css` | `@utility name { … }` plus keyframes if needed |
-| 1b | `src/effects.cjs` / `src/engine.cjs` | Same tokens for the Tailwind v3 JS plugin |
+| 1b | `src/effects.cjs` / `src/engine.cjs` | Same tokens for the Tailwind v3 JS plugin (`name-duration-*` compounds come from `src/compound.cjs`) |
 | 2 | `src/masks.cjs` | SVG shape, only if the effect uses a mask, then `pnpm emit:masks` |
 | 3 | `web/src/data/effects.js` | Catalogue entry with a **string-literal** `className` |
 | 4 | `web/src/styles/previews.css` | `--preview-*` tokens so the card preview matches |

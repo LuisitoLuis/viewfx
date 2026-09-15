@@ -16,7 +16,7 @@ export const FAQ = [
   },
   {
     q: 'How do I use an effect class?',
-    a: 'Add a class such as circle, fade, or polygon to <html>. Combine it with fx-duration-*, fx-delay-*, and fx-steps-* to control timing. The theme class is expected to be .dark on the same element.'
+    a: 'Add a class such as circle, fade, or polygon to <html>. Timing can share that class (circle-duration-1000-delay-300) or use fx-duration-*, fx-delay-*, and fx-steps-*. The theme class is expected to be .dark on the same element.'
   },
   {
     q: 'Does the plugin toggle light and dark mode by itself?',

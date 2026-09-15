@@ -38,6 +38,17 @@ describe('viewfx tailwind v3 plugin', () => {
     expect(css).toContain('@keyframes fx-reveal-dark')
   })
 
+  it('combines effect duration and delay in one class', async () => {
+    const css = await generatePluginCSSv3({
+      content: '<html class="circle-duration-1000-delay-300"></html>'
+    })
+
+    expect(css).toContain('.circle-duration-1000-delay-300{')
+    expect(css).toContain('--fx-anim:fx-mask-grow')
+    expect(css).toContain('--fx-duration-override:1000ms')
+    expect(css).toContain('--fx-delay:300ms')
+  })
+
   it('use a predefined transition delay', async () => {
     const css = await generatePluginCSSv3({
       content: '<html class="fx-delay-100"></html>'

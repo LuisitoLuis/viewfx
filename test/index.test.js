@@ -38,6 +38,36 @@ describe('viewfx plugins', () => {
     expect(css).toContain('@keyframes fx-reveal-dark')
   })
 
+  it('combines effect duration and delay in one class', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="circle-duration-1000-delay-300"></html>'
+    })
+
+    expect(css).toContain(
+      '.circle-duration-1000-delay-300{--fx-anim:fx-mask-grow;--fx-anim-old:none;--fx-old-z:-1;--fx-mask:var(--mask-circle);--fx-mask-size:200vmax;--fx-duration:1s;--fx-duration-override:1000ms;--fx-delay:300ms;}'
+    )
+  })
+
+  it('combines a hyphenated effect with duration only', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="circle-blur-duration-500"></html>'
+    })
+
+    expect(css).toContain('.circle-blur-duration-500{')
+    expect(css).toContain('--fx-mask:var(--mask-circle-blur)')
+    expect(css).toContain('--fx-duration-override:500ms')
+  })
+
+  it('flips polygon compounds in dark', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="dark polygon-duration-1000-delay-300"></html>'
+    })
+
+    expect(css).toContain('--fx-anim:fx-reveal-light')
+    expect(css).toContain('--fx-anim:fx-reveal-dark')
+    expect(css).toContain('polygon-duration')
+  })
+
   it('use a predefined transition delay', async () => {
     const css = await generatePluginCSS({
       content: '<html class="fx-delay-100"></html>'
