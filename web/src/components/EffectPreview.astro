@@ -1,0 +1,37 @@
+---
+/**
+ * Decorative theme snapshot. Hidden from AT — the card button names the effect.
+ */
+const TONES = ['dark', 'light']
+---
+
+<span class="fx-preview" aria-hidden="true">
+  {
+    TONES.map((tone) => (
+      <span class:list={['fx-scene', `fx-scene--${tone}`]}>
+        <span class="fx-chrome">
+          <span class="fx-chrome__dots">
+            <span></span>
+            <span></span>
+            <span></span>
+          </span>
+          <span class="fx-chrome__bar"></span>
+        </span>
+        <span class="fx-mock">
+          <span class="fx-mock__head">
+            <span class="fx-orb"></span>
+            <span class="fx-bars">
+              <span></span>
+              <span></span>
+            </span>
+          </span>
+          <span class="fx-mock__hero"></span>
+          <span class="fx-mock__row">
+            <span class="fx-mock__tile"></span>
+            <span class="fx-mock__tile"></span>
+          </span>
+        </span>
+      </span>
+    ))
+  }
+</span>

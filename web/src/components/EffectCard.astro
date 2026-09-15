@@ -1,4 +1,5 @@
 ---
+import EffectPreview from './EffectPreview.astro'
 import Icon from './Icon.astro'
 
 interface Props {
@@ -30,18 +31,9 @@ const copyId = `fx-copy-${effect.id}`
   <button
     type="button"
     class="fx-select"
-    aria-label={`Preview ${effect.id}. Hover or focus to play.`}
+    aria-label={`Select ${effect.id}. Preview plays on hover or focus. Click to copy the class.`}
   >
-    <span class="fx-preview">
-      <span class="fx-scene fx-scene--dark">
-        <span class="fx-orb"></span>
-        <span class="fx-bars"><i></i><i></i></span>
-      </span>
-      <span class="fx-scene fx-scene--light">
-        <span class="fx-orb"></span>
-        <span class="fx-bars"><i></i><i></i></span>
-      </span>
-    </span>
+    <EffectPreview />
   </button>
 
   <div class="fx-meta">

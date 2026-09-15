@@ -1,6 +1,6 @@
 @import 'tailwindcss';
 @import 'viewfx';
-@import './previews.css';
+@import './previews.css'; /* card mock windows */
 
 /* String literals so JIT emits every effect, including those applied at runtime. */
 @source inline("circle circle-blur polygon corner-tl corner-tr iris diamond hexagon heart mosaic ink spiral wipe-h wipe-v slide-down venetian glitch slide zoom rotate fade");
@@ -477,11 +477,12 @@
   }
 
   .fx-card:is(:hover, :focus-within) .fx-preview {
-    box-shadow: 0 0 2.5rem -0.4rem color-mix(in oklab, var(--accent) 55%, transparent);
+    border-color: var(--line-strong);
   }
 
   .fx-card.is-current .fx-preview {
-    box-shadow: 0 0 0 1px var(--accent), 0 0 2.5rem -0.4rem color-mix(in oklab, var(--accent) 55%, transparent);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent);
   }
 
   .fx-select {

@@ -1,10 +1,10 @@
 /* ═══════════════════════════════════════════════════════════════
    Card previews
 
-   Each card stacks two fixed mock scenes — one dark, one light. At rest
-   they are split on a diagonal so a card shows both themes at once; on
-   hover or keyboard focus the light scene replays a miniature of the
-   real transition.
+   Two full mock windows stack in the card: dark underneath, light on
+   top. At rest only dark is visible. Hover, focus, or Play all runs
+   the effect and reveals light — the same dark→light wipe as the
+   real view transition.
 
    Like the plugin, the animation is declared once and each effect
    only supplies tokens.
@@ -16,106 +16,160 @@
   width: 100%;
   overflow: hidden;
   aspect-ratio: 5 / 4;
-  border-radius: 1.35rem;
+  isolation: isolate;
+  contain: paint;
+  border: 1px solid var(--line);
+  border-radius: 1rem;
   background: var(--scene-dark);
-  transition: box-shadow 0.25s var(--expo-out);
+  box-shadow: inset 0 1px 0 color-mix(in oklab, #fff 8%, transparent);
+  transition:
+    border-color 0.2s var(--expo-out),
+    box-shadow 0.25s var(--expo-out);
+}
+
+.fx-chrome {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.6rem;
+  border-bottom: 1px solid var(--chrome-line);
+  background: var(--chrome);
+}
+
+.fx-chrome__dots {
+  display: flex;
+  flex-shrink: 0;
+  gap: 0.22rem;
+}
+
+.fx-chrome__dots span {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--line-strong);
+}
+
+.fx-chrome__dots span:nth-child(1) {
+  background: color-mix(in oklab, var(--line-strong) 70%, oklch(0.7 0.12 25));
+}
+
+.fx-chrome__dots span:nth-child(2) {
+  background: color-mix(in oklab, var(--line-strong) 70%, oklch(0.78 0.12 90));
+}
+
+.fx-chrome__dots span:nth-child(3) {
+  background: color-mix(in oklab, var(--line-strong) 70%, oklch(0.72 0.12 145));
+}
+
+.fx-chrome__bar {
+  flex: 1;
+  height: 0.35rem;
+  border-radius: 99px;
+  background: var(--chrome-bar);
 }
 
 .fx-scene {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
+  flex-direction: column;
 }
 
-/* Each scene hugs its own side of the resting diagonal, so a card at rest
-   shows a crescent on the dark half and a sun on the light half. */
 .fx-scene--dark {
   --orb: oklch(0.82 0.06 260);
   --orb-notch: var(--scene-dark);
-  --bar: oklch(0.34 0.025 260);
-  --bar-alt: oklch(0.46 0.03 260);
+  --bar: oklch(0.38 0.02 260);
+  --bar-alt: oklch(0.52 0.03 260);
+  --pane: oklch(0.24 0.02 260);
+  --tile: oklch(0.3 0.022 260);
+  --chrome: oklch(0.2 0.018 260);
+  --chrome-line: oklch(0.28 0.02 260);
+  --chrome-bar: oklch(0.32 0.02 260);
 
-  justify-content: flex-start;
-  padding-left: 1.25rem;
+  z-index: 0;
   background: var(--scene-dark);
 }
 
 .fx-scene--light {
   --orb: oklch(0.82 0.16 85);
   --orb-notch: transparent;
-  --bar: oklch(0.86 0.012 260);
-  --bar-alt: oklch(0.72 0.02 260);
+  --bar: oklch(0.86 0.012 85);
+  --bar-alt: oklch(0.72 0.04 85);
+  --pane: oklch(0.93 0.02 95);
+  --tile: oklch(0.88 0.018 95);
+  --chrome: oklch(0.94 0.01 95);
+  --chrome-line: oklch(0.86 0.012 95);
+  --chrome-bar: oklch(0.82 0.02 95);
 
-  flex-direction: row-reverse;
-  justify-content: flex-start;
-  padding-right: 1.25rem;
+  z-index: 1;
   background: var(--scene-light);
-  clip-path: polygon(45% 0, 100% 0, 100% 100%, 55% 100%);
+  visibility: hidden;
+}
+
+.fx-mock {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  gap: 0.4rem;
+  padding: 0.55rem 0.6rem 0.6rem;
+}
+
+.fx-mock__head {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 
 .fx-orb {
-  width: 1.125rem;
-  height: 1.125rem;
+  flex-shrink: 0;
+  width: 0.95rem;
+  height: 0.95rem;
   border-radius: 50%;
   background: var(--orb);
-  /* Offsetting an inset shadow in the scene colour carves out a crescent. */
-  box-shadow: inset -0.3rem -0.15rem 0 0 var(--orb-notch);
+  box-shadow: inset -0.28rem -0.12rem 0 0 var(--orb-notch);
 }
 
 .fx-bars {
   display: flex;
+  flex: 1;
   flex-direction: column;
-  gap: 0.3rem;
+  gap: 0.22rem;
 }
 
-.fx-bars i {
+.fx-bars span {
   display: block;
-  height: 0.3rem;
+  height: 0.28rem;
   border-radius: 99px;
   background: var(--bar);
 }
 
-.fx-bars i:first-child {
-  width: 2.75rem;
+.fx-bars span:first-child {
+  width: 72%;
   background: var(--bar-alt);
 }
 
-.fx-bars i:last-child {
-  width: 1.75rem;
+.fx-bars span:last-child {
+  width: 46%;
 }
 
-/* ── Play affordance ────────────────────────────────────────── */
+.fx-mock__hero {
+  min-height: 0;
+  border-radius: 0.4rem;
+  background: var(--pane);
+}
 
-.fx-play {
-  position: absolute;
-  inset: 0;
+.fx-mock__row {
   display: grid;
-  place-items: center;
-  opacity: 0;
-  background: color-mix(in oklab, var(--accent) 12%, transparent);
-  transition: opacity 0.2s;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.35rem;
 }
 
-.fx-card:is(:hover, :focus-within) .fx-play {
-  opacity: 1;
-}
-
-.fx-gallery[data-play-all] .fx-play {
-  display: none;
-}
-
-.fx-play span {
-  display: grid;
-  place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 50%;
-  background: var(--accent);
-  color: var(--accent-ink);
-  box-shadow: 0 0.5rem 1.5rem color-mix(in oklab, var(--accent) 45%, transparent);
+.fx-mock__tile {
+  height: 0.7rem;
+  border-radius: 0.3rem;
+  background: var(--tile);
 }
 
 /* ── Shared animation hook ──────────────────────────────────── */
@@ -130,7 +184,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .fx-card:is(:hover, :focus-within) .fx-scene--light,
   .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
-    /* The resting diagonal would fight the animation. */
+    visibility: visible;
     clip-path: none;
     mask: var(--preview-mask) var(--preview-mask-position) / 0 no-repeat;
     animation-name: var(--preview-anim);
@@ -138,6 +192,28 @@
     animation-delay: var(--gallery-delay, 0s);
     animation-timing-function: var(--gallery-ease, ease-in-out);
     animation-iteration-count: infinite;
+    animation-fill-mode: both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fx-card:is(:hover, :focus-within) .fx-scene--light,
+  .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
+    visibility: visible;
+  }
+}
+
+@media (forced-colors: active) {
+  .fx-preview {
+    border: 1px solid CanvasText;
+  }
+
+  .fx-chrome,
+  .fx-mock__hero,
+  .fx-mock__tile,
+  .fx-bars span,
+  .fx-orb {
+    forced-color-adjust: none;
   }
 }
 
@@ -244,7 +320,7 @@
   }
   55%,
   85% {
-    mask-size: 34rem;
+    mask-size: 220%;
   }
   100% {
     mask-size: 0;
