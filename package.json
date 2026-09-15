@@ -28,10 +28,6 @@
   "homepage": "https://viewfx.luismc.dev",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --dir web dev",
-    "build": "pnpm --dir web build",
-    "preview": "pnpm --dir web preview",
-    "astro": "pnpm --dir web astro",
     "emit:masks": "node scripts/emit-masks.mjs",
     "test": "vitest",
     "test:ci": "vitest run"
