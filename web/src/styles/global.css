@@ -14,8 +14,8 @@
    Design tokens
 
    Semantic values live in :root/.dark below so they can swap with
-   the theme; @theme inline re-exports them as Tailwind utilities
-   (bg-paper, text-ink-2, border-line, ease-expo-out, …).
+   the theme; the inline theme block re-exports them as Tailwind
+   utilities (bg-paper, text-ink-2, border-line, ease-expo-out, …).
    ───────────────────────────────────────────────────────────── */
 @theme inline {
   --font-display: var(--ff-display);
