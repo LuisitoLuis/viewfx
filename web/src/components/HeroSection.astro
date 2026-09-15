@@ -25,24 +25,26 @@ module.exports = {
 
 <section class="border-b border-line">
   <div class="shell flex flex-col items-center py-16 text-center sm:py-20">
-    <p class="label flex items-center gap-2.5 text-ink-3">
+    <p class="label fade-up flex items-center gap-2.5 text-ink-3 [animation-delay:100ms]">
       <span class="inline-block size-1.5 rounded-full bg-accent"></span>
       Effect
     </p>
 
     <h1
-      class="mt-6 max-w-3xl text-[clamp(2.25rem,6vw,4.25rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance"
+      class="fade-up mt-6 max-w-3xl text-[clamp(2.25rem,6vw,4.25rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance [animation-delay:100ms]"
     >
       {EFFECTS.length} theme transitions, one class on
       <em class="font-normal text-accent-text italic">&lt;html&gt;</em>
     </h1>
 
-    <p class="mt-6 max-w-xl text-base leading-relaxed text-pretty text-ink-2 sm:text-lg">
+    <p
+      class="fade-up mt-6 max-w-xl text-base leading-relaxed text-pretty text-ink-2 sm:text-lg [animation-delay:200ms]"
+    >
       Hover a card to preview, click to copy the class. Same idea as a Tailwind
       animation catalogue — built for the View Transitions API.
     </p>
 
-    <div class="mt-10 flex w-full max-w-xl flex-col gap-3">
+    <div class="fade-up mt-10 flex w-full max-w-xl flex-col gap-3 [animation-delay:300ms]">
       <div data-copy-scope class="install-card">
         <div class="install-card__bar">
           <div class="install-card__tabs" role="group" aria-label="Package manager">

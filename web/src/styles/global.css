@@ -218,18 +218,25 @@
   text-transform: uppercase;
 }
 
-/** Staggered entrance for grid items; index comes from `--i`. */
-@utility rise {
+/** Page-load entrance, same motion as tailwind-animations `animate-fade-in-up`. */
+@utility fade-up {
   @media (prefers-reduced-motion: no-preference) {
-    animation: rise 0.5s var(--expo-out) both;
-    animation-delay: calc(var(--i, 0) * 35ms);
+    animation: fade-in-up 0.6s ease-in-out both;
   }
 }
 
-@keyframes rise {
+/** Staggered catalogue cards; `--i` is 0-based and starts after the hero. */
+@utility rise {
+  @media (prefers-reduced-motion: no-preference) {
+    animation: fade-in-up 0.6s ease-in-out both;
+    animation-delay: calc(1s + var(--i, 0) * 50ms);
+  }
+}
+
+@keyframes fade-in-up {
   from {
     opacity: 0;
-    transform: translateY(12px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
