@@ -165,7 +165,7 @@ const iconBtnClass =
       aria-hidden={isHome ? 'true' : undefined}
       tabindex={isHome ? '-1' : undefined}
       data-always-visible={isHome ? undefined : 'true'}
-      class="logo-scroll flex min-w-0 shrink-0 items-center gap-2.5 rounded-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      class="logo-scroll flex min-w-0 shrink-0 items-center gap-2 rounded-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <BrandMark
         class="aspect-square size-8 shrink-0 sm:size-9"
@@ -180,7 +180,10 @@ const iconBtnClass =
     </a>
 
     <nav aria-label="Primary" class="ml-auto hidden min-w-0 items-center gap-0.5 lg:flex xl:gap-1">
-      <a href="#palette" class={navLinkClass}>Effect</a>
+      <a href="#palette" class={navLinkClass}>
+        <span class="xl:hidden">Effect</span>
+        <span class="hidden xl:inline">Effect Collection</span>
+      </a>
       <a href="#faq" class={navLinkClass}>FAQ</a>
     </nav>
 
@@ -217,7 +220,7 @@ const iconBtnClass =
     class="hidden border-t border-line bg-paper lg:hidden"
   >
     <nav class="shell flex flex-col gap-1 py-4" aria-label="Mobile">
-      <a href="#palette" class={mobileNavLinkClass}>Effect</a>
+      <a href="#palette" class={mobileNavLinkClass}>Effect Collection</a>
       <a href="#faq" class={mobileNavLinkClass}>FAQ</a>
     </nav>
   </div>

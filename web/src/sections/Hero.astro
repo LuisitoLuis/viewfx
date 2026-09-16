@@ -23,94 +23,98 @@ module.exports = {
 }`
 ---
 
-<section class="band">
-  <div class="shell flex flex-col items-center text-center">
-    <p class="label fade-up flex items-center gap-2.5 text-ink-3 [animation-delay:100ms]">
-      <span class="inline-block size-1.5 rounded-full bg-accent"></span>
-      Effect
-    </p>
+<section class="relative z-10 mb-24">
+  <div class="shell">
+    <div class="grid items-start gap-10 lg:grid-cols-2 lg:items-end lg:gap-12 xl:gap-16">
+      <div class="text-left">
+        <p class="label fade-up flex items-center gap-2.5 text-ink-3 [animation-delay:100ms]">
+          <span class="inline-block size-1.5 rounded-full bg-accent"></span>
+          Effect
+        </p>
 
-    <h1
-      class="fade-up mt-6 max-w-3xl text-[clamp(2.25rem,6vw,4.25rem)] leading-[0.95] font-semibold tracking-[-0.04em] text-balance [animation-delay:100ms]"
-    >
-      {EFFECTS.length} theme transitions, one class on
-      <em class="font-normal text-accent-text italic">&lt;html&gt;</em>
-    </h1>
+        <h1
+          class="fade-up mt-5 max-w-xl text-3xl leading-tight font-semibold tracking-tight text-balance sm:mt-6 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1] [animation-delay:100ms]"
+        >
+          {EFFECTS.length} theme transitions, one class on
+          <em class="font-normal text-accent-text italic">&lt;html&gt;</em>
+        </h1>
 
-    <p
-      class="fade-up mt-6 max-w-xl text-base leading-relaxed text-pretty text-ink-2 sm:text-lg [animation-delay:200ms]"
-    >
-      Hover a card to preview, click to copy the class. Same idea as a Tailwind
-      animation catalogue — built for the View Transitions API.
-    </p>
-
-    <div class="fade-up mt-10 flex w-full max-w-xl flex-col gap-3 [animation-delay:300ms]">
-      <div data-copy-scope class="install-card">
-        <div class="install-card__bar">
-          <div class="install-card__tabs" role="group" aria-label="Package manager">
-            {
-              PACKAGE_MANAGERS.map((pm, index) => (
-                <button
-                  type="button"
-                  class="install-tab"
-                  data-pm
-                  data-command={pm.command}
-                  aria-pressed={index === 0 ? 'true' : 'false'}
-                >
-                  <span class="install-tab__mark">
-                    <PackageMark name={pm.name} />
-                  </span>
-                  {pm.name}
-                </button>
-              ))
-            }
-          </div>
-          <button
-            type="button"
-            class="btn btn--icon btn--ghost install-card__copy"
-            data-copy="#install-command"
-            data-toast="Command copied to clipboard!"
-            aria-label="Copy install command"
-          >
-            <Icon name="copy" size={15} />
-            <span class="sr-only" data-copy-label>Copy</span>
-          </button>
-        </div>
-        <p class="install-card__body">
-          <span class="install-prompt" aria-hidden="true">$</span>
-          <code id="install-command">{PACKAGE_MANAGERS[0].command}</code>
+        <p
+          class="fade-up mt-6 max-w-md text-base leading-relaxed text-pretty text-ink-2 sm:text-lg [animation-delay:200ms]"
+        >
+          Hover a card to preview, click to copy the class. Same idea as a Tailwind
+          animation catalogue — built for the View Transitions API.
         </p>
       </div>
 
-      <div data-copy-scope class="install-card">
-        <div class="install-card__bar">
-          <div class="install-card__tabs" role="group" aria-label="Tailwind version">
-            <button type="button" class="install-tab" data-tw-version="v4" aria-pressed="true">
-              Tailwind v4
-            </button>
-            <button type="button" class="install-tab" data-tw-version="v3" aria-pressed="false">
-              Tailwind v3
+      <div class="fade-up flex w-full flex-col gap-3 [animation-delay:300ms]">
+        <div data-copy-scope class="install-card">
+          <div class="install-card__bar">
+            <div class="install-card__tabs" role="group" aria-label="Package manager">
+              {
+                PACKAGE_MANAGERS.map((pm, index) => (
+                  <button
+                    type="button"
+                    class="install-tab"
+                    data-pm
+                    data-command={pm.command}
+                    aria-pressed={index === 0 ? 'true' : 'false'}
+                  >
+                    <span class="install-tab__mark">
+                      <PackageMark name={pm.name} />
+                    </span>
+                    {pm.name}
+                  </button>
+                ))
+              }
+            </div>
+            <button
+              type="button"
+              class="btn btn--icon btn--ghost install-card__copy"
+              data-copy="#install-command"
+              data-toast="Command copied to clipboard!"
+              aria-label="Copy install command"
+            >
+              <Icon name="copy" size={15} />
+              <span class="sr-only" data-copy-label>Copy</span>
             </button>
           </div>
-          <button
-            type="button"
-            class="btn btn--icon btn--ghost install-card__copy"
-            data-copy="#install-v4"
-            data-toast="Configuration copied to clipboard!"
-            data-tw-copy
-            aria-label="Copy usage snippet"
-          >
-            <Icon name="copy" size={15} />
-            <span class="sr-only" data-copy-label>Copy</span>
-          </button>
+          <p class="install-card__body">
+            <span class="install-prompt" aria-hidden="true">$</span>
+            <code id="install-command">{PACKAGE_MANAGERS[0].command}</code>
+          </p>
         </div>
-        <pre id="install-v4" class="install-card__body code" set:html={highlight(IMPORT_V4, 'css')} />
-        <pre
-          id="install-v3"
-          class="install-card__body code"
-          hidden
-          set:html={highlight(IMPORT_V3, 'js')}
-        />
+
+        <div data-copy-scope class="install-card">
+          <div class="install-card__bar">
+            <div class="install-card__tabs" role="group" aria-label="Tailwind version">
+              <button type="button" class="install-tab" data-tw-version="v4" aria-pressed="true">
+                Tailwind v4
+              </button>
+              <button type="button" class="install-tab" data-tw-version="v3" aria-pressed="false">
+                Tailwind v3
+              </button>
+            </div>
+            <button
+              type="button"
+              class="btn btn--icon btn--ghost install-card__copy"
+              data-copy="#install-v4"
+              data-toast="Configuration copied to clipboard!"
+              data-tw-copy
+              aria-label="Copy usage snippet"
+            >
+              <Icon name="copy" size={15} />
+              <span class="sr-only" data-copy-label>Copy</span>
+            </button>
+          </div>
+          <pre id="install-v4" class="install-card__body code" set:html={highlight(IMPORT_V4, 'css')} />
+          <pre
+            id="install-v3"
+            class="install-card__body code"
+            hidden
+            set:html={highlight(IMPORT_V3, 'js')}
+          />
+        </div>
       </div>
     </div>
   </div>
