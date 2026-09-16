@@ -67,13 +67,11 @@ module.exports = {
     '--fx-mask-size': '280vmax',
     '--fx-duration': '1s'
   },
-  '.mosaic': {
-    '--fx-anim': 'fx-mask-grow',
+  '.expand': {
+    '--fx-anim': 'fx-expand-in',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
-    '--fx-mask': 'var(--mask-mosaic)',
-    '--fx-mask-size': '300vmax',
-    '--fx-duration': '0.9s'
+    '--fx-duration': '0.6s'
   },
   '.ink': {
     '--fx-anim': 'fx-mask-grow',

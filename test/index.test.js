@@ -27,6 +27,17 @@ describe('viewfx plugins', () => {
     expect(css).toContain('@keyframes fx-fade-out')
   })
 
+  it('use a centre expand clip', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="expand"></html>'
+    })
+
+    expect(css).toContain(
+      '.expand{--fx-anim:fx-expand-in;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.6s;}'
+    )
+    expect(css).toContain('@keyframes fx-expand-in')
+  })
+
   it('flips the polygon clip with the dark class', async () => {
     const css = await generatePluginCSS({
       content: '<html class="dark polygon"></html>'

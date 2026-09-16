@@ -94,13 +94,13 @@ export const EFFECTS = [
     css: usage('heart')
   },
   {
-    id: 'mosaic',
-    className: 'mosaic',
-    name: 'Mosaic',
-    desc: 'A checkerboard of tiles blooming into the new theme.',
-    technique: 'mask',
-    durationMs: 900,
-    css: usage('mosaic')
+    id: 'expand',
+    className: 'expand',
+    name: 'Expand',
+    desc: 'A rectangular iris from the centre — the practical clip-path wipe.',
+    technique: 'clip-path',
+    durationMs: 600,
+    css: usage('expand')
   },
   {
     id: 'ink',

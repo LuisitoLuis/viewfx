@@ -3,7 +3,7 @@
 @import './previews.css'; /* card mock windows */
 
 /* String literals so JIT emits every effect, including those applied at runtime. */
-@source inline("circle circle-blur polygon corner-tl corner-tr iris diamond hexagon heart mosaic ink spiral wipe-h wipe-v slide-down venetian glitch slide zoom rotate fade");
+@source inline("circle circle-blur polygon corner-tl corner-tr iris diamond hexagon heart expand ink spiral wipe-h wipe-v slide-down venetian glitch slide zoom rotate fade");
 
 
 /* Theme is user-controlled, so the dark variant follows a class on <html>

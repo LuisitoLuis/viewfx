@@ -80,6 +80,10 @@ function engineBase() {
       from: { clipPath: 'inset(0 0 0 0)' },
       to: { clipPath: 'inset(100% 0 0 0)' }
     },
+    '@keyframes fx-expand-in': {
+      from: { clipPath: 'inset(50%)' },
+      to: { clipPath: 'inset(0)' }
+    },
     '@keyframes fx-glitch-in': {
       '0%': { clipPath: 'inset(0 0 100% 0)', opacity: '0' },
       '20%': { clipPath: 'inset(40% 0 0 0)', opacity: '1' },

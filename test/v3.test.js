@@ -27,6 +27,16 @@ describe('viewfx tailwind v3 plugin', () => {
     expect(css).toContain('@keyframes fx-fade-out')
   })
 
+  it('use a centre expand clip', async () => {
+    const css = await generatePluginCSSv3({
+      content: '<html class="expand"></html>'
+    })
+
+    expect(css).toContain('--fx-anim:fx-expand-in')
+    expect(css).toContain('--fx-old-z:-1')
+    expect(css).toContain('@keyframes fx-expand-in')
+  })
+
   it('flips the polygon clip with the dark class', async () => {
     const css = await generatePluginCSSv3({
       content: '<html class="dark polygon"></html>'

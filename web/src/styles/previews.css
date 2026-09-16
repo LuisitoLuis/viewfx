@@ -275,9 +275,8 @@
   --preview-mask: var(--mask-heart);
 }
 
-.fx-card[data-fx='mosaic'] {
-  --preview-anim: preview-mask;
-  --preview-mask: var(--mask-mosaic);
+.fx-card[data-fx='expand'] {
+  --preview-anim: preview-expand;
 }
 
 .fx-card[data-fx='ink'] {
@@ -360,6 +359,17 @@
   55%,
   85% {
     clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes preview-expand {
+  0%,
+  100% {
+    clip-path: inset(50%);
+  }
+  55%,
+  85% {
+    clip-path: inset(0);
   }
 }
 
