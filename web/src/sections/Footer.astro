@@ -48,11 +48,12 @@ const socialClass =
 ---
 
 <footer
-  class="relative mt-32 overflow-hidden border-t border-line bg-inset/40 pt-20 pb-10"
+  class="relative z-0 overflow-hidden bg-inset pb-10"
   role="contentinfo"
 >
   <div
-    class="absolute top-0 left-1/2 h-px w-full -translate-x-1/2 bg-linear-to-r from-transparent via-accent/20 to-transparent"
+    class="pointer-events-none h-24 bg-linear-to-b from-paper via-paper/80 to-transparent sm:h-32"
+    aria-hidden="true"
   >
   </div>
   <div
@@ -64,7 +65,7 @@ const socialClass =
   >
   </div>
 
-  <div class="shell relative">
+  <div class="shell relative pt-8">
     <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
       <div class="group flex flex-col gap-6 lg:col-span-5">
         <div class="flex items-center gap-3">
