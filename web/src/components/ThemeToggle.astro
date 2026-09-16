@@ -1,12 +1,18 @@
 ---
 import Icon from './Icon.astro'
+
+interface Props {
+  class?: string
+}
+
+const { class: className } = Astro.props
 ---
 
 <!-- The accessible name is kept in sync with the current theme by scripts/theme.ts. -->
 <button
   id="theme-toggle"
   type="button"
-  class="btn btn--icon btn--outline"
+  class={className}
   aria-label="Switch the theme"
 >
   <Icon name="moon" class="dark:hidden" />

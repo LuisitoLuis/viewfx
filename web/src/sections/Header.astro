@@ -3,28 +3,222 @@ import BrandMark from '../components/BrandMark.astro'
 import Icon from '../components/Icon.astro'
 import ThemeToggle from '../components/ThemeToggle.astro'
 import { SITE } from '../consts'
+
+const isHome =
+  Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
+
+const navLinkClass =
+  'inline-flex items-center px-2 py-1 text-[13px] font-medium tracking-tight text-ink-3 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent xl:px-2.5'
+
+const mobileNavLinkClass =
+  'block rounded-lg px-3 py-2.5 text-base font-medium text-ink-2 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+
+const iconBtnClass =
+  'inline-flex size-10 min-h-10 min-w-10 items-center justify-center rounded-full text-ink-3 transition-colors hover:bg-inset hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent sm:size-11 sm:min-h-11 sm:min-w-11'
 ---
 
-<header class="sticky top-0 z-50 border-b border-line bg-paper/85 backdrop-blur-md">
-  <div class="shell flex h-16 items-center justify-between gap-4">
-    <a href="/" class="flex items-center gap-2.5 rounded-md" aria-label={`${SITE.name}, home`}>
-      <BrandMark class="text-accent-text" />
-      <span class="font-mono text-sm font-semibold tracking-tight">{SITE.name}</span>
+<style>
+  .header-scroll {
+    --header-opacity: 0;
+    background: color-mix(in oklab, var(--paper) calc(var(--header-opacity) * 82%), transparent);
+    border-color: color-mix(in oklab, var(--line) calc(var(--header-opacity) * 100%), transparent);
+    backdrop-filter: blur(calc(var(--header-opacity) * 10px));
+    -webkit-backdrop-filter: blur(calc(var(--header-opacity) * 10px));
+  }
+
+  .logo-scroll {
+    --logo-opacity: 0;
+    opacity: var(--logo-opacity);
+    transform: translateY(calc((1 - var(--logo-opacity)) * 10px));
+  }
+
+  .logo-scroll[aria-hidden='true'] {
+    pointer-events: none;
+  }
+
+  .logo-scroll[data-always-visible='true'] {
+    --logo-opacity: 1;
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .logo-scroll {
+      transform: none;
+    }
+  }
+
+  .header-menu-bars {
+    display: block;
+    width: 1rem;
+    height: 2px;
+    background: currentColor;
+    box-shadow:
+      0 -5px 0 currentColor,
+      0 5px 0 currentColor;
+  }
+
+  .header-menu-close {
+    display: none;
+  }
+
+  #menu-btn[aria-expanded='true'] .header-menu-bars {
+    display: none;
+  }
+
+  #menu-btn[aria-expanded='true'] .header-menu-close {
+    display: block;
+  }
+</style>
+
+<script>
+  const btn = document.getElementById('menu-btn')
+  const menu = document.getElementById('menu')
+
+  const setMenuOpen = (open: boolean) => {
+    if (!btn || !menu) return
+
+    menu.classList.toggle('hidden', !open)
+    btn.setAttribute('aria-expanded', String(open))
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu')
+    document.body.classList.toggle(
+      'overflow-hidden',
+      open && window.matchMedia('(max-width: 1023px)').matches
+    )
+
+    if (open) {
+      header?.style.setProperty('--header-opacity', '1')
+      const firstLink = menu.querySelector<HTMLElement>('a[href]')
+      firstLink?.focus()
+    } else {
+      handleScroll()
+    }
+  }
+
+  if (btn && menu) {
+    btn.addEventListener('click', () => {
+      setMenuOpen(menu.classList.contains('hidden'))
+    })
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        if (window.matchMedia('(max-width: 1023px)').matches) {
+          setMenuOpen(false)
+          btn.focus()
+        }
+      }
+    })
+
+    menu.querySelectorAll('a[href]').forEach((link) => {
+      link.addEventListener('click', () => {
+        if (window.matchMedia('(max-width: 1023px)').matches) {
+          setMenuOpen(false)
+        }
+      })
+    })
+  }
+
+  const logoContainer = document.getElementById('logo-container')
+  const header = document.getElementById('header')
+  const alwaysVisible = logoContainer?.dataset.alwaysVisible === 'true'
+
+  const handleScroll = () => {
+    const scrollY = window.scrollY
+    const progress = alwaysVisible ? 1 : Math.min(scrollY / 100, 1)
+    const isLogoInteractive = alwaysVisible || progress > 0.05
+
+    if (alwaysVisible) {
+      header?.style.setProperty(
+        '--header-opacity',
+        String(Math.max(0.75, Math.min(scrollY / 100, 1)))
+      )
+    } else {
+      header?.style.setProperty('--header-opacity', String(Math.min(scrollY / 100, 1)))
+    }
+
+    logoContainer?.style.setProperty('--logo-opacity', String(progress))
+
+    if (logoContainer) {
+      if (isLogoInteractive) {
+        logoContainer.removeAttribute('aria-hidden')
+        logoContainer.removeAttribute('tabindex')
+      } else {
+        logoContainer.setAttribute('aria-hidden', 'true')
+        logoContainer.setAttribute('tabindex', '-1')
+      }
+    }
+  }
+
+  window.addEventListener('scroll', handleScroll, { passive: true })
+  handleScroll()
+</script>
+
+<header
+  id="header"
+  class="header-scroll fixed inset-x-0 top-0 z-50 border-b border-transparent"
+>
+  <div class="shell flex h-14 items-center gap-3 sm:h-16 sm:gap-4">
+    <a
+      id="logo-container"
+      href={isHome ? '#top' : '/'}
+      aria-label={isHome ? `${SITE.name}, back to top` : `${SITE.name}, home`}
+      aria-hidden={isHome ? 'true' : undefined}
+      tabindex={isHome ? '-1' : undefined}
+      data-always-visible={isHome ? undefined : 'true'}
+      class="logo-scroll flex min-w-0 shrink-0 items-center gap-2.5 rounded-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent"
+    >
+      <BrandMark
+        class="aspect-square size-8 shrink-0 sm:size-9"
+        iconClass="size-4 sm:size-5 animate-float-subtle"
+      />
+      <span
+        class="truncate text-base font-bold tracking-tight text-ink sm:text-lg"
+        aria-hidden="true"
+      >
+        View<span class="text-accent-text">FX</span>
+      </span>
     </a>
 
-    <nav aria-label="Primary" class="flex items-center gap-1">
-      <a href="#palette" class="btn btn--sm btn--ghost">Effect</a>
-      <a href="#faq" class="btn btn--sm btn--ghost">FAQ</a>
+    <nav aria-label="Primary" class="ml-auto hidden min-w-0 items-center gap-0.5 lg:flex xl:gap-1">
+      <a href="#palette" class={navLinkClass}>Effect</a>
+      <a href="#faq" class={navLinkClass}>FAQ</a>
+    </nav>
+
+    <div class="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1 lg:ml-2">
+      <ThemeToggle class={iconBtnClass} />
       <a
         href={SITE.repo}
         target="_blank"
         rel="noopener noreferrer"
-        class="btn btn--icon btn--ghost"
+        class={iconBtnClass}
         aria-label="Source on GitHub, opens in a new tab"
       >
         <Icon name="github" size={17} />
       </a>
-      <ThemeToggle />
+      <button
+        id="menu-btn"
+        type="button"
+        aria-label="Open menu"
+        aria-expanded="false"
+        aria-controls="menu"
+        class:list={[iconBtnClass, 'lg:hidden']}
+      >
+        <span class="header-menu-bars" aria-hidden="true"></span>
+        <span class="header-menu-close">
+          <Icon name="close" size={18} />
+        </span>
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+
+  <div
+    id="menu"
+    class="hidden border-t border-line bg-paper lg:hidden"
+  >
+    <nav class="shell flex flex-col gap-1 py-4" aria-label="Mobile">
+      <a href="#palette" class={mobileNavLinkClass}>Effect</a>
+      <a href="#faq" class={mobileNavLinkClass}>FAQ</a>
     </nav>
   </div>
 </header>
