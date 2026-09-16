@@ -1,0 +1,257 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Icon from '../components/Icon.astro'
+import { SITE } from '../consts'
+import { EFFECTS } from '../data/effects'
+import {
+  ANIMATION_DELAY,
+  ANIMATION_DURATION,
+  ANIMATION_STEPS,
+  DEFAULT_DURATION_KEY
+} from '../data/timing'
+
+const effectIds = EFFECTS.map((effect) => effect.id)
+const durations = Object.keys(ANIMATION_DURATION)
+const delays = Object.keys(ANIMATION_DELAY)
+const steps = Object.keys(ANIMATION_STEPS)
+
+const params = Astro.url.searchParams
+const pick = (key: string, allowed: string[], fallback: string) => {
+  const value = params.get(key)
+  return value && allowed.includes(value) ? value : fallback
+}
+
+const initial = {
+  e: pick('e', effectIds, 'polygon'),
+  d: pick('d', durations, DEFAULT_DURATION_KEY),
+  delay: pick('delay', delays, '0'),
+  s: pick('s', steps, 'none')
+}
+
+const playgroundData = {
+  effects: effectIds,
+  durations,
+  delays,
+  steps
+}
+
+const selectClass =
+  'w-full min-h-11 rounded-xl border border-line bg-surface px-3 text-sm text-ink focus-visible:border-accent'
+---
+
+<Layout
+  title={`Playground — ${SITE.name}`}
+  description="Compose ViewFX theme transitions live: pick an effect, duration, delay and steps, play the wipe, then copy the class list or share the URL."
+>
+  <div class="shell pb-16">
+    <div class="mb-8 max-w-2xl">
+      <p class="label mb-2 text-accent-text">Playground</p>
+      <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Compose transitions live</h1>
+      <p class="mt-3 max-w-xl text-base leading-relaxed text-ink-2">
+        Pick an effect, tune timing, play it on the real View Transitions API, then copy the
+        classes or share the URL.
+      </p>
+    </div>
+
+    <div
+      id="playground"
+      class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-start xl:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)]"
+    >
+      <section
+        class="flex min-h-112 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm"
+        aria-label="Theme transition preview"
+      >
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
+          <p class="text-xs font-semibold tracking-wide text-ink-3 uppercase">Live page</p>
+          <button
+            type="button"
+            id="play-btn"
+            class="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:border-accent hover:text-accent-text"
+          >
+            <Icon name="play" size={14} />
+            Play
+          </button>
+        </div>
+
+        <div class="relative flex flex-1 items-center justify-center overflow-hidden p-8 sm:p-12">
+          <div
+            class="pointer-events-none absolute inset-0 opacity-40"
+            style="background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 32px 32px;"
+            aria-hidden="true"
+          >
+          </div>
+
+          <div class="relative z-10 w-full max-w-md overflow-hidden rounded-2xl border border-line bg-paper shadow-xl">
+            <div class="flex items-center gap-2 border-b border-line px-4 py-3">
+              <span class="size-2.5 rounded-full bg-line-strong" aria-hidden="true"></span>
+              <span class="size-2.5 rounded-full bg-line-strong" aria-hidden="true"></span>
+              <span class="size-2.5 rounded-full bg-line-strong" aria-hidden="true"></span>
+              <span class="ml-2 truncate font-mono text-[11px] text-ink-3">app.example</span>
+            </div>
+            <div class="grid gap-4 p-5 sm:grid-cols-[7rem_1fr]">
+              <div class="hidden rounded-xl bg-inset sm:block" aria-hidden="true"></div>
+              <div>
+                <p class="text-sm font-bold text-ink">Theme surface</p>
+                <p class="mt-1 text-xs leading-relaxed text-ink-2">
+                  Play toggles <code class="font-mono">.dark</code> on{' '}
+                  <code class="font-mono">&lt;html&gt;</code> with your classes. The wipe runs on
+                  the whole page, including this mock.
+                </p>
+                <div class="mt-4 grid grid-cols-2 gap-2" aria-hidden="true">
+                  <div class="h-16 rounded-lg bg-inset"></div>
+                  <div class="h-16 rounded-lg bg-inset"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="border-t border-line bg-inset px-4 py-3">
+          <div class="flex items-start justify-between gap-3">
+            <div class="min-w-0 flex-1">
+              <p class="mb-1 text-[10px] font-semibold tracking-wider text-ink-3 uppercase">
+                Class list
+              </p>
+              <code
+                id="class-snippet"
+                class="block overflow-x-auto font-mono text-[13px] leading-relaxed break-all text-ink"
+              >
+                {initial.e}-duration-{initial.d}
+              </code>
+              <p class="mt-2 text-[10px] font-semibold tracking-wider text-ink-3 uppercase">
+                On &lt;html&gt;
+              </p>
+              <code
+                id="html-snippet"
+                class="block overflow-x-auto font-mono text-[12px] leading-relaxed break-all text-ink-2"
+              >
+                {`<html class="dark ${initial.e}-duration-${initial.d}">`}
+              </code>
+            </div>
+            <div class="flex shrink-0 flex-col gap-2 sm:flex-row">
+              <button
+                type="button"
+                id="copy-classes"
+                class="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full bg-ink px-3 py-1.5 text-xs font-semibold text-paper"
+              >
+                <Icon name="copy" size={13} />
+                <span data-label>Copy</span>
+              </button>
+              <button
+                type="button"
+                id="copy-url"
+                class="inline-flex min-h-9 items-center justify-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2"
+              >
+                <span data-label>Share URL</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="flex flex-col gap-4 lg:sticky lg:top-24">
+        <div class="rounded-2xl border border-line bg-surface p-4">
+          <label class="mb-2 block text-xs font-semibold tracking-wide text-ink-3 uppercase" for="effect-search">
+            Effect
+          </label>
+          <div class="relative mb-3">
+            <Icon name="search" size={14} class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-3" />
+            <input
+              id="effect-search"
+              class="field"
+              type="search"
+              placeholder="Search effects"
+              autocomplete="off"
+            />
+          </div>
+          <div
+            id="effect-list"
+            class="flex max-h-64 flex-col gap-0.5 overflow-y-auto"
+            role="listbox"
+            aria-label="ViewFX effects"
+          >
+            {
+              EFFECTS.map((effect) => (
+                <button
+                  type="button"
+                  role="option"
+                  data-effect={effect.id}
+                  data-name={effect.name}
+                  aria-selected={effect.id === initial.e ? 'true' : 'false'}
+                  class:list={[
+                    'effect-option min-h-10 rounded-lg px-3 py-2 text-left text-sm text-ink-2 transition-colors hover:bg-inset hover:text-ink',
+                    effect.id === initial.e && 'is-selected'
+                  ]}
+                >
+                  <span class="block font-mono text-[13px] font-semibold">{effect.id}</span>
+                  <span class="block text-[11px] text-ink-3">{effect.name}</span>
+                </button>
+              ))
+            }
+          </div>
+        </div>
+
+        <div class="rounded-2xl border border-line bg-surface p-4">
+          <div class="grid gap-3">
+            <label class="block">
+              <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">
+                Duration
+              </span>
+              <select id="ctrl-duration" class={selectClass}>
+                {durations.map((key) => (
+                  <option value={key} selected={key === initial.d}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label class="block">
+              <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">
+                Delay
+              </span>
+              <select id="ctrl-delay" class={selectClass}>
+                {delays.map((key) => (
+                  <option value={key} selected={key === initial.delay}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </label>
+            <label class="block">
+              <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">
+                Steps
+              </span>
+              <select id="ctrl-steps" class={selectClass}>
+                {steps.map((key) => (
+                  <option value={key} selected={key === initial.s}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </div>
+        </div>
+
+        <p class="text-xs leading-relaxed text-ink-3">
+          Tip: change any control to play the wipe and update the shareable URL. Use Play to
+          toggle light and dark again.
+        </p>
+      </aside>
+    </div>
+  </div>
+
+  <script type="application/json" id="playground-data" is:inline set:html={JSON.stringify(playgroundData)} />
+</Layout>
+
+<script>
+  import { initPlayground } from '../scripts/playground'
+  initPlayground()
+</script>
+
+<style>
+  .effect-option.is-selected {
+    background: color-mix(in oklab, var(--accent) 14%, var(--inset));
+    color: var(--accent-text);
+    font-weight: 600;
+  }
+</style>

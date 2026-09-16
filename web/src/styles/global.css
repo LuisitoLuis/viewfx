@@ -4,6 +4,9 @@
 
 /* String literals so JIT emits every effect, including those applied at runtime. */
 @source inline("circle circle-blur polygon corner-tl corner-tr iris diamond hexagon heart expand ink spiral wipe-h wipe-v slide-down venetian glitch slide zoom rotate fade");
+@source inline("fx-duration-none fx-duration-slower fx-duration-slow fx-duration-normal fx-duration-fast fx-duration-faster fx-duration-0 fx-duration-100 fx-duration-150 fx-duration-200 fx-duration-250 fx-duration-300 fx-duration-400 fx-duration-500 fx-duration-700 fx-duration-800 fx-duration-900 fx-duration-1000");
+@source inline("fx-delay-none fx-delay-0 fx-delay-100 fx-delay-150 fx-delay-200 fx-delay-250 fx-delay-300 fx-delay-400 fx-delay-500 fx-delay-700 fx-delay-800 fx-delay-900 fx-delay-1000");
+@source inline("fx-steps-none fx-steps-retro fx-steps-normal fx-steps-modern");
 
 
 /* Theme is user-controlled, so the dark variant follows a class on <html>

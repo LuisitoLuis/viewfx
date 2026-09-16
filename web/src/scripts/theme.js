@@ -29,21 +29,26 @@ function commit(dark, persist) {
 }
 
 /**
- * Flips the theme through `polygon` on `<html>`.
+ * Flips the theme through the effect class currently on `<html>`.
  * Falls back to an instant swap when the API is missing or the visitor has
  * asked for reduced motion.
  *
  * `persist` is false when the change comes from the OS rather than the
  * visitor, so following the system preference stays sticky.
  */
+function activeEffect() {
+  return [...root().classList].find((cls) => EFFECT_CLASSES.has(cls)) ?? PAGE_EFFECT
+}
+
 export function playTransition(dark = !isDark(), persist = true) {
   const el = root()
+  const keep = activeEffect()
   for (const cls of [...el.classList]) {
-    if (EFFECT_CLASSES.has(cls) && cls !== PAGE_EFFECT) {
+    if (EFFECT_CLASSES.has(cls) && cls !== keep) {
       el.classList.remove(cls)
     }
   }
-  el.classList.add(PAGE_EFFECT)
+  el.classList.add(keep)
 
   const start = startViewTransition()
 

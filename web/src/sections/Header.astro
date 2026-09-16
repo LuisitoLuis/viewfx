@@ -6,6 +6,9 @@ import { SITE } from '../consts'
 
 const isHome =
   Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
+const isPlayground = Astro.url.pathname.startsWith('/playground')
+/** @param {string} id */
+const section = (id) => (isHome ? `#${id}` : `/#${id}`)
 
 const navLinkClass =
   'inline-flex items-center px-2 py-1 text-[13px] font-medium tracking-tight text-ink-3 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent xl:px-2.5'
@@ -180,11 +183,18 @@ const iconBtnClass =
     </a>
 
     <nav aria-label="Primary" class="ml-auto hidden min-w-0 items-center gap-0.5 lg:flex xl:gap-1">
-      <a href="#palette" class={navLinkClass}>
+      <a
+        href="/playground"
+        class={navLinkClass}
+        aria-current={isPlayground ? 'page' : undefined}
+      >
+        Playground
+      </a>
+      <a href={section('palette')} class={navLinkClass}>
         <span class="xl:hidden">Effect</span>
         <span class="hidden xl:inline">Effect Collection</span>
       </a>
-      <a href="#faq" class={navLinkClass}>FAQ</a>
+      <a href={section('faq')} class={navLinkClass}>FAQ</a>
     </nav>
 
     <div class="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1 lg:ml-2">
@@ -220,8 +230,15 @@ const iconBtnClass =
     class="hidden border-t border-line bg-paper lg:hidden"
   >
     <nav class="shell flex flex-col gap-1 py-4" aria-label="Mobile">
-      <a href="#palette" class={mobileNavLinkClass}>Effect Collection</a>
-      <a href="#faq" class={mobileNavLinkClass}>FAQ</a>
+      <a
+        href="/playground"
+        class={mobileNavLinkClass}
+        aria-current={isPlayground ? 'page' : undefined}
+      >
+        Playground
+      </a>
+      <a href={section('palette')} class={mobileNavLinkClass}>Effect Collection</a>
+      <a href={section('faq')} class={mobileNavLinkClass}>FAQ</a>
     </nav>
   </div>
 </header>

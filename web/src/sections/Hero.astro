@@ -45,6 +45,20 @@ module.exports = {
           Hover a card to preview, click to copy the class. Same idea as a Tailwind
           animation catalogue — built for the View Transitions API.
         </p>
+
+        <div class="fade-up mt-8 flex flex-wrap items-center gap-3 [animation-delay:250ms]">
+          <a
+            href="/playground"
+            class="group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-lg shadow-accent/25 transition-all hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--ink))] hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+          >
+            Open Playground
+            <Icon
+              name="arrow-right"
+              size={16}
+              class="stroke-2 transition-transform group-hover:translate-x-0.5"
+            />
+          </a>
+        </div>
       </div>
 
       <div class="fade-up flex w-full flex-col gap-3 [animation-delay:300ms]">
@@ -128,6 +142,7 @@ module.exports = {
 
     for (const button of buttons) {
       button.addEventListener('click', () => {
+        if (!(button instanceof HTMLElement)) return
         const next = button.dataset.command
         if (next) command.textContent = next
 
@@ -147,6 +162,7 @@ module.exports = {
 
     for (const button of buttons) {
       button.addEventListener('click', () => {
+        if (!(button instanceof HTMLElement) || !(copy instanceof HTMLElement)) return
         const version = button.dataset.twVersion
         v4.hidden = version !== 'v4'
         v3.hidden = version !== 'v3'
