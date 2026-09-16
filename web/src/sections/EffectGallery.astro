@@ -1,5 +1,5 @@
 ---
-import EffectCard from './EffectCard.astro'
+import EffectCard from '../components/EffectCard.astro'
 import { EFFECTS } from '../data/effects'
 import {
   ANIMATION_DELAY,
@@ -9,8 +9,12 @@ import {
 } from '../data/timing'
 ---
 
-<section id="palette" class="fx-gallery" aria-labelledby="palette-heading">
-  <div class="shell py-16 text-center sm:py-20">
+<section
+  id="palette"
+  class="fx-gallery band band-inset border-y border-line"
+  aria-labelledby="palette-heading"
+>
+  <div class="shell text-center">
     <h2
       id="palette-heading"
       class="fade-up text-3xl font-semibold tracking-tight sm:text-4xl [animation-delay:600ms]"

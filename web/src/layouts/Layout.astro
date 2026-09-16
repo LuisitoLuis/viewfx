@@ -3,8 +3,8 @@ import '@fontsource-variable/geist-mono/index.css'
 
 import '../styles/global.css'
 
-import SiteHeader from '../components/SiteHeader.astro'
-import SiteFooter from '../components/SiteFooter.astro'
+import Header from '../sections/Header.astro'
+import Footer from '../sections/Footer.astro'
 import { SITE } from '../consts'
 import { DEFAULT_EFFECT_CLASS } from '../data/effects'
 import { THEME_KEY } from '../scripts/theme'
@@ -83,14 +83,14 @@ const bootstrap = `(() => {
   <body class="min-h-dvh font-display antialiased">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <SiteHeader />
+    <Header />
 
     <!-- tabindex makes the skip link land focus here, not just the scroll position. -->
     <main id="main" tabindex="-1">
       <slot />
     </main>
 
-    <SiteFooter />
+    <Footer />
 
     <div id="live-region" class="sr-only" role="status" aria-live="polite"></div>
     <div

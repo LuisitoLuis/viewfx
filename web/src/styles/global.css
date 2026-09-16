@@ -209,6 +209,20 @@
   }
 }
 
+/** Vertical rhythm for hero, catalogue, and FAQ so the bands do not collide. */
+@utility band {
+  padding-block: 5rem;
+
+  @media (width >= 40rem) {
+    padding-block: 6.5rem;
+  }
+}
+
+/** Alternate slab so neighbouring sections read as separate components. */
+@utility band-inset {
+  background-color: color-mix(in oklab, var(--inset) 70%, transparent);
+}
+
 /** Uppercase monospace micro-label used for section and metadata text. */
 @utility label {
   font-family: var(--font-mono);

@@ -1,5 +1,5 @@
 ---
-import CodeBlock from './CodeBlock.astro'
+import CodeBlock from '../components/CodeBlock.astro'
 
 interface Step {
   title: string
@@ -43,8 +43,8 @@ if (document.startViewTransition) {
 ]
 ---
 
-<section id="usage" aria-labelledby="usage-heading">
-  <div class="shell py-16 sm:py-20">
+<section id="usage" class="band border-t border-line" aria-labelledby="usage-heading">
+  <div class="shell">
     <p class="label text-ink-3">02 — Usage</p>
     <h2 id="usage-heading" class="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">
       Install, class, one line of JavaScript
