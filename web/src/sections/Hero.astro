@@ -1,8 +1,10 @@
 ---
+import BrandMark from '../components/BrandMark.astro'
 import Icon from '../components/Icon.astro'
 import PackageMark from '../components/PackageMark.astro'
 import { EFFECTS } from '../data/effects'
 import { highlight } from '../lib/highlight'
+import { version } from '../../../package.json'
 
 const PACKAGE_MANAGERS = [
   { name: 'npm', command: 'npm install viewfx' },
@@ -27,29 +29,42 @@ module.exports = {
   <div class="shell">
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:items-end lg:gap-12 xl:gap-16">
       <div class="text-left">
-        <p class="label fade-up flex items-center gap-2.5 text-ink-3 [animation-delay:100ms]">
-          <span class="inline-block size-1.5 rounded-full bg-accent"></span>
-          Effect
-        </p>
-
-        <h1
-          class="fade-up mt-5 max-w-xl text-3xl leading-tight font-semibold tracking-tight text-balance sm:mt-6 sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1] [animation-delay:100ms]"
-        >
-          {EFFECTS.length} theme transitions, one class on
-          <em class="font-normal text-accent-text italic">&lt;html&gt;</em>
-        </h1>
+        <div class="fade-up mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4 [animation-delay:100ms]">
+          <BrandMark
+            class="aspect-square size-11 shrink-0 sm:size-12"
+            iconClass="size-6 animate-float-subtle sm:size-7"
+          />
+          <div class="min-w-0">
+            <h1
+              class="text-3xl font-bold tracking-tight text-ink sm:text-4xl lg:text-[2.75rem] lg:leading-[1.1]"
+            >
+              View<span class="text-accent-text">FX</span>
+            </h1>
+            <p class="mt-1 flex items-center gap-3 font-mono text-xs tracking-wide text-ink-3">
+              <span class="hero-dot" aria-hidden="true">
+                <span class="hero-dot__ring"></span>
+                <span class="hero-dot__ring hero-dot__ring--late"></span>
+                <span class="hero-dot__core"></span>
+              </span>
+              v{version}
+            </p>
+          </div>
+        </div>
 
         <p
-          class="fade-up mt-6 max-w-md text-base leading-relaxed text-pretty text-ink-2 sm:text-lg [animation-delay:200ms]"
+          class="fade-up mb-6 max-w-md text-base leading-relaxed text-ink-2 sm:text-lg [animation-delay:200ms]"
         >
-          Hover a card to preview, click to copy the class. Same idea as a Tailwind
-          animation catalogue — built for the View Transitions API.
+          {EFFECTS.length}+ ready-to-use theme transitions for Tailwind CSS. Zero config, one class
+          on{' '}
+          <em class="font-normal text-accent-text italic">&lt;html&gt;</em>.
         </p>
 
-        <div class="fade-up mt-8 flex flex-wrap items-center gap-3 [animation-delay:250ms]">
+        <div
+          class="fade-up mb-8 flex flex-wrap items-center gap-3 sm:mb-10 [animation-delay:200ms]"
+        >
           <a
             href="/playground"
-            class="group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-ink shadow-lg shadow-accent/25 transition-all hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--ink))] hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
+            class="group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-[color-mix(in_oklab,var(--accent)_82%,black)] hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           >
             Open Playground
             <Icon
@@ -178,3 +193,53 @@ module.exports = {
   initPackageManagers()
   initTailwindVersions()
 </script>
+
+<style>
+  .hero-dot {
+    position: relative;
+    display: inline-flex;
+    width: 0.55rem;
+    height: 0.55rem;
+    flex-shrink: 0;
+  }
+
+  .hero-dot__core,
+  .hero-dot__ring {
+    position: absolute;
+    inset: 0;
+    border-radius: 9999px;
+    background: var(--accent);
+  }
+
+  .hero-dot__core {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--accent) 40%, transparent),
+      0 0 12px color-mix(in oklab, var(--accent) 80%, transparent);
+  }
+
+  .hero-dot__ring {
+    animation: hero-dot-pulse 1.7s cubic-bezier(0.15, 0.7, 0.3, 1) infinite;
+  }
+
+  .hero-dot__ring--late {
+    animation-delay: 0.55s;
+  }
+
+  @keyframes hero-dot-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.7;
+    }
+    100% {
+      transform: scale(4.2);
+      opacity: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-dot__ring {
+      animation: none;
+      display: none;
+    }
+  }
+</style>
