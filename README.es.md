@@ -11,22 +11,22 @@
 ![GitHub issues](https://img.shields.io/github/issues/LuisitoLuis/viewfx)
 ![GitHub Contributors](https://img.shields.io/github/contributors/LuisitoLuis/viewfx)
 
-![ViewFX catalogue](./lib/imgs/web.png)
+![Catálogo de ViewFX](./lib/imgs/web.png)
 
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-blue?style=for-the-badge&logo=tailwind-css)
 ![npm](https://img.shields.io/npm/v/viewfx?style=for-the-badge)
 
-Theme transitions with one Tailwind class on <code>&lt;html&gt;</code>.
+Transiciones de tema con una sola clase de Tailwind en <code>&lt;html&gt;</code>.
 
-Visit the [website](https://viewfx.luismc.dev) or the [playground](https://viewfx.luismc.dev/playground) to get more information.
+Visita la [web](https://viewfx.luismc.dev) o el [playground](https://viewfx.luismc.dev/playground) para obtener más información.
 
 </div>
 
-## Installation :book:
+## Instalación :book:
 
-#### Package install
+#### Instalar el paquete
 
-> Install the package with your favorite package manager:
+> Instala el paquete con tu gestor de paquetes favorito:
 
 - npm
 
@@ -46,17 +46,17 @@ pnpm add viewfx
 yarn add viewfx
 ```
 
-#### Plugin Implementation
+#### Implementación del plugin
 
-> Use the plugin in your Tailwind CSS project:
+> Úsalo en tu proyecto de Tailwind CSS:
 
 ```css
-/* globals.css (for Tailwind CSS 4.*) */
+/* globals.css (para Tailwind CSS 4.*) */
 @import 'tailwindcss';
 @import 'viewfx';
 ```
 
-> Tailwind CSS v3 — register the JavaScript plugin:
+> Tailwind CSS v3 — registra el plugin de JavaScript:
 
 ```js
 /** @type {import('tailwindcss').Config} */
@@ -67,11 +67,11 @@ module.exports = {
 }
 ```
 
-## Usage :gear:
+## Uso :gear:
 
-#### Example
+#### Ejemplo
 
-> Put an effect class on `<html>`, then wrap your theme toggle in `document.startViewTransition`:
+> Pon una clase de efecto en `<html>` y envuelve el toggle de tema en `document.startViewTransition`:
 
 ```html
 <html class="dark circle">
@@ -90,20 +90,20 @@ document.startViewTransition
   : switchTheme()
 ```
 
-Timing can sit in the same class (`circle-duration-1000`, `circle-duration-1000-delay-300`) or as separate utilities: `fx-duration-1000`, `fx-delay-300`, `fx-steps-modern`.
+El timing puede ir en la misma clase (`circle-duration-1000`, `circle-duration-1000-delay-300`) o en utilidades sueltas: `fx-duration-1000`, `fx-delay-300`, `fx-steps-modern`.
 
-Theme is expected as a `.dark` class on `<html>` (the `polygon` wipe reverses in dark).
+El tema se espera como clase `.dark` en `<html>` (el wipe `polygon` se invierte en oscuro).
 
-`prefers-reduced-motion: reduce` is honoured: the theme still changes, without the wipe. Browsers without the View Transitions API skip the animation and toggle instantly.
+`prefers-reduced-motion: reduce` se respeta: el tema cambia, el wipe no. Los navegadores sin View Transitions API cambian al instante.
 
-### Effects
+### Efectos
 
-21 utilities. Hover to preview and click to copy on the [catalogue](https://viewfx.luismc.dev).
+21 utilidades. Pasa el ratón para previsualizar y haz clic para copiar en el [catálogo](https://viewfx.luismc.dev).
 
 `circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `iris`, `diamond`, `hexagon`, `heart`, `expand`, `ink`, `spiral`, `wipe-h`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `zoom`, `rotate`, `fade`.
 
-## Contributors 👑
+## Contribuidores 👑
 
 <a href="https://github.com/LuisitoLuis/viewfx/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=LuisitoLuis/viewfx" alt="ViewFX contributors" />
+  <img src="https://contrib.rocks/image?repo=LuisitoLuis/viewfx" alt="Contribuidores de ViewFX" />
 </a>
