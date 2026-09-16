@@ -32,7 +32,7 @@ const structuredData = {
           <details class="faq-item group">
             <summary class="faq-item__summary">
               <span class="flex items-center justify-between gap-4">
-                {q}
+                <span class="faq-item__question">{q}</span>
                 <span class="faq-item__icon" aria-hidden="true">
                   +
                 </span>
@@ -85,6 +85,15 @@ const structuredData = {
   .faq-item__summary:focus-visible {
     outline: 2px solid var(--accent-text);
     outline-offset: 2px;
+  }
+
+  .faq-item__question {
+    color: var(--ink);
+    transition: color 0.3s;
+  }
+
+  .faq-item[open] .faq-item__question {
+    color: var(--accent-text);
   }
 
   .faq-item__icon {
@@ -164,6 +173,7 @@ const structuredData = {
 
   @media (prefers-reduced-motion: reduce) {
     .faq-item,
+    .faq-item__question,
     .faq-item__icon,
     .faq-item::details-content,
     .faq-item__body,
