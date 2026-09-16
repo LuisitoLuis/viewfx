@@ -1,35 +1,197 @@
 ---
 import BrandMark from '../components/BrandMark.astro'
+import Icon from '../components/Icon.astro'
 import { SITE } from '../consts'
+
+const currentYear = new Date().getFullYear()
+const isHome =
+  Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
+const section = (id: string) => (isHome ? `#${id}` : `/#${id}`)
+
+const authorHost = new URL(SITE.author.url).host
+
+const FOOTER_LINKS = [
+  {
+    title: 'Documentation',
+    links: [
+      { name: 'Installation', href: section('install-command') },
+      { name: 'Effect Collection', href: section('palette') },
+      { name: 'FAQ', href: section('faq') },
+      { name: 'Usage', href: `${SITE.repo}#usage` },
+      { name: 'Effects', href: `${SITE.repo}#effects` },
+      { name: 'Add an effect', href: `${SITE.repo}#add-an-effect` }
+    ]
+  },
+  {
+    title: 'Community',
+    links: [
+      { name: 'Contributors', href: `${SITE.repo}/graphs/contributors` },
+      { name: 'GitHub Issues', href: `${SITE.repo}/issues` },
+      { name: 'Source', href: SITE.repo }
+    ]
+  },
+  {
+    title: 'Links',
+    links: [
+      { name: 'npm Package', href: 'https://www.npmjs.com/package/viewfx' },
+      { name: authorHost, href: SITE.author.url },
+      {
+        name: 'View Transitions API',
+        href: 'https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API'
+      }
+    ]
+  }
+]
+
+const socialClass =
+  'inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-paper text-ink-3 shadow-sm ring-1 ring-line transition-all hover:text-ink hover:ring-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
 ---
 
-<footer class="border-t border-line">
-  <div class="shell flex flex-col gap-8 py-12 sm:flex-row sm:items-start sm:justify-between">
-    <div class="max-w-sm">
-      <p class="flex items-center gap-2.5">
-        <BrandMark class="aspect-square size-7" iconClass="size-5" />
-        <span class="text-base font-bold tracking-tight text-ink">
-          View<span class="text-accent-text">FX</span>
-        </span>
-      </p>
-      <p class="mt-3 text-sm leading-relaxed text-ink-2">
-        Built as a Tailwind CSS v3 and v4 plugin on the native View Transitions API — CSS
-        utilities and one line of JavaScript.
-      </p>
+<footer
+  class="relative mt-32 overflow-hidden border-t border-line bg-inset/40 pt-20 pb-10"
+  role="contentinfo"
+>
+  <div
+    class="absolute top-0 left-1/2 h-px w-full -translate-x-1/2 bg-linear-to-r from-transparent via-accent/20 to-transparent"
+  >
+  </div>
+  <div
+    class="absolute -top-24 left-1/4 size-64 rounded-full bg-accent/5 blur-[100px]"
+  >
+  </div>
+  <div
+    class="absolute right-1/4 -bottom-24 size-64 rounded-full bg-accent/5 blur-[100px]"
+  >
+  </div>
+
+  <div class="shell relative">
+    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
+      <div class="group flex flex-col gap-6 lg:col-span-5">
+        <div class="flex items-center gap-3">
+          <BrandMark
+            class="size-10 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-accent/40"
+            iconClass="size-6 animate-float-subtle group-hover:animate-pulse"
+          />
+          <span
+            class="text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-accent-text"
+          >
+            View<span class="text-accent-text">FX</span>
+          </span>
+        </div>
+
+        <p class="max-w-sm text-base leading-relaxed text-ink-2">
+          Free Tailwind CSS plugin with 21 theme transitions on the View
+          Transitions API. Open source, and built to copy one class onto
+          {' '}
+          <code class="font-mono text-[0.95em]">&lt;html&gt;</code>.
+        </p>
+
+        <div class="flex items-center gap-3">
+          <a
+            href={SITE.repo}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="GitHub repository, opens in a new tab"
+            class={socialClass}
+          >
+            <Icon name="github" size={20} class="size-5" />
+          </a>
+          <a
+            href={SITE.author.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label={`${SITE.author.name} website, opens in a new tab`}
+            class={socialClass}
+          >
+            <svg
+              viewBox="0 0 24 24"
+              class="size-5"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
+        {
+          FOOTER_LINKS.map((column) => (
+            <div class="flex flex-col gap-4">
+              <h3 class="text-xs font-bold tracking-[0.2em] whitespace-nowrap text-ink uppercase">
+                {column.title}
+              </h3>
+              <ul class="flex flex-col gap-3">
+                {column.links.map((link) => {
+                  const isExternal = link.href.startsWith('http')
+                  return (
+                    <li>
+                      <a
+                        href={link.href}
+                        class="text-sm text-ink-3 transition-colors hover:text-accent-text"
+                        {...(isExternal
+                          ? { target: '_blank', rel: 'noopener noreferrer' }
+                          : {})}
+                      >
+                        {link.name}
+                        {isExternal && (
+                          <span class="sr-only"> (opens in a new tab)</span>
+                        )}
+                      </a>
+                    </li>
+                  )
+                })}
+              </ul>
+            </div>
+          ))
+        }
+      </div>
     </div>
 
-    <nav aria-label="Footer" class="flex flex-wrap gap-x-8 gap-y-3">
-      <a class="label link" href="#faq">FAQ</a>
-      <a class="label link" href={SITE.repo} target="_blank" rel="noopener noreferrer">Source</a>
+    <div
+      class="mt-20 flex flex-col items-center justify-between gap-6 border-t border-dashed border-line pt-10 md:flex-row"
+    >
       <a
-        class="label link"
-        href="https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API"
+        href={`${SITE.repo}/issues`}
         target="_blank"
-        rel="noopener noreferrer">Reference</a
+        rel="noopener noreferrer"
+        class="group/community flex flex-col items-center gap-2 md:items-start"
       >
-      <a class="label link" href={SITE.author.url} target="_blank" rel="noopener noreferrer"
-        >{new URL(SITE.author.url).host}</a
-      >
-    </nav>
+        <p
+          class="text-sm font-bold text-ink transition-colors group-hover/community:text-accent-text"
+        >
+          Join the project
+        </p>
+        <p class="max-w-50 text-center text-xs text-ink-3 md:text-left">
+          Opening an issue or sending a pull request is the best way to support
+          ViewFX.
+        </p>
+      </a>
+
+      <div class="flex flex-col items-center gap-4 md:items-end">
+        <div class="flex items-center gap-2 text-sm text-ink-3">
+          <span>Created with</span>
+          <span class="animate-pulse text-red-500">❤️</span>
+          <span>by</span>
+          <a
+            href={SITE.author.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="font-bold text-ink transition-all hover:scale-105 hover:text-accent-text"
+          >
+            {SITE.author.name}
+          </a>
+        </div>
+        <p class="text-[10px] tracking-widest whitespace-nowrap text-ink-3 uppercase">
+          © {currentYear} {SITE.name} • MIT License
+        </p>
+      </div>
+    </div>
   </div>
 </footer>
