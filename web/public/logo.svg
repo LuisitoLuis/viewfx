@@ -1,14 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <style>
-    .tile { fill: #bcdb27 }
-    .mark { fill: #252d00; stroke: #252d00 }
-    @media (prefers-color-scheme: dark) {
-      .tile { fill: #c4e621 }
-      .mark { fill: #131900; stroke: #131900 }
-    }
-  </style>
-  <rect class="tile" width="32" height="32" rx="12" />
-  <g class="mark" transform="translate(5 5) scale(0.9166667)">
+  <rect width="32" height="32" rx="12" fill="#40a02b" />
+  <g fill="#0a1a08" stroke="#0a1a08" transform="translate(5 5) scale(0.9166667)">
     <circle cx="12" cy="12" r="9.25" fill="none" stroke-width="1.75" />
     <path d="M12 2.75a9.25 9.25 0 0 1 0 18.5Z" stroke="none" />
   </g>

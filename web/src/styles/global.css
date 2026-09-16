@@ -65,10 +65,10 @@
     --line: oklch(0.885 0.008 260);
     --line-strong: oklch(0.78 0.012 260);
 
-    --accent: oklch(0.84 0.19 120);
-    --accent-ink: oklch(0.28 0.07 120); /* text on an --accent fill */
-    --accent-text: oklch(0.46 0.13 128); /* 4.9:1 on --paper */
-    --glow: oklch(0.84 0.19 120 / 0.22);
+    --accent: #40a02b;
+    --accent-ink: #0a1a08; /* text on an --accent fill */
+    --accent-text: #40a02b;
+    --glow: color-mix(in oklab, #40a02b 22%, transparent);
 
     /* Mock scene colours used by the card previews. They mirror the page
        palette so a preview reads as a miniature of the real transition. */
@@ -128,10 +128,10 @@
     --line: oklch(0.3 0.02 260);
     --line-strong: oklch(0.42 0.025 260);
 
-    --accent: oklch(0.87 0.2 120);
-    --accent-ink: oklch(0.2 0.06 120);
-    --accent-text: oklch(0.87 0.2 120);
-    --glow: oklch(0.87 0.2 120 / 0.16);
+    --accent: #40a02b;
+    --accent-ink: #0a1a08;
+    --accent-text: #40a02b;
+    --glow: color-mix(in oklab, #40a02b 16%, transparent);
   }
 
   html {
