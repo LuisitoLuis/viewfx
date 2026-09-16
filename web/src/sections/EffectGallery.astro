@@ -11,10 +11,15 @@ import {
 
 <section
   id="palette"
-  class="fx-gallery band band-inset border-y border-line"
+  class="fx-gallery relative z-0 overflow-hidden bg-inset"
   aria-labelledby="palette-heading"
 >
-  <div class="shell text-center">
+  <div
+    class="pointer-events-none h-24 bg-linear-to-b from-paper via-paper/80 to-transparent sm:h-32"
+    aria-hidden="true"
+  >
+  </div>
+  <div class="shell band text-center">
     <h2
       id="palette-heading"
       class="fade-up text-3xl font-semibold tracking-tight sm:text-4xl [animation-delay:600ms]"
@@ -97,5 +102,10 @@ import {
     >
       {EFFECTS.map((effect, index) => <EffectCard effect={effect} index={index} />)}
     </ul>
+  </div>
+  <div
+    class="pointer-events-none h-24 bg-linear-to-b from-transparent via-paper/80 to-paper sm:h-32"
+    aria-hidden="true"
+  >
   </div>
 </section>
