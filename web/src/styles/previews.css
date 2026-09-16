@@ -186,6 +186,7 @@
   --preview-anim: preview-fade;
   --preview-mask: none;
   --preview-mask-position: center;
+  --preview-mask-peak: 220%;
   --preview-duration: 1.8s;
 }
 
@@ -241,17 +242,22 @@
   --preview-anim: preview-mask;
   --preview-mask: var(--mask-corner-tl);
   --preview-mask-position: top left;
+  /* Circle sits in one corner of the SVG, so 220% never covers the card. */
+  --preview-mask-peak: 420%;
 }
 
 .fx-card[data-fx='corner-tr'] {
   --preview-anim: preview-mask;
   --preview-mask: var(--mask-corner-tr);
   --preview-mask-position: top right;
+  --preview-mask-peak: 420%;
 }
 
 .fx-card[data-fx='iris'] {
   --preview-anim: preview-mask;
   --preview-mask: var(--mask-star);
+  /* Star valleys are ~20% of the viewBox; they need a larger peak than circle. */
+  --preview-mask-peak: 380%;
 }
 
 .fx-card[data-fx='diamond'] {
@@ -328,7 +334,7 @@
   }
   55%,
   85% {
-    mask-size: 220%;
+    mask-size: var(--preview-mask-peak);
   }
   100% {
     mask-size: 0;
