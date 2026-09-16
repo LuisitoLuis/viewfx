@@ -77,8 +77,8 @@
 }
 
 .fx-scene--dark {
-  --orb: oklch(0.82 0.06 260);
-  --orb-notch: var(--scene-dark);
+  --theme: oklch(0.88 0.04 260);
+  --theme-fill: oklch(0.28 0.03 260);
   --bar: oklch(0.38 0.02 260);
   --bar-alt: oklch(0.52 0.03 260);
   --pane: oklch(0.24 0.02 260);
@@ -92,8 +92,8 @@
 }
 
 .fx-scene--light {
-  --orb: oklch(0.82 0.16 85);
-  --orb-notch: transparent;
+  --theme: oklch(0.52 0.16 75);
+  --theme-fill: oklch(0.97 0.04 95);
   --bar: oklch(0.86 0.012 85);
   --bar-alt: oklch(0.72 0.04 85);
   --pane: oklch(0.93 0.02 95);
@@ -122,13 +122,21 @@
   gap: 0.4rem;
 }
 
-.fx-orb {
+.fx-theme {
+  display: grid;
   flex-shrink: 0;
-  width: 0.95rem;
-  height: 0.95rem;
+  place-items: center;
+  width: 1.35rem;
+  height: 1.35rem;
   border-radius: 50%;
-  background: var(--orb);
-  box-shadow: inset -0.28rem -0.12rem 0 0 var(--orb-notch);
+  color: var(--theme);
+  background: var(--theme-fill);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--theme) 22%, transparent);
+}
+
+.fx-theme svg {
+  display: block;
+  overflow: visible;
 }
 
 .fx-bars {
@@ -212,7 +220,7 @@
   .fx-mock__hero,
   .fx-mock__tile,
   .fx-bars span,
-  .fx-orb {
+  .fx-theme {
     forced-color-adjust: none;
   }
 }
