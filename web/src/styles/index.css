@@ -1,6 +1,5 @@
 @import 'tailwindcss';
 @import 'viewfx';
-@import './previews.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 

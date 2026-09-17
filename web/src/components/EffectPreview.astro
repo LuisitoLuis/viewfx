@@ -1,26 +1,31 @@
 ---
 /**
  * Decorative theme snapshot. Hidden from AT — the card button names the effect.
- * Glyphs are drawn for a 16px chip, not the site-wide 24px stroke icons.
+ * Layout uses Tailwind like tailwind-animations gallery cards; the wipe itself
+ * is component CSS because ViewFX effects live on `::view-transition-*`, not
+ * on the preview box.
  */
 const TONES = ['dark', 'light'] as const
 ---
 
-<span class="fx-preview" aria-hidden="true">
+<span
+  class="fx-preview relative isolate block aspect-[5/4] w-full overflow-hidden rounded-2xl border border-line bg-[var(--scene-dark)] shadow-[inset_0_1px_0_color-mix(in_oklab,white_8%,transparent)] transition-[border-color,box-shadow] duration-200 [contain:paint]"
+  aria-hidden="true"
+>
   {
     TONES.map((tone) => (
       <span class:list={['fx-scene', `fx-scene--${tone}`]}>
-        <span class="fx-chrome">
-          <span class="fx-chrome__dots">
-            <span></span>
-            <span></span>
-            <span></span>
+        <span class="fx-chrome flex shrink-0 items-center gap-[0.45rem] border-b border-[var(--chrome-line)] bg-[var(--chrome)] px-[0.6rem] py-[0.45rem]">
+          <span class="flex shrink-0 gap-[0.22rem]">
+            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.7_0.12_25))]" />
+            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.78_0.12_90))]" />
+            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.72_0.12_145))]" />
           </span>
-          <span class="fx-chrome__bar"></span>
+          <span class="h-[0.35rem] flex-1 rounded-full bg-[var(--chrome-bar)]" />
         </span>
-        <span class="fx-mock">
-          <span class="fx-mock__head">
-            <span class="fx-theme">
+        <span class="grid min-h-0 flex-1 grid-rows-[auto_1fr_auto] gap-[0.4rem] px-[0.6rem] pt-[0.55rem] pb-[0.6rem]">
+          <span class="flex items-center gap-[0.4rem]">
+            <span class="grid size-[1.35rem] shrink-0 place-items-center rounded-full bg-[var(--theme-fill)] text-[var(--theme)] shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--theme)_22%,transparent)]">
               {
                 tone === 'dark' ? (
                   <svg viewBox="0 0 16 16" width="14" height="14">
@@ -44,18 +49,347 @@ const TONES = ['dark', 'light'] as const
                 )
               }
             </span>
-            <span class="fx-bars">
-              <span></span>
-              <span></span>
+            <span class="flex flex-1 flex-col gap-[0.22rem]">
+              <span class="block h-[0.28rem] w-[72%] rounded-full bg-[var(--bar-alt)]" />
+              <span class="block h-[0.28rem] w-[46%] rounded-full bg-[var(--bar)]" />
             </span>
           </span>
-          <span class="fx-mock__hero"></span>
-          <span class="fx-mock__row">
-            <span class="fx-mock__tile"></span>
-            <span class="fx-mock__tile"></span>
+          <span class="min-h-0 rounded-[0.4rem] bg-[var(--pane)]" />
+          <span class="grid grid-cols-2 gap-[0.35rem]">
+            <span class="h-[0.7rem] rounded-[0.3rem] bg-[var(--tile)]" />
+            <span class="h-[0.7rem] rounded-[0.3rem] bg-[var(--tile)]" />
           </span>
         </span>
       </span>
     ))
   }
 </span>
+
+<style is:global>
+  .fx-scene {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .fx-scene--dark {
+    --theme: oklch(0.88 0.04 260);
+    --theme-fill: oklch(0.28 0.03 260);
+    --bar: oklch(0.38 0.02 260);
+    --bar-alt: oklch(0.52 0.03 260);
+    --pane: oklch(0.24 0.02 260);
+    --tile: oklch(0.3 0.022 260);
+    --chrome: oklch(0.2 0.018 260);
+    --chrome-line: oklch(0.28 0.02 260);
+    --chrome-bar: oklch(0.32 0.02 260);
+    z-index: 0;
+    background: var(--scene-dark);
+  }
+
+  .fx-scene--light {
+    --theme: oklch(0.52 0.16 75);
+    --theme-fill: oklch(0.97 0.04 95);
+    --bar: oklch(0.86 0.012 85);
+    --bar-alt: oklch(0.72 0.04 85);
+    --pane: oklch(0.93 0.02 95);
+    --tile: oklch(0.88 0.018 95);
+    --chrome: oklch(0.94 0.01 95);
+    --chrome-line: oklch(0.86 0.012 95);
+    --chrome-bar: oklch(0.82 0.02 95);
+    z-index: 1;
+    background: var(--scene-light);
+    visibility: hidden;
+  }
+
+  .fx-card {
+    --preview-anim: preview-fade;
+    --preview-mask: none;
+    --preview-mask-position: center;
+    --preview-mask-peak: 220%;
+    --preview-duration: 1.8s;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .fx-card:is(:hover, :focus-within) .fx-scene--light,
+    .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
+      visibility: visible;
+      clip-path: none;
+      mask: var(--preview-mask) var(--preview-mask-position) / 0 no-repeat;
+      animation-name: var(--preview-anim);
+      animation-duration: var(--gallery-duration, var(--preview-duration));
+      animation-delay: var(--gallery-delay, 0s);
+      animation-timing-function: var(--gallery-ease, ease-in-out);
+      animation-iteration-count: infinite;
+      animation-fill-mode: both;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-card:is(:hover, :focus-within) .fx-scene--light,
+    .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
+      visibility: visible;
+    }
+  }
+
+  @media (forced-colors: active) {
+    .fx-preview {
+      border: 1px solid CanvasText;
+    }
+  }
+
+  .fx-card[data-fx='circle'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-circle);
+  }
+
+  .fx-card[data-fx='circle-blur'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-circle-blur);
+  }
+
+  .fx-card[data-fx='corner-tl'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-corner-tl);
+    --preview-mask-position: top left;
+    --preview-mask-peak: 420%;
+  }
+
+  .fx-card[data-fx='corner-tr'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-corner-tr);
+    --preview-mask-position: top right;
+    --preview-mask-peak: 420%;
+  }
+
+  .fx-card[data-fx='iris'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-star);
+    --preview-mask-peak: 380%;
+  }
+
+  .fx-card[data-fx='diamond'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-diamond);
+  }
+
+  .fx-card[data-fx='hexagon'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-hexagon);
+  }
+
+  .fx-card[data-fx='heart'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-heart);
+  }
+
+  .fx-card[data-fx='expand'] {
+    --preview-anim: preview-expand;
+  }
+
+  .fx-card[data-fx='ink'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-ink);
+    --preview-duration: 2s;
+  }
+
+  .fx-card[data-fx='polygon'] {
+    --preview-anim: preview-polygon;
+  }
+
+  .fx-card[data-fx='wipe-h'] {
+    --preview-anim: preview-wipe-h;
+  }
+
+  .fx-card[data-fx='wipe-v'] {
+    --preview-anim: preview-wipe-down;
+  }
+
+  .fx-card[data-fx='slide-down'] {
+    --preview-anim: preview-wipe-up;
+  }
+
+  .fx-card[data-fx='venetian'] {
+    --preview-anim: preview-venetian;
+  }
+
+  .fx-card[data-fx='glitch'] {
+    --preview-anim: preview-glitch;
+    --preview-duration: 1.1s;
+  }
+
+  .fx-card[data-fx='slide'] {
+    --preview-anim: preview-slide;
+  }
+
+  .fx-card[data-fx='zoom'] {
+    --preview-anim: preview-zoom;
+  }
+
+  .fx-card:is([data-fx='rotate'], [data-fx='spiral']) {
+    --preview-anim: preview-rotate;
+  }
+
+  @keyframes preview-mask {
+    0% {
+      mask-size: 0;
+    }
+    55%,
+    85% {
+      mask-size: var(--preview-mask-peak);
+    }
+    100% {
+      mask-size: 0;
+    }
+  }
+
+  @keyframes preview-fade {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    30%,
+    80% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes preview-wipe-h {
+    0%,
+    100% {
+      clip-path: inset(0 100% 0 0);
+    }
+    55%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes preview-expand {
+    0%,
+    100% {
+      clip-path: inset(50%);
+    }
+    55%,
+    85% {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes preview-wipe-down {
+    0%,
+    100% {
+      clip-path: inset(100% 0 0 0);
+    }
+    55%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes preview-wipe-up {
+    0%,
+    100% {
+      clip-path: inset(0 0 100% 0);
+    }
+    55%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
+  @keyframes preview-venetian {
+    0% {
+      clip-path: inset(0 0 100% 0);
+    }
+    55%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+    100% {
+      clip-path: inset(100% 0 0 0);
+    }
+  }
+
+  @keyframes preview-polygon {
+    0%,
+    100% {
+      clip-path: polygon(171% 50%, 50% 171%, 50% 171%, 171% 50%);
+    }
+    55%,
+    85% {
+      clip-path: polygon(171% 50%, 50% 171%, -50% 71%, 50% -71%);
+    }
+  }
+
+  @keyframes preview-glitch {
+    0% {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+    20% {
+      clip-path: inset(40% 0 0 0);
+      opacity: 1;
+    }
+    35% {
+      clip-path: inset(0 0 60% 0);
+    }
+    50% {
+      clip-path: inset(20% 0 20% 0);
+    }
+    65%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+    100% {
+      clip-path: inset(0 0 100% 0);
+      opacity: 0;
+    }
+  }
+
+  @keyframes preview-slide {
+    0% {
+      transform: translateX(100%);
+    }
+    50%,
+    85% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-35%);
+      opacity: 0;
+    }
+  }
+
+  @keyframes preview-zoom {
+    0% {
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    40%,
+    80% {
+      opacity: 1;
+      transform: scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: scale(1.12);
+    }
+  }
+
+  @keyframes preview-rotate {
+    0% {
+      opacity: 0;
+      transform: rotate(-8deg) scale(0.88);
+    }
+    40%,
+    80% {
+      opacity: 1;
+      transform: rotate(0) scale(1);
+    }
+    100% {
+      opacity: 0;
+      transform: rotate(8deg) scale(0.88);
+    }
+  }
+</style>
