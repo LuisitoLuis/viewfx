@@ -1,4 +1,4 @@
-import { SITE } from '../consts'
+import { SITE } from './site'
 import { EFFECTS } from './effects'
 
 export const FAQ = [

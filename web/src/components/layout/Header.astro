@@ -1,8 +1,10 @@
 ---
-import BrandMark from '../components/BrandMark.astro'
-import Icon from '../components/Icon.astro'
-import ThemeToggle from '../components/ThemeToggle.astro'
-import { SITE } from '../consts'
+import Logo from '../ui/Logo.astro'
+import GithubIcon from '../icons/github.astro'
+import CloseIcon from '../icons/close.astro'
+import ToggleTheme from '../ui/ToggleTheme.astro'
+import Enlace from '../ui/Enlace.astro'
+import { SITE } from '../../data/site'
 
 const isHome =
   Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
@@ -170,7 +172,7 @@ const iconBtnClass =
       data-always-visible={isHome ? undefined : 'true'}
       class="logo-scroll flex min-w-0 shrink-0 items-center gap-2 rounded-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
-      <BrandMark
+      <Logo
         class="aspect-square size-8 shrink-0 sm:size-9"
         iconClass="size-5 sm:size-6 animate-float-subtle"
       />
@@ -190,15 +192,15 @@ const iconBtnClass =
       >
         Playground
       </a>
-      <a href={section('palette')} class={navLinkClass}>
+      <Enlace href={section('palette')} class={navLinkClass}>
         <span class="xl:hidden">Effect</span>
         <span class="hidden xl:inline">Effect Collection</span>
-      </a>
-      <a href={section('faq')} class={navLinkClass}>FAQ</a>
+      </Enlace>
+      <Enlace href={section('faq')} class={navLinkClass}>FAQ</Enlace>
     </nav>
 
     <div class="ml-auto flex shrink-0 items-center gap-0.5 sm:gap-1 lg:ml-2">
-      <ThemeToggle class={iconBtnClass} />
+      <ToggleTheme class={iconBtnClass} />
       <a
         href={SITE.repo}
         target="_blank"
@@ -206,7 +208,7 @@ const iconBtnClass =
         class={iconBtnClass}
         aria-label="Source on GitHub, opens in a new tab"
       >
-        <Icon name="github" size={17} />
+        <GithubIcon size={17} />
       </a>
       <button
         id="menu-btn"
@@ -218,7 +220,7 @@ const iconBtnClass =
       >
         <span class="header-menu-bars" aria-hidden="true"></span>
         <span class="header-menu-close">
-          <Icon name="close" size={18} />
+          <CloseIcon size={18} />
         </span>
         <span class="sr-only">Menu</span>
       </button>
@@ -237,8 +239,8 @@ const iconBtnClass =
       >
         Playground
       </a>
-      <a href={section('palette')} class={mobileNavLinkClass}>Effect Collection</a>
-      <a href={section('faq')} class={mobileNavLinkClass}>FAQ</a>
+      <Enlace href={section('palette')} class={mobileNavLinkClass}>Effect Collection</Enlace>
+      <Enlace href={section('faq')} class={mobileNavLinkClass}>FAQ</Enlace>
     </nav>
   </div>
 </header>

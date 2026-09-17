@@ -1,0 +1,19 @@
+# ViewFX
+
+> Tailwind CSS plugin of theme transitions on the View Transitions API.
+
+- Site: https://viewfx.luismc.dev
+- Playground: https://viewfx.luismc.dev/playground
+- Markdown: https://viewfx.luismc.dev/index.md
+- Full agent doc: https://viewfx.luismc.dev/llms-full.md
+- npm: https://www.npmjs.com/package/viewfx
+- GitHub: https://github.com/LuisitoLuis/viewfx
+
+Install: `npm install viewfx`
+
+```css
+@import "tailwindcss";
+@import "viewfx";
+```
+
+Put one effect class on `<html>` and wrap theme toggles in `document.startViewTransition`.

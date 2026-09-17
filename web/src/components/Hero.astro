@@ -1,7 +1,8 @@
 ---
-import BrandMark from '../components/BrandMark.astro'
-import Icon from '../components/Icon.astro'
-import PackageMark from '../components/PackageMark.astro'
+import Logo from './ui/Logo.astro'
+import ArrowRightIcon from './icons/arrow-right.astro'
+import CopyIcon from './icons/copy.astro'
+import PackageMark from './ui/PackageMark.astro'
 import { EFFECTS } from '../data/effects'
 import { AGENT_INSTALL_PROMPT } from '../data/agent-prompt'
 import { highlight } from '../lib/highlight'
@@ -31,7 +32,7 @@ module.exports = {
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:items-end lg:gap-12 xl:gap-16">
       <div class="text-left">
         <div class="fade-up mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4 [animation-delay:100ms]">
-          <BrandMark
+          <Logo
             class="aspect-square size-11 shrink-0 sm:size-12"
             iconClass="size-6 animate-float-subtle sm:size-7"
           />
@@ -69,8 +70,7 @@ module.exports = {
             class="group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-[color-mix(in_oklab,var(--accent)_82%,black)] hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
           >
             Open Playground
-            <Icon
-              name="arrow-right"
+            <ArrowRightIcon
               size={16}
               class="stroke-2 transition-transform group-hover:translate-x-0.5"
             />
@@ -82,8 +82,7 @@ module.exports = {
             data-toast="Agent install prompt copied!"
             aria-label="Copy install prompt for Claude Code and similar agents"
           >
-            <Icon
-              name="copy"
+            <CopyIcon
               size={16}
               class="stroke-2 opacity-70 transition-opacity group-hover:opacity-100"
             />
@@ -121,7 +120,7 @@ module.exports = {
               data-toast="Command copied to clipboard!"
               aria-label="Copy install command"
             >
-              <Icon name="copy" size={15} />
+              <CopyIcon size={15} />
               <span class="sr-only" data-copy-label>Copy</span>
             </button>
           </div>
@@ -149,7 +148,7 @@ module.exports = {
               data-tw-copy
               aria-label="Copy usage snippet"
             >
-              <Icon name="copy" size={15} />
+              <CopyIcon size={15} />
               <span class="sr-only" data-copy-label>Copy</span>
             </button>
           </div>

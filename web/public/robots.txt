@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://viewfx.luismc.dev/sitemap-index.xml

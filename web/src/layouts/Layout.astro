@@ -1,13 +1,11 @@
 ---
 import '@fontsource-variable/geist-mono/index.css'
 
-import '../styles/global.css'
+import '../styles/index.css'
 
-import Header from '../sections/Header.astro'
-import Footer from '../sections/Footer.astro'
-import { SITE } from '../consts'
+import { SITE } from '../data/site'
 import { DEFAULT_EFFECT_CLASS } from '../data/effects'
-import { THEME_KEY } from '../scripts/theme'
+import { THEME_KEY } from '../lib/theme'
 
 interface Props {
   title?: string
@@ -18,6 +16,10 @@ interface Props {
 const { title = SITE.title, description = SITE.description, noindex = false } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url)
+const markdownPath =
+  Astro.url.pathname.replace(/\/$/, '') === '' || Astro.url.pathname === '/'
+    ? '/index.md'
+    : `${Astro.url.pathname.replace(/\/$/, '')}.md`
 
 const structuredData = {
   '@context': 'https://schema.org',
@@ -63,12 +65,14 @@ const bootstrap = `(() => {
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/markdown" href={new URL(markdownPath, SITE.url)} />
     {noindex && <meta name="robots" content="noindex, follow" />}
 
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f8f6f1" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content={SITE.name} />
@@ -86,14 +90,7 @@ const bootstrap = `(() => {
   <body id="top" class="min-h-dvh font-display antialiased">
     <a class="skip-link" href="#main">Skip to main content</a>
 
-    <Header />
-
-    <!-- tabindex makes the skip link land focus here, not just the scroll position. -->
-    <main id="main" class="pt-20 sm:pt-24" tabindex="-1">
-      <slot />
-    </main>
-
-    <Footer />
+    <slot />
 
     <div id="live-region" class="sr-only" role="status" aria-live="polite"></div>
     <div
@@ -104,7 +101,7 @@ const bootstrap = `(() => {
     ></div>
 
     <script>
-      import { initTheme } from '../scripts/theme'
+      import { initTheme } from '../lib/theme'
       initTheme()
     </script>
   </body>

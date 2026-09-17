@@ -1,0 +1,56 @@
+---
+interface Props {
+  href: string
+  target?: string
+  class?: string
+  title?: string
+}
+
+const {
+  href,
+  target = '_self',
+  class: className,
+  title
+} = Astro.props
+---
+
+<a href={href} target={target} class={className} title={title} data-enlace>
+  <slot />
+</a>
+
+<script>
+  document.addEventListener('click', (e) => {
+    if (!e.target) return
+    const link = (e.target as Element).closest('a[data-enlace]')
+    if (!link) return
+
+    const next = link.getAttribute('href')
+
+    if (next && next.startsWith('#')) {
+      e.preventDefault()
+      const id = next.slice(1)
+      const el = document.getElementById(id) || document.getElementsByName(id)[0]
+
+      if (el instanceof HTMLElement) {
+        const header = document.querySelector('header')
+        const offset = header ? header.getBoundingClientRect().height + 8 : 8
+        const y = el.getBoundingClientRect().top + window.pageYOffset - offset
+
+        if (!el.hasAttribute('tabindex')) {
+          el.setAttribute('tabindex', '-1')
+        }
+        el.focus({ preventScroll: true })
+
+        const prefersReducedMotion = window.matchMedia(
+          '(prefers-reduced-motion: reduce)'
+        ).matches
+        window.scrollTo({
+          top: y,
+          behavior: prefersReducedMotion ? 'auto' : 'smooth'
+        })
+
+        history.pushState(null, '', next)
+      }
+    }
+  })
+</script>

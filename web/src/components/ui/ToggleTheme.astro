@@ -1,5 +1,7 @@
 ---
-import Icon from './Icon.astro'
+import SunIcon from '../icons/sun.astro'
+import MoonIcon from '../icons/moon.astro'
+import MonitorIcon from '../icons/monitor.astro'
 
 interface Props {
   class?: string
@@ -8,14 +10,14 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<!-- The accessible name is kept in sync with the current theme by scripts/theme.js. -->
+<!-- The accessible name is kept in sync with the current theme by lib/theme.js. -->
 <button
   id="theme-toggle"
   type="button"
   class:list={['cursor-pointer', className]}
   aria-label="Switch the theme"
 >
-  <Icon name="sun" class="hidden in-data-[theme-mode=light]:block" />
-  <Icon name="moon" class="hidden in-data-[theme-mode=dark]:block" />
-  <Icon name="monitor" class="hidden in-data-[theme-mode=auto]:block" />
+  <SunIcon class="hidden in-data-[theme-mode=light]:block" />
+  <MoonIcon class="hidden in-data-[theme-mode=dark]:block" />
+  <MonitorIcon class="hidden in-data-[theme-mode=auto]:block" />
 </button>

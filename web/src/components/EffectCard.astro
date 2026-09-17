@@ -1,6 +1,7 @@
 ---
 import EffectPreview from './EffectPreview.astro'
-import Icon from './Icon.astro'
+import CopyIcon from './icons/copy.astro'
+import CheckIcon from './icons/check.astro'
 
 interface Props {
   effect: {
@@ -47,10 +48,10 @@ const copyId = `fx-copy-${effect.id}`
       aria-label={`Copy class ${effect.className}`}
     >
       <span class="fx-copy__idle" aria-hidden="true">
-        <Icon name="copy" size={13} />
+        <CopyIcon size={13} />
       </span>
       <span class="fx-copy__done" aria-hidden="true">
-        <Icon name="check" size={13} />
+        <CheckIcon size={13} />
       </span>
       <span class="sr-only" data-copy-label>Copy</span>
     </button>

@@ -1,19 +1,25 @@
 ---
-import Layout from '../layouts/Layout.astro'
-import EffectGallery from '../sections/EffectGallery.astro'
-import Faq from '../sections/Faq.astro'
-import Hero from '../sections/Hero.astro'
+import Layout from '@layouts/Layout.astro'
+import Header from '@components/layout/Header.astro'
+import Footer from '@components/layout/Footer.astro'
+import EffectGallery from '@components/EffectGallery.astro'
+import Faq from '@components/Faq.astro'
+import Hero from '@components/Hero.astro'
 ---
 
 <Layout>
-  <Hero />
-  <EffectGallery />
-  <Faq />
+  <Header />
+  <main id="main" class="pt-20 sm:pt-24" tabindex="-1">
+    <Hero />
+    <EffectGallery />
+    <Faq />
+  </main>
+  <Footer />
 </Layout>
 
 <script>
-  import { initClipboard } from '../scripts/clipboard'
-  import { initGallery } from '../scripts/gallery'
+  import { initClipboard } from '../lib/clipboard'
+  import { initGallery } from '../lib/gallery'
 
   initGallery()
   initClipboard()

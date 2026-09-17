@@ -1,5 +1,5 @@
 ---
-import Icon from './Icon.astro'
+import CopyIcon from './icons/copy.astro'
 import { highlight } from '../lib/highlight'
 
 interface Props {
@@ -38,7 +38,7 @@ const {
 
         {copyable && (
           <button type="button" class="btn btn--sm btn--ghost -mr-1" data-copy="pre">
-            <Icon name="copy" size={13} />
+            <CopyIcon size={13} />
             <span data-copy-label>Copy</span>
           </button>
         )}
