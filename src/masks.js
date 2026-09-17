@@ -31,6 +31,23 @@ export const MASK_SVG = {
     `${blur(1.5)}<circle cx="40" cy="0" r="18" fill="#fff" filter="url(#b)"/>`
   ),
 
+  'corner-bl': svg(
+    '0 0 40 40',
+    `${blur(2)}<circle cx="0" cy="40" r="18" fill="#fff" filter="url(#b)"/>`
+  ),
+
+  'corner-br': svg(
+    '0 0 40 40',
+    `${blur(1.5)}<circle cx="40" cy="40" r="18" fill="#fff" filter="url(#b)"/>`
+  ),
+
+  square: svg('0 0 40 40', '<rect x="4" y="4" width="32" height="32" fill="#fff"/>'),
+
+  soft: svg(
+    '0 0 40 40',
+    `${blur(3.2)}<ellipse cx="20" cy="20" rx="16" ry="12" fill="#fff" filter="url(#b)"/>`
+  ),
+
   diamond: svg('0 0 40 40', '<polygon points="20,0 40,20 20,40 0,20" fill="#fff"/>'),
 
   hexagon: svg(

@@ -27,15 +27,33 @@ describe('viewfx plugins', () => {
     expect(css).toContain('@keyframes fx-fade-out')
   })
 
-  it('use a centre expand clip', async () => {
+  it('use a cinematic blur dissolve', async () => {
     const css = await generatePluginCSS({
-      content: '<html class="expand"></html>'
+      content: '<html class="dissolve"></html>'
     })
 
     expect(css).toContain(
-      '.expand{--fx-anim:fx-expand-in;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.6s;}'
+      '.dissolve{--fx-anim:fx-blur-in;--fx-anim-old:fx-blur-out;--fx-duration:0.7s;--fx-ease:ease-in-out;}'
     )
-    expect(css).toContain('@keyframes fx-expand-in')
+    expect(css).toContain('@keyframes fx-blur-in')
+  })
+
+  it('use a centre split curtain', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="split"></html>'
+    })
+
+    expect(css).toContain('.split{--fx-anim:fx-split-in;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.7s;}')
+    expect(css).toContain('@keyframes fx-split-in')
+  })
+
+  it('use a camera shutter clip', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="shutter"></html>'
+    })
+
+    expect(css).toContain('.shutter{--fx-anim:fx-shutter-in;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.7s;}')
+    expect(css).toContain('@keyframes fx-shutter-in')
   })
 
   it('flips the polygon clip with the dark class', async () => {
@@ -166,6 +184,9 @@ describe('viewfx plugins', () => {
     expect(css).toContain('--mask-circle:url("data:image/svg+xml;base64,')
     expect(maskCustomProperties()).toContain('--mask-circle:url("data:image/svg+xml;base64,')
     expect(maskCustomProperties()).toContain('--mask-heart:')
+    expect(maskCustomProperties()).toContain('--mask-square:')
+    expect(maskCustomProperties()).toContain('--mask-soft:')
+    expect(maskCustomProperties()).toContain('--mask-corner-bl:')
   })
 
   it('resolves @import "viewfx" to the v4 CSS entry', async () => {

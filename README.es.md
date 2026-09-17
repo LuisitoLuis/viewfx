@@ -98,9 +98,9 @@ El tema se espera como clase `.dark` en `<html>` (el wipe `polygon` se invierte 
 
 ### Efectos
 
-21 utilidades. Pasa el ratón para previsualizar y haz clic para copiar en el [catálogo](https://viewfx.luismc.dev).
+30 utilidades. Pasa el ratón para previsualizar y haz clic para copiar en el [catálogo](https://viewfx.luismc.dev).
 
-`circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `iris`, `diamond`, `hexagon`, `heart`, `expand`, `ink`, `spiral`, `wipe-h`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `zoom`, `rotate`, `fade`.
+`circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `corner-bl`, `corner-br`, `iris`, `diamond`, `hexagon`, `square`, `soft`, `heart`, `expand`, `split`, `shutter`, `ink`, `spiral`, `wipe-h`, `wipe-left`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `lift`, `zoom`, `rotate`, `fade`, `dissolve`.
 
 ## Contribuidores 👑
 

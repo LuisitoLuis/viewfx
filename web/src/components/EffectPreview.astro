@@ -111,7 +111,7 @@ const TONES = ['dark', 'light'] as const
   }
 
   @media (prefers-reduced-motion: no-preference) {
-    .fx-card:is(:hover, :focus-within) .fx-scene--light,
+    .fx-card:hover .fx-scene--light,
     .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
       visibility: visible;
       clip-path: none;
@@ -126,7 +126,7 @@ const TONES = ['dark', 'light'] as const
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .fx-card:is(:hover, :focus-within) .fx-scene--light,
+    .fx-card:hover .fx-scene--light,
     .fx-gallery[data-play-all] .fx-card:not([hidden]) .fx-scene--light {
       visibility: visible;
     }
@@ -162,6 +162,20 @@ const TONES = ['dark', 'light'] as const
     --preview-mask-peak: 420%;
   }
 
+  .fx-card[data-fx='corner-bl'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-corner-bl);
+    --preview-mask-position: bottom left;
+    --preview-mask-peak: 420%;
+  }
+
+  .fx-card[data-fx='corner-br'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-corner-br);
+    --preview-mask-position: bottom right;
+    --preview-mask-peak: 420%;
+  }
+
   .fx-card[data-fx='iris'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-star);
@@ -178,6 +192,18 @@ const TONES = ['dark', 'light'] as const
     --preview-mask: var(--mask-hexagon);
   }
 
+  .fx-card[data-fx='square'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-square);
+  }
+
+  .fx-card[data-fx='soft'] {
+    --preview-anim: preview-mask;
+    --preview-mask: var(--mask-soft);
+    --preview-mask-peak: 320%;
+    --preview-duration: 2.1s;
+  }
+
   .fx-card[data-fx='heart'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-heart);
@@ -185,6 +211,14 @@ const TONES = ['dark', 'light'] as const
 
   .fx-card[data-fx='expand'] {
     --preview-anim: preview-expand;
+  }
+
+  .fx-card[data-fx='split'] {
+    --preview-anim: preview-split;
+  }
+
+  .fx-card[data-fx='shutter'] {
+    --preview-anim: preview-shutter;
   }
 
   .fx-card[data-fx='ink'] {
@@ -199,6 +233,10 @@ const TONES = ['dark', 'light'] as const
 
   .fx-card[data-fx='wipe-h'] {
     --preview-anim: preview-wipe-h;
+  }
+
+  .fx-card[data-fx='wipe-left'] {
+    --preview-anim: preview-wipe-left;
   }
 
   .fx-card[data-fx='wipe-v'] {
@@ -222,8 +260,16 @@ const TONES = ['dark', 'light'] as const
     --preview-anim: preview-slide;
   }
 
+  .fx-card[data-fx='lift'] {
+    --preview-anim: preview-lift;
+  }
+
   .fx-card[data-fx='zoom'] {
     --preview-anim: preview-zoom;
+  }
+
+  .fx-card[data-fx='dissolve'] {
+    --preview-anim: preview-blur;
   }
 
   .fx-card:is([data-fx='rotate'], [data-fx='spiral']) {
@@ -265,10 +311,43 @@ const TONES = ['dark', 'light'] as const
     }
   }
 
+  @keyframes preview-wipe-left {
+    0%,
+    100% {
+      clip-path: inset(0 0 0 100%);
+    }
+    55%,
+    85% {
+      clip-path: inset(0 0 0 0);
+    }
+  }
+
   @keyframes preview-expand {
     0%,
     100% {
       clip-path: inset(50%);
+    }
+    55%,
+    85% {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes preview-split {
+    0%,
+    100% {
+      clip-path: inset(0 50%);
+    }
+    55%,
+    85% {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes preview-shutter {
+    0%,
+    100% {
+      clip-path: inset(50% 0);
     }
     55%,
     85% {
@@ -358,6 +437,35 @@ const TONES = ['dark', 'light'] as const
     100% {
       transform: translateX(-35%);
       opacity: 0;
+    }
+  }
+
+  @keyframes preview-lift {
+    0% {
+      opacity: 0;
+      transform: translateY(28%);
+    }
+    50%,
+    85% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-16%);
+    }
+  }
+
+  @keyframes preview-blur {
+    0%,
+    100% {
+      opacity: 0;
+      filter: blur(10px);
+    }
+    30%,
+    80% {
+      opacity: 1;
+      filter: blur(0);
     }
   }
 

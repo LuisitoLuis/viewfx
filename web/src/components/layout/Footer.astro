@@ -2,6 +2,7 @@
 import Logo from '../ui/Logo.astro'
 import GithubIcon from '../icons/github.astro'
 import { SITE } from '../../data/site'
+import { EFFECTS } from '../../data/effects'
 
 const currentYear = new Date().getFullYear()
 const isHome =
@@ -82,7 +83,7 @@ const socialClass =
         </div>
 
         <p class="max-w-sm text-base leading-relaxed text-ink-2">
-          Free Tailwind CSS plugin with 21 theme transitions on the View
+          Free Tailwind CSS plugin with {EFFECTS.length} theme transitions on the View
           Transitions API. Open source, and built to copy one class onto
           {' '}
           <code class="font-mono text-[0.95em]">&lt;html&gt;</code>.

@@ -5,7 +5,13 @@ import { DEFAULT_EFFECT_ID } from '../data/effects'
 export const EFFECT_KEY = 'viewfx:effect'
 
 const cards = () => Array.from(document.querySelectorAll('.fx-card'))
-const visibleSelects = () => Array.from(document.querySelectorAll('.fx-select'))
+const visibleSelects = () =>
+  Array.from(document.querySelectorAll('.fx-card:not([hidden]) .fx-select'))
+
+function revealAllEffects() {
+  for (const card of cards()) card.hidden = false
+  document.getElementById('show-all-effects')?.remove()
+}
 
 function markCurrent(id) {
   let name = id
@@ -62,10 +68,13 @@ function initSelection() {
     const select = target.closest('.fx-select')
     const id = select?.closest('.fx-card')?.dataset.fx
 
-    if (id) selectEffect(id)
+    if (id) {
+      selectEffect(id)
+      if (select instanceof HTMLElement) select.blur()
+    }
   })
 
-  // Arrow keys walk the gallery so it is not 21 tab stops to cross.
+  // Arrow keys walk the gallery so it is not one tab stop per card.
   // Rows wrap, so left/up and right/down are simply previous and next.
   grid.addEventListener('keydown', (event) => {
     const step =
@@ -133,7 +142,7 @@ function initPreviewControls() {
     announce(
       playAll.checked
         ? 'Play all enabled. All previews loop continuously.'
-        : 'Play all disabled. Previews play on hover or focus.'
+        : 'Play all disabled. Previews play on hover.'
     )
   }
 
@@ -157,6 +166,15 @@ export function initGallery() {
   const isKnown =
     stored && document.querySelector(`.fx-card[data-fx="${CSS.escape(stored)}"]`) !== null
   selectEffect(isKnown ? stored : DEFAULT_EFFECT_ID, { copy: false })
+
+  const current = document.querySelector('.fx-card.is-current')
+  if (current?.hidden) revealAllEffects()
+
+  const showAll = document.getElementById('show-all-effects')
+  showAll?.addEventListener('click', () => {
+    revealAllEffects()
+    announce(`Showing all ${cards().length} effects.`)
+  })
 
   initSelection()
   initPreviewControls()

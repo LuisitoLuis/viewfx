@@ -98,9 +98,9 @@ Theme is expected as a `.dark` class on `<html>` (the `polygon` wipe reverses in
 
 ### Effects
 
-21 utilities. Hover to preview and click to copy on the [catalogue](https://viewfx.luismc.dev).
+30 utilities. Hover to preview and click to copy on the [catalogue](https://viewfx.luismc.dev).
 
-`circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `iris`, `diamond`, `hexagon`, `heart`, `expand`, `ink`, `spiral`, `wipe-h`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `zoom`, `rotate`, `fade`.
+`circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `corner-bl`, `corner-br`, `iris`, `diamond`, `hexagon`, `square`, `soft`, `heart`, `expand`, `split`, `shutter`, `ink`, `spiral`, `wipe-h`, `wipe-left`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `lift`, `zoom`, `rotate`, `fade`, `dissolve`.
 
 ## Contributors 👑
 

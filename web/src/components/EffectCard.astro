@@ -14,9 +14,10 @@ interface Props {
     css: string
   }
   index: number
+  hidden?: boolean
 }
 
-const { effect, index } = Astro.props
+const { effect, index, hidden = false } = Astro.props
 const copyId = `fx-copy-${effect.id}`
 ---
 
@@ -28,6 +29,7 @@ const copyId = `fx-copy-${effect.id}`
   data-name={effect.id}
   data-technique={effect.technique}
   style={`--i:${index}`}
+  hidden={hidden || undefined}
 >
   <button
     type="button"
@@ -67,13 +69,8 @@ const copyId = `fx-copy-${effect.id}`
     overflow: visible;
   }
 
-  .fx-card:is(:hover, :focus-within) :global(.fx-preview) {
+  .fx-card:hover :global(.fx-preview) {
     border-color: var(--line-strong);
-  }
-
-  .fx-card.is-current :global(.fx-preview) {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent);
   }
 
   .fx-select {
@@ -95,7 +92,7 @@ const copyId = `fx-copy-${effect.id}`
   }
 
   .fx-select:focus-visible :global(.fx-preview) {
-    outline: 2px solid var(--accent-text);
+    outline: 2px solid var(--ink);
     outline-offset: 3px;
   }
 
@@ -142,7 +139,7 @@ const copyId = `fx-copy-${effect.id}`
   }
 
   .fx-copy:focus-visible {
-    outline: 2px solid var(--accent-text);
+    outline: 2px solid var(--ink);
     outline-offset: 2px;
   }
 

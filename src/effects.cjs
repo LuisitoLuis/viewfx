@@ -35,6 +35,24 @@ module.exports = {
     '--fx-mask-size': '350vmax',
     '--fx-duration': '1s'
   },
+  '.corner-bl': {
+    '--fx-anim': 'fx-mask-grow',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-mask': 'var(--mask-corner-bl)',
+    '--fx-mask-position': 'bottom left',
+    '--fx-mask-size': '350vmax',
+    '--fx-duration': '1s'
+  },
+  '.corner-br': {
+    '--fx-anim': 'fx-mask-grow',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-mask': 'var(--mask-corner-br)',
+    '--fx-mask-position': 'bottom right',
+    '--fx-mask-size': '350vmax',
+    '--fx-duration': '1s'
+  },
   '.iris': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
@@ -59,6 +77,22 @@ module.exports = {
     '--fx-mask-size': '300vmax',
     '--fx-duration': '1s'
   },
+  '.square': {
+    '--fx-anim': 'fx-mask-grow',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-mask': 'var(--mask-square)',
+    '--fx-mask-size': '240vmax',
+    '--fx-duration': '0.8s'
+  },
+  '.soft': {
+    '--fx-anim': 'fx-mask-grow',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-mask': 'var(--mask-soft)',
+    '--fx-mask-size': '280vmax',
+    '--fx-duration': '1.1s'
+  },
   '.heart': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
@@ -72,6 +106,18 @@ module.exports = {
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-duration': '0.6s'
+  },
+  '.split': {
+    '--fx-anim': 'fx-split-in',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-duration': '0.7s'
+  },
+  '.shutter': {
+    '--fx-anim': 'fx-shutter-in',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-duration': '0.7s'
   },
   '.ink': {
     '--fx-anim': 'fx-mask-grow',
@@ -106,6 +152,11 @@ module.exports = {
     '--fx-anim-old': 'fx-wipe-out-h',
     '--fx-duration': '0.6s'
   },
+  '.wipe-left': {
+    '--fx-anim': 'fx-wipe-in-left',
+    '--fx-anim-old': 'fx-wipe-out-left',
+    '--fx-duration': '0.6s'
+  },
   '.wipe-v': {
     '--fx-anim': 'fx-wipe-in-down',
     '--fx-anim-old': 'fx-wipe-out-down',
@@ -131,6 +182,11 @@ module.exports = {
     '--fx-anim-old': 'fx-slide-out',
     '--fx-duration': '0.6s'
   },
+  '.lift': {
+    '--fx-anim': 'fx-lift-in',
+    '--fx-anim-old': 'fx-lift-out',
+    '--fx-duration': '0.7s'
+  },
   '.zoom': {
     '--fx-anim': 'fx-zoom-in',
     '--fx-anim-old': 'fx-zoom-out',
@@ -145,6 +201,12 @@ module.exports = {
     '--fx-anim': 'fx-fade-in',
     '--fx-anim-old': 'fx-fade-out',
     '--fx-duration': '0.5s',
+    '--fx-ease': 'ease-in-out'
+  },
+  '.dissolve': {
+    '--fx-anim': 'fx-blur-in',
+    '--fx-anim-old': 'fx-blur-out',
+    '--fx-duration': '0.7s',
     '--fx-ease': 'ease-in-out'
   }
 }

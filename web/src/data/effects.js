@@ -58,6 +58,24 @@ export const EFFECTS = [
     css: usage('corner-tr')
   },
   {
+    id: 'corner-bl',
+    className: 'corner-bl',
+    name: 'Corner Bottom-Left',
+    desc: 'The same ripple, anchored to the bottom-left corner.',
+    technique: 'mask',
+    durationMs: 1000,
+    css: usage('corner-bl')
+  },
+  {
+    id: 'corner-br',
+    className: 'corner-br',
+    name: 'Corner Bottom-Right',
+    desc: 'Closes the set — a ripple from the bottom-right corner.',
+    technique: 'mask',
+    durationMs: 1000,
+    css: usage('corner-br')
+  },
+  {
     id: 'iris',
     className: 'iris',
     name: 'Star Iris',
@@ -85,6 +103,24 @@ export const EFFECTS = [
     css: usage('hexagon')
   },
   {
+    id: 'square',
+    className: 'square',
+    name: 'Square',
+    desc: 'An axis-aligned square growing from the centre. Cleaner than the diamond.',
+    technique: 'mask',
+    durationMs: 800,
+    css: usage('square')
+  },
+  {
+    id: 'soft',
+    className: 'soft',
+    name: 'Soft Bloom',
+    desc: 'A wide ellipse with a heavy Gaussian edge — cinematic, not geometric.',
+    technique: 'mask',
+    durationMs: 1100,
+    css: usage('soft')
+  },
+  {
     id: 'heart',
     className: 'heart',
     name: 'Heart',
@@ -101,6 +137,24 @@ export const EFFECTS = [
     technique: 'clip-path',
     durationMs: 600,
     css: usage('expand')
+  },
+  {
+    id: 'split',
+    className: 'split',
+    name: 'Split Curtain',
+    desc: 'Two edges meet in the middle, then part like a stage curtain.',
+    technique: 'clip-path',
+    durationMs: 700,
+    css: usage('split')
+  },
+  {
+    id: 'shutter',
+    className: 'shutter',
+    name: 'Shutter',
+    desc: 'Top and bottom edges open like a camera shutter.',
+    technique: 'clip-path',
+    durationMs: 700,
+    css: usage('shutter')
   },
   {
     id: 'ink',
@@ -128,6 +182,15 @@ export const EFFECTS = [
     technique: 'clip-path',
     durationMs: 600,
     css: usage('wipe-h')
+  },
+  {
+    id: 'wipe-left',
+    className: 'wipe-left',
+    name: 'Wipe Left',
+    desc: 'The hard edge travelling right to left.',
+    technique: 'clip-path',
+    durationMs: 600,
+    css: usage('wipe-left')
   },
   {
     id: 'wipe-v',
@@ -175,6 +238,15 @@ export const EFFECTS = [
     css: usage('slide')
   },
   {
+    id: 'lift',
+    className: 'lift',
+    name: 'Lift',
+    desc: 'The new theme rises in; the old one eases up and out.',
+    technique: 'transform',
+    durationMs: 700,
+    css: usage('lift')
+  },
+  {
     id: 'zoom',
     className: 'zoom',
     name: 'Zoom',
@@ -200,5 +272,14 @@ export const EFFECTS = [
     technique: 'opacity',
     durationMs: 500,
     css: usage('fade')
+  },
+  {
+    id: 'dissolve',
+    className: 'dissolve',
+    name: 'Blur Dissolve',
+    desc: 'A soft-focus cross-fade. The old view blurs out as the new one sharpens.',
+    technique: 'opacity',
+    durationMs: 700,
+    css: usage('dissolve')
   }
 ]
