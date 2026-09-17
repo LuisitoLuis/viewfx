@@ -24,3 +24,35 @@ import CloseIcon from './icons/close.astro'
   >
   </div>
 </dialog>
+
+<style>
+  .dialog {
+    margin: auto;
+    width: min(46rem, calc(100vw - 2rem));
+    max-height: min(46rem, calc(100dvh - 2rem));
+    padding: 0;
+    border: 1px solid var(--line-strong);
+    border-radius: 1rem;
+    background: var(--surface);
+    color: var(--ink);
+    overflow: hidden;
+  }
+
+  .dialog::backdrop {
+    background: color-mix(in oklab, var(--paper) 70%, transparent);
+    backdrop-filter: blur(6px);
+  }
+
+  .dialog[open] {
+    @media (prefers-reduced-motion: no-preference) {
+      animation: dialog-in 0.28s var(--expo-out) both;
+    }
+  }
+
+  @keyframes dialog-in {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.98);
+    }
+  }
+</style>

@@ -211,6 +211,111 @@ module.exports = {
 </script>
 
 <style>
+  .install-card {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 1.25rem;
+    background: var(--surface);
+    text-align: left;
+  }
+
+  .install-card__bar {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.625rem;
+  }
+
+  .install-card__tabs {
+    display: flex;
+    min-width: 0;
+    flex: 1;
+    align-items: center;
+    gap: 0.125rem;
+    overflow-x: auto;
+  }
+
+  .install-tab {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    min-height: 2rem;
+    padding: 0.25rem 0.7rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--ink-2);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  @media (width < 40rem) {
+    .install-tab {
+      padding: 0.25rem 0.5rem;
+    }
+  }
+
+  .install-tab:hover {
+    color: var(--ink);
+  }
+
+  .install-tab[aria-pressed='true'] {
+    background: var(--paper);
+    color: var(--ink);
+  }
+
+  .install-tab__mark {
+    display: block;
+    width: 0.9rem;
+    height: 0.9rem;
+    flex-shrink: 0;
+  }
+
+  .install-tab__mark :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .install-card__copy {
+    flex-shrink: 0;
+    min-width: 2rem;
+    min-height: 2rem;
+    color: var(--ink-3);
+  }
+
+  .install-card__body {
+    margin: 0;
+    overflow-x: auto;
+    border-top: 1px solid var(--line);
+    padding: 1rem 1.15rem 1.1rem;
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    line-height: 1.7;
+    color: var(--ink);
+
+    @media (width >= 40rem) {
+      font-size: 0.875rem;
+    }
+  }
+
+  .install-prompt {
+    margin-right: 0.55rem;
+    color: var(--ink-3);
+  }
+
+  .install-card :global(.t-at) {
+    color: #e6c35c;
+    font-weight: 500;
+  }
+
+  .install-card :global(.t-str) {
+    color: #e88848;
+  }
+
   .hero-dot {
     position: relative;
     display: inline-flex;
