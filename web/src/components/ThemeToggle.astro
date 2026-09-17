@@ -8,13 +8,14 @@ interface Props {
 const { class: className } = Astro.props
 ---
 
-<!-- The accessible name is kept in sync with the current theme by scripts/theme.ts. -->
+<!-- The accessible name is kept in sync with the current theme by scripts/theme.js. -->
 <button
   id="theme-toggle"
   type="button"
   class:list={['cursor-pointer', className]}
   aria-label="Switch the theme"
 >
-  <Icon name="moon" class="dark:hidden" />
-  <Icon name="sun" class="hidden dark:block" />
+  <Icon name="sun" class="hidden in-data-[theme-mode=light]:block" />
+  <Icon name="moon" class="hidden in-data-[theme-mode=dark]:block" />
+  <Icon name="monitor" class="hidden in-data-[theme-mode=auto]:block" />
 </button>

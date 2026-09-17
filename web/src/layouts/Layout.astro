@@ -42,8 +42,10 @@ const bootstrap = `(() => {
   const el = document.documentElement
   try {
     const theme = localStorage.getItem('${THEME_KEY}')
-    const dark = theme ? theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches
+    const mode = theme === 'light' || theme === 'dark' || theme === 'auto' ? theme : 'auto'
+    const dark = mode === 'dark' || (mode === 'auto' && matchMedia('(prefers-color-scheme: dark)').matches)
     el.classList.toggle('dark', dark)
+    el.dataset.themeMode = mode
   } catch {}
 })()`
 ---
@@ -51,6 +53,7 @@ const bootstrap = `(() => {
 <!doctype html>
 <html
   lang={SITE.locale}
+  data-theme-mode="auto"
   class={`${DEFAULT_EFFECT_CLASS} scrollbar-thin scrollbar-thumb-accent scrollbar-track-paper`}
 >
   <head>

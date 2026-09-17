@@ -4,6 +4,7 @@ export const THEME_KEY = 'viewfx:theme'
 
 const PAGE_EFFECT = DEFAULT_EFFECT_CLASS
 const EFFECT_CLASSES = new Set(EFFECTS.map((effect) => effect.className))
+const THEME_MODES = ['auto', 'dark', 'light']
 
 const root = () => document.documentElement
 
@@ -12,17 +13,44 @@ const startViewTransition = () => document.startViewTransition
 const prefersReducedMotion = () =>
   window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
+const prefersDark = () =>
+  window.matchMedia('(prefers-color-scheme: dark)').matches
+
 export const isDark = () => root().classList.contains('dark')
 
-function commit(dark, persist) {
+function isThemeMode(value) {
+  return value === 'light' || value === 'dark' || value === 'auto'
+}
+
+function readStoredMode() {
+  try {
+    const stored = localStorage.getItem(THEME_KEY)
+    return isThemeMode(stored) ? stored : 'auto'
+  } catch {
+    return 'auto'
+  }
+}
+
+function resolveDark(mode) {
+  return mode === 'auto' ? prefersDark() : mode === 'dark'
+}
+
+function nextMode(mode) {
+  return THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length]
+}
+
+function commit(dark, persist, mode) {
+  const resolvedMode = mode ?? (persist ? (dark ? 'dark' : 'light') : readStoredMode())
+
   root().classList.toggle('dark', dark)
+  root().dataset.themeMode = resolvedMode
   syncToggle()
   syncBrowserChrome()
 
   if (!persist) return
 
   try {
-    localStorage.setItem(THEME_KEY, dark ? 'dark' : 'light')
+    localStorage.setItem(THEME_KEY, resolvedMode)
   } catch {
     // Private browsing modes can refuse writes; the theme still applies.
   }
@@ -40,7 +68,12 @@ function activeEffect() {
   return [...root().classList].find((cls) => EFFECT_CLASSES.has(cls)) ?? PAGE_EFFECT
 }
 
-export function playTransition(dark = !isDark(), persist = true) {
+/**
+ * @param {boolean} [dark]
+ * @param {boolean} [persist]
+ * @param {'light' | 'dark' | 'auto'} [mode]
+ */
+export function playTransition(dark = !isDark(), persist = true, mode) {
   const el = root()
   const keep = activeEffect()
   for (const cls of [...el.classList]) {
@@ -53,11 +86,11 @@ export function playTransition(dark = !isDark(), persist = true) {
   const start = startViewTransition()
 
   if (!start || prefersReducedMotion()) {
-    commit(dark, persist)
+    commit(dark, persist, mode)
     return
   }
 
-  const transition = start.call(document, () => commit(dark, persist))
+  const transition = start.call(document, () => commit(dark, persist, mode))
 
   // Picking a second effect mid-animation skips the running transition, which
   // rejects every promise it exposes. The theme change itself has already been
@@ -66,6 +99,11 @@ export function playTransition(dark = !isDark(), persist = true) {
   for (const settled of [transition?.ready, transition?.updateCallbackDone, transition?.finished]) {
     settled?.catch(() => {})
   }
+}
+
+function cycleTheme() {
+  const mode = nextMode(readStoredMode())
+  playTransition(resolveDark(mode), true, mode)
 }
 
 /** Keeps the mobile browser UI tinted to match the page. */
@@ -81,17 +119,24 @@ function syncToggle() {
   const toggle = document.getElementById('theme-toggle')
   if (!toggle) return
 
-  const label = isDark() ? 'Switch to the light theme' : 'Switch to the dark theme'
+  const mode = root().dataset.themeMode || readStoredMode()
+  const labels = {
+    auto: 'Switch to the dark theme',
+    dark: 'Switch to the light theme',
+    light: 'Use the system theme'
+  }
+  const label = labels[mode] ?? labels.auto
   toggle.setAttribute('aria-label', label)
   toggle.setAttribute('title', label)
 }
 
 export function initTheme() {
+  root().dataset.themeMode = readStoredMode()
   syncToggle()
   syncBrowserChrome()
 
   document.getElementById('theme-toggle')?.addEventListener('click', () => {
-    playTransition()
+    cycleTheme()
   })
 
   // Any control can replay the current effect by opting in.
@@ -102,15 +147,8 @@ export function initTheme() {
     }
   })
 
-  // Follow the OS while the visitor has not expressed a preference.
+  // Follow the OS while the visitor is in auto mode.
   window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-    let stored = null
-    try {
-      stored = localStorage.getItem(THEME_KEY)
-    } catch {
-      stored = null
-    }
-
-    if (!stored) playTransition(event.matches, false)
+    if (readStoredMode() === 'auto') playTransition(event.matches, false, 'auto')
   })
 }
