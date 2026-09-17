@@ -53,24 +53,24 @@
       'Geist Mono Variable', 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
       'Liberation Mono', 'Courier New', monospace;
 
-    --paper: oklch(0.977 0.006 95);
-    --surface: oklch(1 0 0);
-    --inset: oklch(0.955 0.008 95);
+    --paper: #f9f7f3;
+    --surface: #ffffff;
+    --inset: #f2f0ea;
 
-    --ink: oklch(0.19 0.015 260);
-    --ink-2: oklch(0.44 0.012 260); /* 5.2:1 on --paper */
-    --ink-3: oklch(0.6 0.01 260); /* decorative / large text only */
+    --ink: #10141b;
+    --ink-2: #4f5359; /* 5.2:1 on --paper */
+    --ink-3: #7d8086; /* decorative / large text only */
 
-    --line: oklch(0.885 0.008 260);
-    --line-strong: oklch(0.78 0.012 260);
+    --line: #d6d9de;
+    --line-strong: #b3b8bf;
 
     --accent: #40a02b;
     --accent-ink: #0a1a08;
     --accent-text: #40a02b;
     --glow: color-mix(in oklab, #40a02b 22%, transparent);
 
-    --scene-dark: oklch(0.165 0.015 260);
-    --scene-light: oklch(0.977 0.006 95);
+    --scene-dark: #0b0e15;
+    --scene-light: #f9f7f3;
 
     --expo-out: linear(
       0 0%,
@@ -95,16 +95,16 @@
   .dark {
     color-scheme: dark;
 
-    --paper: oklch(0.165 0.015 260);
-    --surface: oklch(0.205 0.018 260);
-    --inset: oklch(0.235 0.02 260);
+    --paper: #0b0e15;
+    --surface: #12171f;
+    --inset: #191e28;
 
-    --ink: oklch(0.965 0.005 260);
-    --ink-2: oklch(0.75 0.012 260);
-    --ink-3: oklch(0.62 0.012 260);
+    --ink: #f1f3f7;
+    --ink-2: #aaaeb6;
+    --ink-3: #82868e;
 
-    --line: oklch(0.3 0.02 260);
-    --line-strong: oklch(0.42 0.025 260);
+    --line: #282e38;
+    --line-strong: #454e5b;
 
     --accent: #40a02b;
     --accent-ink: #0a1a08;
