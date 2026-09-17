@@ -34,10 +34,14 @@ const {
   {
     (filename || copyable) && (
       <figcaption class="flex items-center justify-between gap-3 border-b border-line px-3 py-2">
-        <span class="label truncate text-ink-3">{filename ?? language}</span>
+        <span class="truncate font-mono text-[0.6875rem] leading-none tracking-[0.14em] text-ink-3 uppercase">{filename ?? language}</span>
 
         {copyable && (
-          <button type="button" class="btn btn--sm btn--ghost -mr-1" data-copy="pre">
+          <button
+            type="button"
+            class="-mr-1 inline-flex min-h-9 cursor-pointer items-center justify-center gap-2 rounded-[0.625rem] border border-transparent px-3 font-mono text-[0.6875rem] font-medium tracking-[0.06em] text-ink-2 uppercase transition-colors hover:bg-inset hover:text-ink data-[state=copied]:border-accent data-[state=copied]:text-accent-text"
+            data-copy="pre"
+          >
             <CopyIcon size={13} />
             <span data-copy-label>Copy</span>
           </button>
@@ -50,3 +54,48 @@ const {
     <pre class="code"><code set:html={highlight(code, language)} /></pre>
   </div>
 </figure>
+
+<style>
+  .code {
+    margin: 0;
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.85;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    tab-size: 2;
+  }
+
+  .code :global(.t-com) {
+    color: var(--ink-3);
+    font-style: italic;
+  }
+
+  .code :global(.t-str) {
+    color: var(--ink-2);
+  }
+
+  .code :global(.t-at),
+  .code :global(.t-sel) {
+    color: var(--accent-text);
+    font-weight: 500;
+  }
+
+  .code :global(.t-var) {
+    color: var(--accent-text);
+  }
+
+  .code :global(.t-prop) {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .code :global(.t-fn) {
+    color: var(--ink-2);
+  }
+
+  .code :global(.t-num) {
+    color: var(--ink);
+  }
+</style>

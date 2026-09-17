@@ -28,10 +28,10 @@ module.exports = {
 ---
 
 <section class="relative z-10 mb-24">
-  <div class="shell">
+  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
     <div class="grid items-start gap-10 lg:grid-cols-2 lg:items-end lg:gap-12 xl:gap-16">
       <div class="text-left">
-        <div class="fade-up mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4 [animation-delay:100ms]">
+        <div class="motion-safe:animate-fade-up mb-5 flex items-center gap-3 sm:mb-6 sm:gap-4 [animation-delay:100ms]">
           <Logo
             class="aspect-square size-11 shrink-0 sm:size-12"
             iconClass="size-6 animate-float-subtle sm:size-7"
@@ -54,7 +54,7 @@ module.exports = {
         </div>
 
         <p
-          class="fade-up mb-6 max-w-md text-base leading-relaxed text-ink-2 sm:text-lg [animation-delay:200ms]"
+          class="motion-safe:animate-fade-up mb-6 max-w-md text-base leading-relaxed text-ink-2 sm:text-lg [animation-delay:200ms]"
         >
           {EFFECTS.length}+ ready-to-use theme transitions for Tailwind CSS. Zero config, one class
           on{' '}
@@ -62,7 +62,7 @@ module.exports = {
         </p>
 
         <div
-          class="fade-up mb-8 flex flex-wrap items-center gap-3 sm:mb-10 [animation-delay:200ms]"
+          class="motion-safe:animate-fade-up mb-8 flex flex-wrap items-center gap-3 sm:mb-10 [animation-delay:200ms]"
           data-copy-scope
         >
           <a
@@ -92,7 +92,7 @@ module.exports = {
         </div>
       </div>
 
-      <div class="fade-up flex w-full flex-col gap-3 [animation-delay:300ms]">
+      <div class="motion-safe:animate-fade-up flex w-full flex-col gap-3 [animation-delay:300ms]">
         <div data-copy-scope class="install-card">
           <div class="install-card__bar">
             <div class="install-card__tabs" role="group" aria-label="Package manager">
@@ -115,7 +115,7 @@ module.exports = {
             </div>
             <button
               type="button"
-              class="btn btn--icon btn--ghost install-card__copy"
+              class="install-card__copy cursor-pointer rounded-[0.625rem] border border-transparent data-[state=copied]:border-accent data-[state=copied]:text-accent-text"
               data-copy="#install-command"
               data-toast="Command copied to clipboard!"
               aria-label="Copy install command"
@@ -142,7 +142,7 @@ module.exports = {
             </div>
             <button
               type="button"
-              class="btn btn--icon btn--ghost install-card__copy"
+              class="install-card__copy cursor-pointer rounded-[0.625rem] border border-transparent data-[state=copied]:border-accent data-[state=copied]:text-accent-text"
               data-copy="#install-v4"
               data-toast="Configuration copied to clipboard!"
               data-tw-copy
@@ -281,10 +281,20 @@ module.exports = {
   }
 
   .install-card__copy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     min-width: 2rem;
     min-height: 2rem;
+    padding: 0;
     color: var(--ink-3);
+    cursor: pointer;
+  }
+
+  .install-card__copy:hover {
+    background: var(--inset);
+    color: var(--ink);
   }
 
   .install-card__body {
@@ -307,6 +317,11 @@ module.exports = {
     color: var(--ink-3);
   }
 
+  .install-card :global(.t-com) {
+    color: var(--ink-3);
+    font-style: italic;
+  }
+
   .install-card :global(.t-at) {
     color: #e6c35c;
     font-weight: 500;
@@ -314,6 +329,25 @@ module.exports = {
 
   .install-card :global(.t-str) {
     color: #e88848;
+  }
+
+  .install-card :global(.t-sel),
+  .install-card :global(.t-var) {
+    color: var(--accent-text);
+    font-weight: 500;
+  }
+
+  .install-card :global(.t-prop) {
+    color: var(--ink);
+    font-weight: 500;
+  }
+
+  .install-card :global(.t-fn) {
+    color: var(--ink-2);
+  }
+
+  .install-card :global(.t-num) {
+    color: var(--ink);
   }
 
   .hero-dot {

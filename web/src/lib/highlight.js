@@ -15,7 +15,7 @@ const HTML_ESCAPES = {
 
 const escapeHtml = (value) => value.replace(/[&<>]/g, (char) => HTML_ESCAPES[char])
 
-/** Token name → class name consumed by the `.t-*` rules in `global.css`. */
+/** Token name → class name consumed by `.t-*` rules in CodeBlock and Hero. */
 const TOKEN_CLASS = {
   comment: 't-com',
   string: 't-str',

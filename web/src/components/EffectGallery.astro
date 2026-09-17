@@ -19,25 +19,25 @@ import {
     aria-hidden="true"
   >
   </div>
-  <div class="shell py-10 text-center sm:py-12">
+  <div class="mx-auto w-full max-w-6xl px-4 py-10 text-center sm:px-6 sm:py-12 lg:px-8">
     <h2
       id="palette-heading"
-      class="fade-up text-2xl font-semibold tracking-tight sm:text-4xl [animation-delay:600ms]"
+      class="motion-safe:animate-fade-up text-2xl font-semibold tracking-tight sm:text-4xl [animation-delay:600ms]"
     >
       Effect Collection
     </h2>
-    <p class="fade-up mx-auto mt-3 max-w-xl text-base text-balance text-ink-2 sm:text-lg [animation-delay:700ms]">
+    <p class="motion-safe:animate-fade-up mx-auto mt-3 max-w-xl text-base text-balance text-ink-2 sm:text-lg [animation-delay:700ms]">
       {EFFECTS.length} utilities. Hover to preview, click to copy.
     </p>
 
     <fieldset
-      class="timing-bar fade-up mx-auto mt-8 [animation-delay:800ms]"
+      class="timing-bar motion-safe:animate-fade-up mx-auto mt-8 [animation-delay:800ms]"
       aria-label="Animation preview options"
     >
       <legend class="sr-only">Customize animation duration, delay, and steps for previews</legend>
 
       <label class="timing-item">
-        <span class="label text-ink-3">
+        <span class="font-mono text-[0.6875rem] leading-none tracking-[0.14em] text-ink-3 uppercase">
           <span class="sm:hidden">Dur</span>
           <span class="hidden sm:inline">Duration</span>
         </span>
@@ -55,7 +55,7 @@ import {
       <span class="timing-rule hidden sm:block" aria-hidden="true"></span>
 
       <label class="timing-item">
-        <span class="label text-ink-3">Delay</span>
+        <span class="font-mono text-[0.6875rem] leading-none tracking-[0.14em] text-ink-3 uppercase">Delay</span>
         <select id="preview-delay" class="timing-select" name="delay">
           {Object.entries(ANIMATION_DELAY).map(([key, value]) => (
             <option value={value}>{key}</option>
@@ -66,7 +66,7 @@ import {
       <span class="timing-rule hidden sm:block" aria-hidden="true"></span>
 
       <label class="timing-item">
-        <span class="label text-ink-3">Steps</span>
+        <span class="font-mono text-[0.6875rem] leading-none tracking-[0.14em] text-ink-3 uppercase">Steps</span>
         <select id="preview-steps" class="timing-select" name="steps">
           {Object.entries(ANIMATION_STEPS).map(([key, value]) => (
             <option value={value}>{key}</option>

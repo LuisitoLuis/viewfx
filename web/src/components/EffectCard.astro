@@ -22,7 +22,7 @@ const copyId = `fx-copy-${effect.id}`
 
 <li
   data-copy-scope
-  class="fx-card rise"
+  class="fx-card motion-safe:animate-fade-up motion-safe:[animation-delay:calc(1s+var(--i,0)*50ms)]"
   data-fx={effect.id}
   data-class={effect.className}
   data-name={effect.id}
