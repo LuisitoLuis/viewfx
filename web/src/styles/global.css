@@ -870,11 +870,63 @@
 }
 
 /* ─────────────────────────────────────────────────────────────
+   Cross-document page navigation
+
+   ViewFX styles `::view-transition-*` for theme wipes. Same-origin
+   navigations (home → playground) reuse those pseudos, so a fade is
+   applied unless `theme-swap` marks an explicit theme toggle.
+   ───────────────────────────────────────────────────────────── */
+@view-transition {
+  navigation: auto;
+}
+
+html:not(.theme-swap) #header {
+  view-transition-name: site-header;
+}
+
+html:not(.theme-swap)::view-transition-group(site-header) {
+  z-index: 50;
+}
+
+html:not(.theme-swap)::view-transition-old(root) {
+  animation: page-nav-out 0.45s var(--expo-out, ease) both;
+  mask: none;
+  -webkit-mask: none;
+}
+
+html:not(.theme-swap)::view-transition-new(root) {
+  animation: page-nav-in 0.5s var(--expo-out, ease) both;
+  mask: none;
+  -webkit-mask: none;
+}
+
+html:not(.theme-swap)::view-transition-group(root) {
+  animation-duration: 0.5s;
+  animation-timing-function: var(--expo-out, ease);
+}
+
+@keyframes page-nav-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes page-nav-in {
+  from {
+    opacity: 0;
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
    Motion preferences
    ───────────────────────────────────────────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  @view-transition {
+    navigation: none;
   }
 
   *,

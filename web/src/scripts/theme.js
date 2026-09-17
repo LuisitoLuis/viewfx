@@ -90,7 +90,12 @@ export function playTransition(dark = !isDark(), persist = true, mode) {
     return
   }
 
+  // Marks this as a theme wipe so page-route fades do not override the effect.
+  el.classList.add('theme-swap')
+  const clearSwap = () => el.classList.remove('theme-swap')
+
   const transition = start.call(document, () => commit(dark, persist, mode))
+  transition?.finished.then(clearSwap, clearSwap)
 
   // Picking a second effect mid-animation skips the running transition, which
   // rejects every promise it exposes. The theme change itself has already been
