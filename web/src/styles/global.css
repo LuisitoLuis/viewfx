@@ -163,11 +163,6 @@
     outline-offset: 2px;
   }
 
-  hr {
-    border: 0;
-    border-top: 1px solid var(--line);
-  }
-
   ::selection {
     background: color-mix(in oklab, var(--accent) 18%, transparent);
     color: var(--accent-text);
@@ -208,51 +203,12 @@ html.theme-swap::view-transition-new(effect-picker) {
   animation: none;
 }
 
-/* GIF studio: rdsx-style GIF mask that holds, then blows open. */
-html.gif-mask {
-  --fx-anim: none;
-  --fx-anim-old: none;
-  --fx-mask: none;
+.gif-ink {
+  filter: grayscale(1) contrast(1.35);
 }
 
-html.gif-mask.theme-swap.has-gif-mask::view-transition-group(root) {
-  animation-duration: var(--gif-duration, 3s);
-  animation-timing-function: var(--expo-in);
-}
-
-html.gif-mask.theme-swap.has-gif-mask::view-transition-new(root) {
-  -webkit-mask: var(--gif-mask) center / 0 no-repeat !important;
-  mask: var(--gif-mask) center / 0 no-repeat !important;
-  animation: scale var(--gif-duration, 3s) both !important;
-}
-
-html.gif-mask.theme-swap.has-gif-mask::view-transition-old(root),
-html.gif-mask.theme-swap.has-gif-mask.dark::view-transition-old(root) {
-  -webkit-mask: var(--gif-mask) center / 0 no-repeat !important;
-  mask: var(--gif-mask) center / 0 no-repeat !important;
-  animation: scale var(--gif-duration, 3s) both !important;
-}
-
-@keyframes scale {
-  0% {
-    -webkit-mask-size: 0;
-    mask-size: 0;
-  }
-
-  10% {
-    -webkit-mask-size: var(--gif-hold, 50vmax);
-    mask-size: var(--gif-hold, 50vmax);
-  }
-
-  90% {
-    -webkit-mask-size: var(--gif-hold, 50vmax);
-    mask-size: var(--gif-hold, 50vmax);
-  }
-
-  100% {
-    -webkit-mask-size: 2000vmax;
-    mask-size: 2000vmax;
-  }
+html.dark .gif-ink {
+  filter: grayscale(1) contrast(1.35) invert(1);
 }
 
 html:not(.theme-swap)::view-transition-group(site-header) {

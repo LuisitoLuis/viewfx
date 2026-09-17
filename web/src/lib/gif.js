@@ -1,7 +1,7 @@
-import { ANIMATION_DURATION } from '../data/timing'
 import { playTransition, isDark } from './theme'
 import { announce } from './live-region'
 import { toastSuccess } from './toast'
+import { GIF_DURATION } from '../data/gif'
 
 const SIZE_KEYS = ['30%', '50%', '70%', '100%', 'cover']
 
@@ -25,7 +25,7 @@ function parseGifLink(value) {
 function restartUrl(href) {
   try {
     const url = new URL(href)
-    url.hash = `t=${Date.now()}`
+    url.searchParams.set('_t', String(Date.now()))
     return url.href
   } catch {
     return href
@@ -48,7 +48,13 @@ function holdSize(value) {
   return '50vmax'
 }
 
-function buildSnippet(gifHref, hold, duration) {
+function parseDurationKey(value) {
+  if (value && value in GIF_DURATION) return value
+  if (value === '1000' || value === '900' || value === '800' || value === '700') return '1s'
+  return '3s'
+}
+
+export function buildSnippet(gifHref, hold, duration) {
   const src = gifHref || ' '
   return `::view-transition-group(root) {
   animation-timing-function: var(--expo-in);
@@ -62,13 +68,13 @@ function buildSnippet(gifHref, hold, duration) {
 
 ::view-transition-old(root),
 .dark::view-transition-old(root) {
-  animation: scale ${duration};
-  animation-fill-mode: both;
+  animation: none;
+  z-index: -1;
 }
 
 @keyframes scale {
   0% {
-    mask-size: 0;
+    mask-size: 0px;
   }
   10% {
     mask-size: ${hold};
@@ -82,10 +88,83 @@ function buildSnippet(gifHref, hold, duration) {
 }`
 }
 
+function maskSheet(playHref, hold, duration) {
+  const mask = cssUrl(playHref)
+  return `html.gif-mask,
+html.gif-mask.dark {
+  --fx-anim: none;
+  --fx-anim-old: none;
+  --fx-mask: none;
+  --fx-old-z: -1;
+}
+
+html.gif-mask.theme-swap.has-gif-mask::view-transition-group(root) {
+  animation-duration: ${duration};
+  animation-timing-function: var(--expo-in);
+}
+
+html.gif-mask.theme-swap.has-gif-mask::view-transition-new(root) {
+  -webkit-mask-image: ${mask} !important;
+  mask-image: ${mask} !important;
+  -webkit-mask-position: center !important;
+  mask-position: center !important;
+  -webkit-mask-repeat: no-repeat !important;
+  mask-repeat: no-repeat !important;
+  -webkit-mask-origin: border-box !important;
+  mask-origin: border-box !important;
+  -webkit-mask-size: 0px;
+  mask-size: 0px;
+  animation: gif-mask-scale ${duration} linear both !important;
+}
+
+html.gif-mask.theme-swap.has-gif-mask::view-transition-old(root),
+html.gif-mask.theme-swap.has-gif-mask.dark::view-transition-old(root) {
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  animation: none !important;
+  z-index: -1 !important;
+}
+
+@keyframes gif-mask-scale {
+  0% {
+    -webkit-mask-size: 0px;
+    mask-size: 0px;
+  }
+  10% {
+    -webkit-mask-size: ${hold};
+    mask-size: ${hold};
+  }
+  90% {
+    -webkit-mask-size: ${hold};
+    mask-size: ${hold};
+  }
+  100% {
+    -webkit-mask-size: 2000vmax;
+    mask-size: 2000vmax;
+  }
+}`
+}
+
+function decodeImage(href) {
+  const probe = new Image()
+  const ready = Promise.race([
+    new Promise((resolve) => {
+      probe.onload = resolve
+      probe.onerror = resolve
+    }),
+    new Promise((resolve) => window.setTimeout(resolve, 350))
+  ])
+  probe.src = href
+  void probe.decode().catch(() => {})
+  return ready
+}
+
 export function initGifStudio() {
   const root = document.documentElement
   const input = document.getElementById('gif-url')
   const thumb = document.getElementById('gif-thumb')
+  const stage = document.getElementById('gif-stage')
+  const empty = document.getElementById('gif-empty')
   const play = document.getElementById('play-btn')
   const duration = document.getElementById('ctrl-duration')
   const size = document.getElementById('ctrl-size')
@@ -93,39 +172,53 @@ export function initGifStudio() {
   const htmlSnippet = document.getElementById('html-snippet')
   const copyClasses = document.getElementById('copy-classes')
   const copyUrl = document.getElementById('copy-url')
+  const clear = document.getElementById('gif-clear')
 
   if (
     !(input instanceof HTMLInputElement) ||
     !(thumb instanceof HTMLImageElement) ||
+    !(stage instanceof HTMLImageElement) ||
     !(duration instanceof HTMLSelectElement) ||
     !(size instanceof HTMLSelectElement) ||
     !play ||
     !snippet ||
     !htmlSnippet ||
     !copyClasses ||
-    !copyUrl
+    !copyUrl ||
+    !clear
   ) {
     return
   }
 
   const params = new URLSearchParams(window.location.search)
-  if (params.get('d') && params.get('d') in ANIMATION_DURATION) duration.value = params.get('d')
+  duration.value = parseDurationKey(params.get('d'))
   if (SIZE_KEYS.includes(params.get('size') ?? '')) size.value = params.get('size') ?? '50%'
-  input.value = params.get('gif') || params.get('gif2') || ''
+  input.value = ''
 
   root.classList.add('gif-mask')
 
-  const durationCss = () => ANIMATION_DURATION[duration.value] ?? '1000ms'
+  const durationCss = () => GIF_DURATION[duration.value] ?? '3s'
   const gifHref = () => parseGifLink(input.value)
 
-  const paintThumb = (href) => {
+  const syncClear = () => {
+    clear.hidden = !input.value.trim()
+  }
+
+  const paint = (href) => {
     if (!href) {
       thumb.removeAttribute('src')
+      stage.removeAttribute('src')
       thumb.hidden = true
+      stage.hidden = true
+      if (empty) empty.hidden = false
       return
     }
+
     thumb.src = href
+    stage.src = href
     thumb.hidden = false
+    stage.hidden = false
+    if (empty) empty.hidden = true
   }
 
   const syncVars = () => {
@@ -133,42 +226,51 @@ export function initGifStudio() {
     root.style.setProperty('--gif-duration', durationCss())
   }
 
-  const armMask = async () => {
+  const armMask = async ({ restart = false } = {}) => {
     const href = gifHref()
     if (!href) {
       root.style.removeProperty('--gif-mask')
       root.classList.remove('has-gif-mask')
+      document.getElementById('gif-mask-sheet')?.remove()
       syncVars()
-      return
+      return ''
     }
 
-    const playHref = restartUrl(href)
+    const playHref = restart ? restartUrl(href) : href
     root.style.setProperty('--gif-mask', cssUrl(playHref))
     root.classList.add('has-gif-mask')
     syncVars()
 
-    const probe = new Image()
-    probe.src = playHref
-    try {
-      await probe.decode()
-    } catch {
-      // Remote GIFs can still work as CSS masks even if decode fails.
+    let sheet = document.getElementById('gif-mask-sheet')
+    if (!(sheet instanceof HTMLStyleElement)) {
+      sheet = document.createElement('style')
+      sheet.id = 'gif-mask-sheet'
+      document.head.appendChild(sheet)
     }
+    sheet.textContent = maskSheet(playHref, holdSize(size.value), durationCss())
+
+    await decodeImage(playHref)
+    return playHref
   }
 
   const updateUrl = () => {
     const url = new URL(window.location.href)
-    if (duration.value === '1000') url.searchParams.delete('d')
+    if (duration.value === '3s') url.searchParams.delete('d')
     else url.searchParams.set('d', duration.value)
     if (size.value === '50%') url.searchParams.delete('size')
     else url.searchParams.set('size', size.value)
+    url.searchParams.delete('gif')
+    url.searchParams.delete('gif2')
+    history.replaceState(null, '', url)
+  }
 
+  const shareHref = () => {
+    const url = new URL(window.location.href)
     const gif = gifHref()
     if (gif) url.searchParams.set('gif', gif)
     else url.searchParams.delete('gif')
     url.searchParams.delete('gif2')
-
-    history.replaceState(null, '', url)
+    return url.href
   }
 
   const updateSnippet = () => {
@@ -178,12 +280,15 @@ document.startViewTransition(switchTheme);`
   }
 
   const refresh = () => {
-    paintThumb(gifHref())
+    paint(gifHref())
+    syncClear()
     syncVars()
     updateSnippet()
     updateUrl()
+    void armMask()
   }
 
+  input.addEventListener('input', syncClear)
   input.addEventListener('change', refresh)
   input.addEventListener('paste', () => window.setTimeout(refresh, 0))
   input.addEventListener('keydown', (event) => {
@@ -196,6 +301,13 @@ document.startViewTransition(switchTheme);`
   duration.addEventListener('change', refresh)
   size.addEventListener('change', refresh)
 
+  clear.addEventListener('click', () => {
+    input.value = ''
+    refresh()
+    input.focus()
+    announce('GIF removed')
+  })
+
   play.addEventListener('click', async () => {
     const href = gifHref()
     if (!href) {
@@ -205,7 +317,8 @@ document.startViewTransition(switchTheme);`
 
     play.disabled = true
     try {
-      await armMask()
+      await armMask({ restart: true })
+      await new Promise((resolve) => requestAnimationFrame(() => resolve()))
       playTransition(!isDark())
       announce('GIF mask transition played')
     } finally {
@@ -227,7 +340,7 @@ document.startViewTransition(switchTheme);`
   copyUrl.addEventListener('click', async () => {
     updateUrl()
     try {
-      await navigator.clipboard.writeText(window.location.href)
+      await navigator.clipboard.writeText(shareHref())
       announce('Share URL copied to clipboard')
       flashLabel(copyUrl, 'URL copied!')
       toastSuccess('Share URL copied to clipboard')
@@ -237,7 +350,13 @@ document.startViewTransition(switchTheme);`
   })
 
   thumb.addEventListener('error', () => {
+    if (thumb.getAttribute('src') !== gifHref()) return
     thumb.hidden = true
+  })
+  stage.addEventListener('error', () => {
+    if (stage.getAttribute('src') !== gifHref()) return
+    stage.hidden = true
+    if (empty) empty.hidden = false
   })
 
   refresh()
