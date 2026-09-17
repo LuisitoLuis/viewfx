@@ -42,6 +42,8 @@ Human UI: ${SITE.url}/ · Markdown: ${SITE.url}/index.md · Full catalog: ${SITE
 | Website | ${SITE.url}/ |
 | Playground | ${SITE.url}/playground/ |
 | Playground (markdown) | ${SITE.url}/playground.md |
+| GIF studio | ${SITE.url}/gif/ |
+| GIF studio (markdown) | ${SITE.url}/gif.md |
 | npm | ${NPM} |
 | GitHub | ${SITE.repo} |
 | llms.txt | ${SITE.url}/llms.txt |
@@ -77,6 +79,7 @@ Put one effect class and \`.dark\` on \`<html>\`, then wrap theme toggles in \`d
 - \`#palette\` — gallery of all effects (hover preview, click copy)
 - \`#faq\` — FAQ
 - Playground CTA → \`${SITE.url}/playground/\`
+- GIF studio → \`${SITE.url}/gif/\`
 
 ## Effect catalog (${effects.length})
 
@@ -106,7 +109,7 @@ ${steps.map((k) => `\`${k}\``).join(', ')}
 
 ## For AI agents
 
-- Prefer markdown endpoints (\`/index.md\`, \`/playground.md\`, \`/llms-full.md\`) over scraping HTML.
+- Prefer markdown endpoints (\`/index.md\`, \`/playground.md\`, \`/gif.md\`, \`/llms-full.md\`) over scraping HTML.
 - Source of truth for CSS: \`${SITE.repo}/blob/main/src/index.css\`
 
 ---
@@ -154,6 +157,34 @@ Generated from \`viewfx@${pkg.version}\`
 `
 }
 
+export function buildGifMarkdown() {
+  return `# ViewFX — GIF studio
+
+> Use a GIF as the View Transitions mask (same technique as https://theme-toggle.rdsx.dev/).
+
+HTML UI: ${SITE.url}/gif/
+This markdown: ${SITE.url}/gif.md
+Playground: ${SITE.url}/playground/
+
+## What you can do
+
+1. Paste a GIF URL — the same link wipes to dark and back to light
+2. Tune duration and mask size
+3. Play — the GIF masks \`::view-transition-new(root)\` while \`.dark\` toggles
+4. Copy the CSS or share the page URL (\`?gif=\`)
+
+Transparent GIF frames reveal the incoming theme. One file is enough for both directions.
+
+## Related
+
+- Playground: ${SITE.url}/playground.md
+- Home: ${SITE.url}/index.md
+
+---
+Generated from \`viewfx@${pkg.version}\`
+`
+}
+
 export function buildLlmsFullMarkdown() {
   return `# viewfx — full agent reference
 
@@ -180,6 +211,8 @@ A Tailwind CSS plugin of **${effects.length} dark/light theme transitions** on t
 | \`/index.md\` | Home as Markdown |
 | \`/playground/\` | Interactive class composer |
 | \`/playground.md\` | Playground as Markdown |
+| \`/gif/\` | GIF as a View Transitions mask |
+| \`/gif.md\` | GIF studio as Markdown |
 | \`/llms.txt\` | Short LLM summary |
 | \`/llms-full.md\` | This full reference |
 

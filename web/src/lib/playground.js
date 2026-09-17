@@ -50,7 +50,7 @@ export function buildClasses(state) {
   return classes
 }
 
-function applyHtmlClasses(state) {
+export function applyHtmlClasses(state) {
   const el = document.documentElement
 
   for (const cls of [...el.classList]) {
@@ -75,8 +75,8 @@ function flashLabel(button, message) {
   }, 1200)
 }
 
-export function initPlayground() {
-  const root = document.getElementById('playground')
+export function initPlayground(rootId = 'playground') {
+  const root = document.getElementById(rootId)
   const dataEl = document.getElementById('playground-data')
   if (!root || !dataEl) return
 
@@ -94,18 +94,7 @@ export function initPlayground() {
   const copyClasses = document.getElementById('copy-classes')
   const copyUrl = document.getElementById('copy-url')
 
-  if (
-    !snippet ||
-    !htmlSnippet ||
-    !search ||
-    !list ||
-    !duration ||
-    !delay ||
-    !steps ||
-    !play ||
-    !copyClasses ||
-    !copyUrl
-  ) {
+  if (!snippet || !htmlSnippet || !duration || !delay || !steps || !play || !copyClasses || !copyUrl) {
     return
   }
 
@@ -129,7 +118,7 @@ export function initPlayground() {
   }
 
   const markEffect = () => {
-    list.querySelectorAll('[data-effect]').forEach((button) => {
+    list?.querySelectorAll('[data-effect]').forEach((button) => {
       const selected = button.getAttribute('data-effect') === state.e
       button.setAttribute('aria-selected', String(selected))
       button.classList.toggle('is-selected', selected)
@@ -144,7 +133,7 @@ export function initPlayground() {
     if (shouldPlay) playTransition()
   }
 
-  list.addEventListener('click', (event) => {
+  list?.addEventListener('click', (event) => {
     const button = event.target instanceof Element ? event.target.closest('[data-effect]') : null
     const id = button?.getAttribute('data-effect')
     if (!id || !EFFECT_IDS.has(id)) return
@@ -152,9 +141,9 @@ export function initPlayground() {
     apply()
   })
 
-  search.addEventListener('input', () => {
+  search?.addEventListener('input', () => {
     const query = search.value.trim().toLowerCase()
-    list.querySelectorAll('[data-effect]').forEach((button) => {
+    list?.querySelectorAll('[data-effect]').forEach((button) => {
       const id = button.getAttribute('data-effect') ?? ''
       const name = button.getAttribute('data-name') ?? ''
       const match = query === '' || id.includes(query) || name.toLowerCase().includes(query)

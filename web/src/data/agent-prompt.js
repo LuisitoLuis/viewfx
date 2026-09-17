@@ -60,6 +60,7 @@ Effects: ${classes}.
 ## Documentation
 - Catalogue: ${SITE.url}
 - Playground: ${SITE.url}/playground
+- GIF studio: ${SITE.url}/gif
 - GitHub: ${SITE.repo}
 - npm: https://www.npmjs.com/package/viewfx
 - README: ${SITE.repo}#readme

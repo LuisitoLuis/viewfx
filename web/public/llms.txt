@@ -4,6 +4,7 @@
 
 - Site: https://viewfx.luismc.dev
 - Playground: https://viewfx.luismc.dev/playground
+- GIF studio: https://viewfx.luismc.dev/gif
 - Markdown: https://viewfx.luismc.dev/index.md
 - Full agent doc: https://viewfx.luismc.dev/llms-full.md
 - npm: https://www.npmjs.com/package/viewfx

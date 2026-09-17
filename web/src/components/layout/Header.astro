@@ -9,8 +9,8 @@ import { SITE } from '../../data/site'
 const isHome =
   Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
 const isPlayground = Astro.url.pathname.startsWith('/playground')
-/** @param {string} id */
-const section = (id) => (isHome ? `#${id}` : `/#${id}`)
+const isGif = Astro.url.pathname.startsWith('/gif')
+const section = (id: string) => (isHome ? `#${id}` : `/#${id}`)
 
 const navLinkClass =
   'inline-flex items-center px-2 py-1 text-[13px] font-medium tracking-tight text-ink-3 transition-colors hover:text-ink focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent xl:px-2.5'
@@ -192,6 +192,13 @@ const iconBtnClass =
       >
         Playground
       </a>
+      <a
+        href="/gif"
+        class={navLinkClass}
+        aria-current={isGif ? 'page' : undefined}
+      >
+        GIF
+      </a>
       <Enlace href={section('palette')} class={navLinkClass}>
         <span class="xl:hidden">Effect</span>
         <span class="hidden xl:inline">Effect Collection</span>
@@ -238,6 +245,13 @@ const iconBtnClass =
         aria-current={isPlayground ? 'page' : undefined}
       >
         Playground
+      </a>
+      <a
+        href="/gif"
+        class={mobileNavLinkClass}
+        aria-current={isGif ? 'page' : undefined}
+      >
+        GIF studio
       </a>
       <Enlace href={section('palette')} class={mobileNavLinkClass}>Effect Collection</Enlace>
       <Enlace href={section('faq')} class={mobileNavLinkClass}>FAQ</Enlace>
