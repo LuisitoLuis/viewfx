@@ -41,12 +41,6 @@ const iconBtnClass =
     pointer-events: none;
   }
 
-  .logo-scroll[data-always-visible='true'] {
-    --logo-opacity: 1;
-    opacity: 1;
-    transform: none;
-  }
-
   @media (prefers-reduced-motion: reduce) {
     .logo-scroll {
       transform: none;
@@ -125,21 +119,13 @@ const iconBtnClass =
 
   const logoContainer = document.getElementById('logo-container')
   const header = document.getElementById('header')
-  const alwaysVisible = logoContainer?.dataset.alwaysVisible === 'true'
 
   const handleScroll = () => {
     const scrollY = window.scrollY
-    const progress = alwaysVisible ? 1 : Math.min(scrollY / 100, 1)
-    const isLogoInteractive = alwaysVisible || progress > 0.05
+    const progress = Math.min(scrollY / 100, 1)
+    const isLogoInteractive = progress > 0.05
 
-    if (alwaysVisible) {
-      header?.style.setProperty(
-        '--header-opacity',
-        String(Math.max(0.75, Math.min(scrollY / 100, 1)))
-      )
-    } else {
-      header?.style.setProperty('--header-opacity', String(Math.min(scrollY / 100, 1)))
-    }
+    header?.style.setProperty('--header-opacity', String(progress))
 
     logoContainer?.style.setProperty('--logo-opacity', String(progress))
 
@@ -167,9 +153,8 @@ const iconBtnClass =
       id="logo-container"
       href={isHome ? '#top' : '/'}
       aria-label={isHome ? `${SITE.name}, back to top` : `${SITE.name}, home`}
-      aria-hidden={isHome ? 'true' : undefined}
-      tabindex={isHome ? '-1' : undefined}
-      data-always-visible={isHome ? undefined : 'true'}
+      aria-hidden="true"
+      tabindex="-1"
       class="logo-scroll flex min-w-0 shrink-0 items-center gap-2 rounded-xl no-underline outline-none focus-visible:ring-2 focus-visible:ring-accent"
     >
       <Logo
