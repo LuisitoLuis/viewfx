@@ -11,7 +11,7 @@
 [![GitHub issues](https://img.shields.io/github/issues/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/issues)
 [![GitHub Contributors](https://img.shields.io/github/contributors/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/graphs/contributors)
 
-![Catálogo de ViewFX](./lib/imgs/web.png)
+![Catálogo de ViewFX](./lib/imgs/web.webp)
 
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-blue?style=for-the-badge&logo=tailwind-css)
 [![npm](https://img.shields.io/npm/v/@luisitoluis/viewfx?style=for-the-badge)](https://www.npmjs.com/package/@luisitoluis/viewfx)
