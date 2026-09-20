@@ -189,7 +189,7 @@ describe('viewfx plugins', () => {
     expect(maskCustomProperties()).toContain('--mask-corner-bl:')
   })
 
-  it('resolves @import "viewfx" to the v4 CSS entry', async () => {
+  it('resolves @import "@luisitoluis/viewfx" to the v4 CSS entry', async () => {
     const css = await generatePluginCSSFromPackage({
       content: '<html class="fade"></html>'
     })
