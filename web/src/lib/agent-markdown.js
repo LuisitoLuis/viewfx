@@ -11,7 +11,7 @@ import {
   ANIMATION_STEPS
 } from '../data/timing.js'
 
-const NPM = 'https://www.npmjs.com/package/viewfx'
+const NPM = SITE.npm
 const effects = EFFECTS.map((effect) => effect.id)
 const durations = Object.keys(ANIMATION_DURATION)
 const delays = Object.keys(ANIMATION_DELAY)
@@ -30,7 +30,7 @@ export function markdownResponse(body) {
 export function buildHomeMarkdown() {
   return `# ViewFX
 
-> Theme transition utilities for **Tailwind CSS v3/v4**. Package \`viewfx@${pkg.version}\`. MIT licensed.
+> Theme transition utilities for **Tailwind CSS v3/v4**. Package \`${SITE.package}@${pkg.version}\`. MIT licensed.
 
 This document is the **agent-readable** version of the homepage.
 Human UI: ${SITE.url}/ · Markdown: ${SITE.url}/index.md · Full catalog: ${SITE.url}/llms-full.md
@@ -52,16 +52,16 @@ Human UI: ${SITE.url}/ · Markdown: ${SITE.url}/index.md · Full catalog: ${SITE
 ## Install
 
 \`\`\`bash
-npm install viewfx
-# or: pnpm add viewfx
+npm install ${SITE.package}
+# or: pnpm add ${SITE.package}
 \`\`\`
 
 \`\`\`css
 @import "tailwindcss";
-@import "viewfx";
+@import "${SITE.package}";
 \`\`\`
 
-**Tailwind v3:** \`plugins: [require('viewfx')]\` in \`tailwind.config.js\`.
+**Tailwind v3:** \`plugins: [require('${SITE.package}')]\` in \`tailwind.config.js\`.
 
 ## Usage
 
@@ -113,7 +113,7 @@ ${steps.map((k) => `\`${k}\``).join(', ')}
 - Source of truth for CSS: \`${SITE.repo}/blob/main/src/index.css\`
 
 ---
-Generated from \`viewfx@${pkg.version}\` · ${SITE.url}
+Generated from \`${SITE.package}@${pkg.version}\` · ${SITE.url}
 `
 }
 
@@ -153,7 +153,7 @@ ${effects.map((name) => `- \`${name}\``).join('\n')}
 - Source: ${SITE.repo}
 
 ---
-Generated from \`viewfx@${pkg.version}\`
+Generated from \`${SITE.package}@${pkg.version}\`
 `
 }
 
@@ -181,14 +181,14 @@ Transparent GIF frames reveal the incoming theme. One file is enough for both di
 - Home: ${SITE.url}/index.md
 
 ---
-Generated from \`viewfx@${pkg.version}\`
+Generated from \`${SITE.package}@${pkg.version}\`
 `
 }
 
 export function buildLlmsFullMarkdown() {
   return `# viewfx — full agent reference
 
-Package: \`viewfx@${pkg.version}\`
+Package: \`${SITE.package}@${pkg.version}\`
 npm: ${NPM}
 Repo: ${SITE.repo}
 Site: ${SITE.url}
@@ -200,7 +200,7 @@ A Tailwind CSS plugin of **${effects.length} dark/light theme transitions** on t
 
 \`\`\`css
 @import "tailwindcss";
-@import "viewfx";
+@import "${SITE.package}";
 \`\`\`
 
 ## Website map for agents
@@ -223,6 +223,6 @@ Prefix is the class itself (no \`animate-\`).
 ${effects.map((n) => `- \`${n}\``).join('\n')}
 
 ---
-End of agent reference · viewfx@${pkg.version}
+End of agent reference · ${SITE.package}@${pkg.version}
 `
 }

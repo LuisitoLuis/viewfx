@@ -8,11 +8,11 @@ export const FAQ = [
   },
   {
     q: 'How do I install it?',
-    a: "Run pnpm add viewfx (or npm / yarn / bun / deno), then add @import 'tailwindcss'; and @import 'viewfx'; to your global CSS for Tailwind v4."
+    a: `Run pnpm add ${SITE.package} (or npm / yarn / bun / deno), then add @import 'tailwindcss'; and @import '${SITE.package}'; to your global CSS for Tailwind v4.`
   },
   {
     q: 'Does it work with Tailwind CSS v3 and v4?',
-    a: 'Yes. Tailwind v4 uses the CSS import. Tailwind v3 registers the same utilities with plugins: [require("viewfx")] in tailwind.config.js.'
+    a: `Yes. Tailwind v4 uses the CSS import. Tailwind v3 registers the same utilities with plugins: [require("${SITE.package}")] in tailwind.config.js.`
   },
   {
     q: 'How do I use an effect class?',

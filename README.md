@@ -5,18 +5,20 @@
 [![en](https://img.shields.io/badge/lang-en-red.svg)](./README.md)
 [![es](https://img.shields.io/badge/lang-es-yellow.svg)](./README.es.md)
 
-![GitHub stars](https://img.shields.io/github/stars/LuisitoLuis/viewfx)
-![GitHub Forks](https://img.shields.io/github/forks/LuisitoLuis/viewfx)
-![GitHub PRs](https://img.shields.io/github/issues-pr/LuisitoLuis/viewfx)
-![GitHub issues](https://img.shields.io/github/issues/LuisitoLuis/viewfx)
-![GitHub Contributors](https://img.shields.io/github/contributors/LuisitoLuis/viewfx)
+[![GitHub stars](https://img.shields.io/github/stars/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/forks)
+[![GitHub PRs](https://img.shields.io/github/issues-pr/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/pulls)
+[![GitHub issues](https://img.shields.io/github/issues/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/issues)
+[![GitHub Contributors](https://img.shields.io/github/contributors/LuisitoLuis/viewfx)](https://github.com/LuisitoLuis/viewfx/graphs/contributors)
 
 ![ViewFX catalogue](./lib/imgs/web.png)
 
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4-blue?style=for-the-badge&logo=tailwind-css)
-![npm](https://img.shields.io/npm/v/viewfx?style=for-the-badge)
+[![npm](https://img.shields.io/npm/v/@luisitoluis/viewfx?style=for-the-badge)](https://www.npmjs.com/package/@luisitoluis/viewfx)
 
 Theme transitions with one Tailwind class on <code>&lt;html&gt;</code>.
+
+Package: [`@luisitoluis/viewfx`](https://www.npmjs.com/package/@luisitoluis/viewfx)
 
 Visit the [GitHub repository](https://github.com/LuisitoLuis/viewfx) to get more information.
 
@@ -31,19 +33,19 @@ Visit the [GitHub repository](https://github.com/LuisitoLuis/viewfx) to get more
 - npm
 
 ```bash
-npm install viewfx
+npm install @luisitoluis/viewfx
 ```
 
 - pnpm
 
 ```bash
-pnpm add viewfx
+pnpm add @luisitoluis/viewfx
 ```
 
 - yarn
 
 ```bash
-yarn add viewfx
+yarn add @luisitoluis/viewfx
 ```
 
 #### Plugin Implementation
@@ -53,7 +55,7 @@ yarn add viewfx
 ```css
 /* globals.css (for Tailwind CSS 4.*) */
 @import 'tailwindcss';
-@import 'viewfx';
+@import '@luisitoluis/viewfx';
 ```
 
 > Tailwind CSS v3 — register the JavaScript plugin:
@@ -62,7 +64,7 @@ yarn add viewfx
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   plugins: [
-    require('viewfx')
+    require('@luisitoluis/viewfx')
   ]
 }
 ```

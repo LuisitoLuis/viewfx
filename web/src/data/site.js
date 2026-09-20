@@ -16,5 +16,7 @@ export const SITE = {
     name: 'Luis MC',
     url: 'https://luismc.dev'
   },
-  repo: 'https://github.com/LuisitoLuis/viewfx'
+  repo: 'https://github.com/LuisitoLuis/viewfx',
+  package: '@luisitoluis/viewfx',
+  npm: 'https://www.npmjs.com/package/@luisitoluis/viewfx'
 }

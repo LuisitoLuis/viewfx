@@ -3,13 +3,13 @@
 > Tailwind CSS plugin of theme transitions on the View Transitions API.
 
 - GitHub: https://github.com/LuisitoLuis/viewfx
-- npm: https://www.npmjs.com/package/viewfx
+- npm: https://www.npmjs.com/package/@luisitoluis/viewfx
 
-Install: `npm install viewfx`
+Install: `npm install @luisitoluis/viewfx`
 
 ```css
 @import "tailwindcss";
-@import "viewfx";
+@import "@luisitoluis/viewfx";
 ```
 
 Put one effect class on `<html>` and wrap theme toggles in `document.startViewTransition`.

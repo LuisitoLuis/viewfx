@@ -6,21 +6,21 @@ const classes = EFFECTS.map((effect) => `\`${effect.id}\``).join(', ')
 /**
  * Prompt copied by the hero “Install from prompt” button for coding agents.
  */
-export const AGENT_INSTALL_PROMPT = `Install and use **viewfx** in this project.
+export const AGENT_INSTALL_PROMPT = `Install and use **${SITE.package}** in this project.
 
 ## What it is
-A Tailwind CSS plugin of ${EFFECTS.length} dark/light **theme transitions** on the native View Transitions API. Put one effect class on \`<html>\` and wrap the theme toggle in \`document.startViewTransition\`. Tailwind v4 uses a CSS import; Tailwind v3 uses \`require('viewfx')\`.
+A Tailwind CSS plugin of ${EFFECTS.length} dark/light **theme transitions** on the native View Transitions API. Put one effect class on \`<html>\` and wrap the theme toggle in \`document.startViewTransition\`. Tailwind v4 uses a CSS import; Tailwind v3 uses \`require('${SITE.package}')\`.
 
 ## Install the package
 \`\`\`bash
-npm install viewfx
-# or: pnpm add viewfx / yarn add viewfx / bun add viewfx
+npm install ${SITE.package}
+# or: pnpm add ${SITE.package} / yarn add ${SITE.package} / bun add ${SITE.package}
 \`\`\`
 
 Tailwind CSS v4 (global CSS):
 \`\`\`css
 @import "tailwindcss";
-@import "viewfx";
+@import "${SITE.package}";
 \`\`\`
 
 Tailwind CSS v3:
@@ -28,7 +28,7 @@ Tailwind CSS v3:
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   plugins: [
-    require('viewfx')
+    require('${SITE.package}')
   ]
 }
 \`\`\`
@@ -62,7 +62,7 @@ Effects: ${classes}.
 - Playground: ${SITE.url}/playground
 - GIF studio: ${SITE.url}/gif
 - GitHub: ${SITE.repo}
-- npm: https://www.npmjs.com/package/viewfx
+- npm: ${SITE.npm}
 - README: ${SITE.repo}#readme
 
 Please install the package, wire the v4 CSS import (or the v3 plugin), put one effect class on \`<html>\`, and wrap theme toggles in \`document.startViewTransition\`. Prefer the README and playground over scraping the HTML catalogue.

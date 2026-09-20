@@ -1,5 +1,6 @@
 ---
 import CodeBlock from './CodeBlock.astro'
+import { SITE } from '../data/site'
 
 interface Step {
   title: string
@@ -12,11 +13,11 @@ interface Step {
 const STEPS: Step[] = [
   {
     title: 'Import the plugin',
-    body: 'On Tailwind v4, import ViewFX next to Tailwind in your global stylesheet. On v3, add require("viewfx") to plugins in tailwind.config.js.',
+    body: `On Tailwind v4, import ViewFX next to Tailwind in your global stylesheet. On v3, add require("${SITE.package}") to plugins in tailwind.config.js.`,
     filename: 'global.css',
     language: 'css',
     code: `@import 'tailwindcss';
-@import 'viewfx';`
+@import '${SITE.package}';`
   },
   {
     title: 'Put the effect on html',
