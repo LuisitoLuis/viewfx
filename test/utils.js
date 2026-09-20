@@ -52,7 +52,7 @@ export function generatePluginCSSFromPackage(options = {}) {
   const { content = '' } = options
 
   return postcss([tailwindcss(), minify()])
-    .process(`${TAILWIND_BASE}\n@import "@luisitoluis/viewfx";\n${sourceFromContent(content)}`, {
+    .process(`${TAILWIND_BASE}\n@import "viewfx";\n${sourceFromContent(content)}`, {
       from: join(process.cwd(), 'web/src/styles/global.css')
     })
     .then((result) => result.css)

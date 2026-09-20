@@ -6,6 +6,14 @@ import { toastSuccess } from './toast'
 const EFFECT_IDS = new Set(EFFECTS.map((effect) => effect.id))
 const TIMING_PREFIXES = ['fx-duration-', 'fx-delay-', 'fx-steps-']
 
+function isEffectOrTimingClass(cls) {
+  if (EFFECT_IDS.has(cls) || TIMING_PREFIXES.some((prefix) => cls.startsWith(prefix))) return true
+  for (const id of EFFECT_IDS) {
+    if (cls.startsWith(`${id}-duration-`)) return true
+  }
+  return false
+}
+
 const defaults = {
   e: 'polygon',
   d: '1000',
@@ -54,13 +62,11 @@ export function applyHtmlClasses(state) {
   const el = document.documentElement
 
   for (const cls of [...el.classList]) {
-    if (EFFECT_IDS.has(cls) || TIMING_PREFIXES.some((prefix) => cls.startsWith(prefix))) {
-      el.classList.remove(cls)
-    }
+    if (isEffectOrTimingClass(cls)) el.classList.remove(cls)
   }
 
-  el.classList.add(state.e)
-  if (state.d !== 'none') el.classList.add(`fx-duration-${state.d}`)
+  if (state.d !== 'none') el.classList.add(`${state.e}-duration-${state.d}`)
+  else el.classList.add(state.e)
   if (!isDefaultDelay(state.delay)) el.classList.add(`fx-delay-${state.delay}`)
   if (state.s !== 'none') el.classList.add(`fx-steps-${state.s}`)
 }
