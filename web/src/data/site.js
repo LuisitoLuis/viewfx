@@ -2,11 +2,11 @@ import { EFFECTS } from './effects'
 
 /**
  * Single source of truth for site-wide metadata.
- * Change `url` here when deploying to a different domain — canonical links,
+ * Change `url` here when the catalogue has a public domain — canonical links,
  * Open Graph tags and the JSON-LD payload all derive from it.
  */
 export const SITE = {
-  url: 'https://viewfx.luismc.dev',
+  url: 'https://github.com/LuisitoLuis/viewfx',
   name: 'ViewFX',
   title: `ViewFX — ${EFFECTS.length} theme transition effects for the View Transitions API`,
   tagline: 'A specimen catalogue of dark/light theme transitions',

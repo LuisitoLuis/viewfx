@@ -2,13 +2,8 @@
 
 > Tailwind CSS plugin of theme transitions on the View Transitions API.
 
-- Site: https://viewfx.luismc.dev
-- Playground: https://viewfx.luismc.dev/playground
-- GIF studio: https://viewfx.luismc.dev/gif
-- Markdown: https://viewfx.luismc.dev/index.md
-- Full agent doc: https://viewfx.luismc.dev/llms-full.md
-- npm: https://www.npmjs.com/package/viewfx
 - GitHub: https://github.com/LuisitoLuis/viewfx
+- npm: https://www.npmjs.com/package/viewfx
 
 Install: `npm install viewfx`
 

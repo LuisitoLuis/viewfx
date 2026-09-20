@@ -18,7 +18,7 @@
 
 Transiciones de tema con una sola clase de Tailwind en <code>&lt;html&gt;</code>.
 
-Visita la [web](https://viewfx.luismc.dev) o el [playground](https://viewfx.luismc.dev/playground) para obtener más información.
+Visita el [repositorio en GitHub](https://github.com/LuisitoLuis/viewfx) para obtener más información.
 
 </div>
 
@@ -98,7 +98,7 @@ El tema se espera como clase `.dark` en `<html>` (el wipe `polygon` se invierte 
 
 ### Efectos
 
-30 utilidades. Pasa el ratón para previsualizar y haz clic para copiar en el [catálogo](https://viewfx.luismc.dev).
+30 utilidades. Pasa el ratón para previsualizar y haz clic para copiar en el [catálogo](https://github.com/LuisitoLuis/viewfx#effects).
 
 `circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `corner-bl`, `corner-br`, `iris`, `diamond`, `hexagon`, `square`, `soft`, `heart`, `expand`, `split`, `shutter`, `ink`, `spiral`, `wipe-h`, `wipe-left`, `wipe-v`, `slide-down`, `venetian`, `glitch`, `slide`, `lift`, `zoom`, `rotate`, `fade`, `dissolve`.
 
