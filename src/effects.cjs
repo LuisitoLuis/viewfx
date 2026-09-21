@@ -23,8 +23,9 @@ module.exports = {
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-corner-tl)',
     '--fx-mask-position': 'top left',
-    '--fx-mask-size': '350vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '200vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.corner-tr': {
     '--fx-anim': 'fx-mask-grow',
@@ -32,8 +33,9 @@ module.exports = {
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-corner-tr)',
     '--fx-mask-position': 'top right',
-    '--fx-mask-size': '350vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '200vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.corner-bl': {
     '--fx-anim': 'fx-mask-grow',
@@ -41,8 +43,9 @@ module.exports = {
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-corner-bl)',
     '--fx-mask-position': 'bottom left',
-    '--fx-mask-size': '350vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '200vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.corner-br': {
     '--fx-anim': 'fx-mask-grow',
@@ -50,8 +53,9 @@ module.exports = {
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-corner-br)',
     '--fx-mask-position': 'bottom right',
-    '--fx-mask-size': '350vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '200vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.iris': {
     '--fx-anim': 'fx-mask-grow',

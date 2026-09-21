@@ -23,22 +23,22 @@ export const MASK_SVG = {
 
   'corner-tl': svg(
     '0 0 40 40',
-    `${blur(2)}<circle cx="0" cy="0" r="18" fill="#fff" filter="url(#b)"/>`
+    `${blur(0.6)}<circle cx="0" cy="0" r="40" fill="#fff" filter="url(#b)"/>`
   ),
 
   'corner-tr': svg(
     '0 0 40 40',
-    `${blur(1.5)}<circle cx="40" cy="0" r="18" fill="#fff" filter="url(#b)"/>`
+    `${blur(0.6)}<circle cx="40" cy="0" r="40" fill="#fff" filter="url(#b)"/>`
   ),
 
   'corner-bl': svg(
     '0 0 40 40',
-    `${blur(2)}<circle cx="0" cy="40" r="18" fill="#fff" filter="url(#b)"/>`
+    `${blur(0.6)}<circle cx="0" cy="40" r="40" fill="#fff" filter="url(#b)"/>`
   ),
 
   'corner-br': svg(
     '0 0 40 40',
-    `${blur(1.5)}<circle cx="40" cy="40" r="18" fill="#fff" filter="url(#b)"/>`
+    `${blur(0.6)}<circle cx="40" cy="40" r="40" fill="#fff" filter="url(#b)"/>`
   ),
 
   square: svg('0 0 40 40', '<rect x="4" y="4" width="32" height="32" fill="#fff"/>'),

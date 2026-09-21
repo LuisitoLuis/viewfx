@@ -43,36 +43,36 @@ export const EFFECTS = [
     id: 'corner-tl',
     className: 'corner-tl',
     name: 'Corner Top-Left',
-    desc: 'A soft ripple growing out of the top-left corner.',
+    desc: 'A circular wipe growing out of the top-left corner.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('corner-tl')
   },
   {
     id: 'corner-tr',
     className: 'corner-tr',
     name: 'Corner Top-Right',
-    desc: 'The mirrored ripple, anchored to the top-right corner.',
+    desc: 'The mirrored wipe, anchored to the top-right corner.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('corner-tr')
   },
   {
     id: 'corner-bl',
     className: 'corner-bl',
     name: 'Corner Bottom-Left',
-    desc: 'The same ripple, anchored to the bottom-left corner.',
+    desc: 'The same wipe, anchored to the bottom-left corner.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('corner-bl')
   },
   {
     id: 'corner-br',
     className: 'corner-br',
     name: 'Corner Bottom-Right',
-    desc: 'Closes the set — a ripple from the bottom-right corner.',
+    desc: 'Closes the set — a wipe from the bottom-right corner.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('corner-br')
   },
   {
