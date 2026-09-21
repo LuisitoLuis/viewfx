@@ -105,18 +105,23 @@ function engineBase() {
       to: { clipPath: 'inset(0)' }
     },
     '@keyframes fx-glitch-in': {
-      '0%': { clipPath: 'inset(0 0 100% 0)', opacity: '0' },
-      '20%': { clipPath: 'inset(40% 0 0 0)', opacity: '1' },
-      '40%': { clipPath: 'inset(0 0 60% 0)' },
-      '60%': { clipPath: 'inset(20% 0 20% 0)' },
-      '100%': { clipPath: 'inset(0 0 0 0)' }
+      '0%': { clipPath: 'inset(16% 0 6% 0)', transform: 'translateX(-3.2%) skewX(-1.5deg)' },
+      '14%': { clipPath: 'inset(3% 0 20% 10%)', transform: 'translateX(3.6%) skewX(2deg)' },
+      '28%': { clipPath: 'inset(0 14% 8% 0)', transform: 'translateX(-2.8%) skewX(-0.8deg)' },
+      '42%': { clipPath: 'inset(18% 0 4% 0)', transform: 'translateX(4%) skewX(1.2deg)' },
+      '56%': { clipPath: 'inset(5% 8% 14% 0)', transform: 'translateX(-3%) skewX(-1deg)' },
+      '70%': { clipPath: 'inset(0)', transform: 'translateX(0) skewX(0)' },
+      '84%': { clipPath: 'inset(10% 0 4% 8%)', transform: 'translateX(2.4%) skewX(0.8deg)' },
+      '100%': { clipPath: 'inset(0)', transform: 'translateX(0) skewX(0)' }
     },
     '@keyframes fx-glitch-out': {
-      '0%': { clipPath: 'inset(0 0 0 0)', opacity: '1' },
-      '20%': { clipPath: 'inset(0 0 40% 0)' },
-      '40%': { clipPath: 'inset(60% 0 0 0)' },
-      '60%': { clipPath: 'inset(20% 0 20% 0)', opacity: '0.5' },
-      '100%': { clipPath: 'inset(0 0 100% 0)', opacity: '0' }
+      '0%': { clipPath: 'inset(0)', transform: 'translateX(0) skewX(0)', opacity: '1' },
+      '16%': { clipPath: 'inset(0 0 16% 6%)', transform: 'translateX(3%) skewX(1.2deg)' },
+      '32%': { clipPath: 'inset(14% 10% 4% 0)', transform: 'translateX(-3.4%) skewX(-1.5deg)' },
+      '48%': { clipPath: 'inset(4% 0 18% 0)', transform: 'translateX(2.6%) skewX(0.6deg)' },
+      '64%': { clipPath: 'inset(12% 6% 6% 0)', transform: 'translateX(-2.2%) skewX(-1deg)' },
+      '80%': { clipPath: 'inset(6% 0 12% 8%)', transform: 'translateX(2%) skewX(0.8deg)', opacity: '0.85' },
+      '100%': { clipPath: 'inset(20% 0 16% 0)', transform: 'translateX(-1.5%) skewX(0)', opacity: '0' }
     },
     '@keyframes fx-slide-in': {
       from: { transform: 'translateX(100%)' },

@@ -194,7 +194,8 @@ module.exports = {
   '.glitch': {
     '--fx-anim': 'fx-glitch-in',
     '--fx-anim-old': 'fx-glitch-out',
-    '--fx-duration': '0.6s'
+    '--fx-duration': '1s',
+    '--fx-ease': 'step-end'
   },
   '.slide': {
     '--fx-anim': 'fx-slide-in',

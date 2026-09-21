@@ -1,5 +1,5 @@
 import { EFFECTS } from '../data/effects'
-import { THEME_KEY } from './theme'
+import { playTransition } from './theme'
 import { announce } from './live-region'
 import { toastSuccess } from './toast'
 
@@ -67,47 +67,9 @@ export function applyHtmlClasses(state) {
   for (const cls of next) el.classList.add(cls)
 }
 
-function persistPreviewTheme(dark) {
-  const el = document.documentElement
-  const mode = dark ? 'dark' : 'light'
-
-  el.classList.toggle('dark', dark)
-  el.dataset.themeMode = mode
-
-  try {
-    localStorage.setItem(THEME_KEY, mode)
-  } catch {
-    // Private browsing can refuse writes; the preview still flips.
-  }
-
-  const toggle = document.getElementById('theme-toggle')
-  if (!toggle) return
-
-  const label = dark ? 'Switch to the light theme' : 'Use the system theme'
-  toggle.setAttribute('aria-label', label)
-  toggle.setAttribute('title', label)
-}
-
 function playSelectedEffect(state) {
   applyHtmlClasses(state)
-
-  const el = document.documentElement
-  const nextDark = !el.classList.contains('dark')
-  const start = document.startViewTransition?.bind(document)
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
-  if (!start || reduced) {
-    persistPreviewTheme(nextDark)
-    return
-  }
-
-  el.classList.add('theme-swap')
-  const clearSwap = () => el.classList.remove('theme-swap')
-  const transition = start(() => persistPreviewTheme(nextDark))
-  transition?.finished.then(clearSwap, clearSwap)
-  for (const settled of [transition?.ready, transition?.updateCallbackDone, transition?.finished]) {
-    settled?.catch(() => {})
-  }
+  playTransition()
 }
 
 function flashLabel(button, message) {

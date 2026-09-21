@@ -35,6 +35,18 @@ function nextMode(mode) {
   return THEME_MODES[(THEME_MODES.indexOf(mode) + 1) % THEME_MODES.length]
 }
 
+function isGlitchEffect() {
+  return [...root().classList].some((cls) => cls === 'glitch' || cls.startsWith('glitch-'))
+}
+
+/** Glitch wipes only on light → dark. Other effects, including polygon, still run both ways. */
+function shouldAnimateTheme(nextDark, mode) {
+  if (isDark() === nextDark) return false
+  if (!isGlitchEffect()) return true
+  if (mode === 'auto') return false
+  return !isDark() && nextDark === true
+}
+
 function commit(dark, persist, mode) {
   const resolvedMode = mode ?? (persist ? (dark ? 'dark' : 'light') : readStoredMode())
 
@@ -69,7 +81,7 @@ export function playTransition(dark = !isDark(), persist = true, mode) {
   const el = root()
   const start = startViewTransition()
 
-  if (!start || prefersReducedMotion()) {
+  if (!start || prefersReducedMotion() || !shouldAnimateTheme(dark, mode)) {
     commit(dark, persist, mode)
     return
   }

@@ -343,7 +343,9 @@ const TONES = ['dark', 'light'] as const
 
   .fx-card[data-fx='glitch'] {
     --preview-anim: preview-glitch;
-    --preview-duration: 1.1s;
+    --preview-duration: 1.8s;
+    --gallery-duration: 1.6s;
+    --gallery-ease: step-end;
   }
 
   .fx-card[data-fx='slide'] {
@@ -527,27 +529,30 @@ const TONES = ['dark', 'light'] as const
   }
 
   @keyframes preview-glitch {
-    0% {
-      clip-path: inset(0 0 100% 0);
-      opacity: 0;
-    }
-    20% {
-      clip-path: inset(40% 0 0 0);
-      opacity: 1;
-    }
-    35% {
-      clip-path: inset(0 0 60% 0);
-    }
-    50% {
-      clip-path: inset(20% 0 20% 0);
-    }
-    65%,
-    85% {
-      clip-path: inset(0 0 0 0);
-    }
+    0%,
     100% {
-      clip-path: inset(0 0 100% 0);
-      opacity: 0;
+      clip-path: inset(16% 0 6% 0);
+      transform: translateX(-3.2%) skewX(-1.5deg);
+    }
+    16% {
+      clip-path: inset(3% 0 20% 10%);
+      transform: translateX(3.6%) skewX(2deg);
+    }
+    32% {
+      clip-path: inset(0 14% 8% 0);
+      transform: translateX(-2.8%) skewX(-0.8deg);
+    }
+    48% {
+      clip-path: inset(0);
+      transform: translateX(0) skewX(0);
+    }
+    64% {
+      clip-path: inset(18% 0 4% 0);
+      transform: translateX(4%) skewX(1.2deg);
+    }
+    80% {
+      clip-path: inset(5% 8% 14% 0);
+      transform: translateX(-3%) skewX(-1deg);
     }
   }
 

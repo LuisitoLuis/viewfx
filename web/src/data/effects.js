@@ -232,9 +232,9 @@ export const EFFECTS = [
     id: 'glitch',
     className: 'glitch',
     name: 'Glitch',
-    desc: 'Stepped clip offsets for a broken-signal feel.',
+    desc: 'A digital slice flicker with a sideways offset.',
     technique: 'clip-path',
-    durationMs: 600,
+    durationMs: 1000,
     css: usage('glitch')
   },
   {
