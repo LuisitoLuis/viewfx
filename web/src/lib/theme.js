@@ -1,9 +1,5 @@
-import { DEFAULT_EFFECT_CLASS, EFFECTS } from '../data/effects'
-
 export const THEME_KEY = 'viewfx:theme'
 
-const PAGE_EFFECT = DEFAULT_EFFECT_CLASS
-const EFFECT_CLASSES = new Set(EFFECTS.map((effect) => effect.className))
 const THEME_MODES = ['auto', 'dark', 'light']
 
 const root = () => document.documentElement
@@ -58,40 +54,19 @@ function commit(dark, persist, mode) {
 
 /**
  * Flips the theme through the effect class currently on `<html>`.
+ * Does not rewrite effect utilities — the playground or page owns those.
  * Falls back to an instant swap when the API is missing or the visitor has
  * asked for reduced motion.
  *
  * `persist` is false when the change comes from the OS rather than the
  * visitor, so following the system preference stays sticky.
- */
-function isEffectClass(cls) {
-  if (EFFECT_CLASSES.has(cls)) return true
-  for (const name of EFFECT_CLASSES) {
-    if (cls.startsWith(`${name}-duration-`)) return true
-  }
-  return false
-}
-
-function activeEffect() {
-  const classes = [...root().classList]
-  return classes.find((cls) => isEffectClass(cls)) ?? PAGE_EFFECT
-}
-
-/**
+ *
  * @param {boolean} [dark]
  * @param {boolean} [persist]
  * @param {'light' | 'dark' | 'auto'} [mode]
  */
 export function playTransition(dark = !isDark(), persist = true, mode) {
   const el = root()
-  const keep = activeEffect()
-  for (const cls of [...el.classList]) {
-    if (isEffectClass(cls) && cls !== keep) {
-      el.classList.remove(cls)
-    }
-  }
-  el.classList.add(keep)
-
   const start = startViewTransition()
 
   if (!start || prefersReducedMotion()) {

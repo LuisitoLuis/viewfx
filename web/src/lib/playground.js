@@ -1,17 +1,15 @@
 import { EFFECTS } from '../data/effects'
-import { playTransition } from './theme'
+import { THEME_KEY } from './theme'
 import { announce } from './live-region'
 import { toastSuccess } from './toast'
 
 const EFFECT_IDS = new Set(EFFECTS.map((effect) => effect.id))
+const EFFECT_IDS_BY_LENGTH = [...EFFECT_IDS].sort((a, b) => b.length - a.length)
 const TIMING_PREFIXES = ['fx-duration-', 'fx-delay-', 'fx-steps-']
 
-function isEffectOrTimingClass(cls) {
+export function isEffectOrTimingClass(cls) {
   if (EFFECT_IDS.has(cls) || TIMING_PREFIXES.some((prefix) => cls.startsWith(prefix))) return true
-  for (const id of EFFECT_IDS) {
-    if (cls.startsWith(`${id}-duration-`)) return true
-  }
-  return false
+  return EFFECT_IDS_BY_LENGTH.some((id) => cls.startsWith(`${id}-duration-`))
 }
 
 const defaults = {
@@ -60,15 +58,56 @@ export function buildClasses(state) {
 
 export function applyHtmlClasses(state) {
   const el = document.documentElement
+  const next = buildClasses(state)
 
   for (const cls of [...el.classList]) {
     if (isEffectOrTimingClass(cls)) el.classList.remove(cls)
   }
 
-  el.classList.add(state.e)
-  if (state.d !== 'none') el.classList.add(`${state.e}-duration-${state.d}`)
-  if (!isDefaultDelay(state.delay)) el.classList.add(`fx-delay-${state.delay}`)
-  if (state.s !== 'none') el.classList.add(`fx-steps-${state.s}`)
+  for (const cls of next) el.classList.add(cls)
+}
+
+function persistPreviewTheme(dark) {
+  const el = document.documentElement
+  const mode = dark ? 'dark' : 'light'
+
+  el.classList.toggle('dark', dark)
+  el.dataset.themeMode = mode
+
+  try {
+    localStorage.setItem(THEME_KEY, mode)
+  } catch {
+    // Private browsing can refuse writes; the preview still flips.
+  }
+
+  const toggle = document.getElementById('theme-toggle')
+  if (!toggle) return
+
+  const label = dark ? 'Switch to the light theme' : 'Use the system theme'
+  toggle.setAttribute('aria-label', label)
+  toggle.setAttribute('title', label)
+}
+
+function playSelectedEffect(state) {
+  applyHtmlClasses(state)
+
+  const el = document.documentElement
+  const nextDark = !el.classList.contains('dark')
+  const start = document.startViewTransition?.bind(document)
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!start || reduced) {
+    persistPreviewTheme(nextDark)
+    return
+  }
+
+  el.classList.add('theme-swap')
+  const clearSwap = () => el.classList.remove('theme-swap')
+  const transition = start(() => persistPreviewTheme(nextDark))
+  transition?.finished.then(clearSwap, clearSwap)
+  for (const settled of [transition?.ready, transition?.updateCallbackDone, transition?.finished]) {
+    settled?.catch(() => {})
+  }
 }
 
 function flashLabel(button, message) {
@@ -136,7 +175,7 @@ export function initPlayground(rootId = 'playground') {
     markEffect()
     updateSnippet()
     updateUrl()
-    if (shouldPlay) playTransition()
+    if (shouldPlay) playSelectedEffect(state)
   }
 
   list?.addEventListener('click', (event) => {
@@ -171,8 +210,7 @@ export function initPlayground(rootId = 'playground') {
   })
 
   play.addEventListener('click', () => {
-    applyHtmlClasses(state)
-    playTransition()
+    playSelectedEffect(state)
     announce('Theme transition played')
   })
 

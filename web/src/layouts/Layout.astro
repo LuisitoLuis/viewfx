@@ -11,9 +11,15 @@ interface Props {
   title?: string
   description?: string
   noindex?: boolean
+  effectClass?: string
 }
 
-const { title = SITE.title, description = SITE.description, noindex = false } = Astro.props
+const {
+  title = SITE.title,
+  description = SITE.description,
+  noindex = false,
+  effectClass = DEFAULT_EFFECT_CLASS
+} = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url)
 const markdownPath =
@@ -56,7 +62,7 @@ const bootstrap = `(() => {
 <html
   lang={SITE.locale}
   data-theme-mode="auto"
-  class={`${DEFAULT_EFFECT_CLASS} scrollbar-thin scrollbar-thumb-accent scrollbar-track-paper`}
+  class={`${effectClass} scrollbar-thin scrollbar-thumb-accent scrollbar-track-paper`}
 >
   <head>
     <meta charset="utf-8" />

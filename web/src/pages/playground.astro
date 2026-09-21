@@ -7,6 +7,7 @@ import CopyIcon from '@components/icons/copy.astro'
 import SearchIcon from '@components/icons/search.astro'
 import { SITE } from '../data/site'
 import { EFFECTS } from '../data/effects'
+import { buildClasses } from '../lib/playground'
 import {
   ANIMATION_DELAY,
   ANIMATION_DURATION,
@@ -39,6 +40,8 @@ const playgroundData = {
   steps
 }
 
+const initialClasses = buildClasses(initial).join(' ')
+
 const selectClass =
   'w-full min-h-11 rounded-xl border border-line bg-surface px-3 text-sm text-ink focus-visible:border-accent'
 ---
@@ -46,6 +49,7 @@ const selectClass =
 <Layout
   title={`Playground — ${SITE.name}`}
   description="Compose ViewFX theme transitions live: pick an effect, duration, delay and steps, play the wipe, then copy the class list or share the URL."
+  effectClass={initialClasses}
 >
   <Header />
   <main id="main" class="pt-20 sm:pt-24" tabindex="-1">

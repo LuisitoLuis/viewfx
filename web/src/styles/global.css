@@ -7,6 +7,8 @@
 /* prettier-ignore */
 @source inline('{circle,circle-blur,polygon,corner-tl,corner-tr,corner-bl,corner-br,iris,diamond,hexagon,square,mosaic,soft,heart,expand,split,shutter,ink,spiral,wipe-h,wipe-left,wipe-v,slide-down,venetian,glitch,slide,lift,zoom,rotate,fade,dissolve}-duration-{none,slower,slow,normal,fast,faster,0,100,150,200,250,300,400,500,700,800,900,1000}');
 /* prettier-ignore */
+@source inline('{circle,circle-blur,polygon,corner-tl,corner-tr,corner-bl,corner-br,iris,diamond,hexagon,square,mosaic,soft,heart,expand,split,shutter,ink,spiral,wipe-h,wipe-left,wipe-v,slide-down,venetian,glitch,slide,lift,zoom,rotate,fade,dissolve}-duration-{none,slower,slow,normal,fast,faster,0,100,150,200,250,300,400,500,700,800,900,1000}-delay-{none,0,100,150,200,250,300,400,500,700,800,900,1000}');
+/* prettier-ignore */
 @source inline('fx-delay-{none,0,100,150,200,250,300,400,500,700,800,900,1000}');
 @source inline('fx-steps-{none,retro,normal,modern}');
 
