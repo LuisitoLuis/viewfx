@@ -169,17 +169,17 @@ module.exports = {
     '--fx-duration': '0.6s'
   },
   '.slide-up': {
-    '--fx-anim': 'fx-wipe-in-down',
-    '--fx-anim-old': 'fx-wipe-out-down',
-    '--fx-duration': '0.6s'
-  },
-  '.slide-down': {
     '--fx-anim': 'fx-wipe-in-up',
     '--fx-anim-old': 'fx-wipe-out-up',
     '--fx-duration': '0.6s'
   },
+  '.slide-down': {
+    '--fx-anim': 'fx-wipe-in-down',
+    '--fx-anim-old': 'fx-wipe-out-down',
+    '--fx-duration': '0.6s'
+  },
   '.venetian': {
-    '--fx-anim': 'fx-wipe-in-up',
+    '--fx-anim': 'fx-wipe-in-down',
     '--fx-anim-old': 'fx-venetian-out',
     '--fx-duration': '0.8s'
   },

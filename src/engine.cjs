@@ -81,15 +81,15 @@ function engineBase() {
       to: { clipPath: 'inset(0 100% 0 0)' }
     },
     '@keyframes fx-wipe-in-down': {
-      from: { clipPath: 'inset(100% 0 0 0)' },
+      from: { clipPath: 'inset(0 0 100% 0)' },
       to: { clipPath: 'inset(0 0 0 0)' }
     },
     '@keyframes fx-wipe-out-down': {
       from: { clipPath: 'inset(0 0 0 0)' },
-      to: { clipPath: 'inset(0 0 100% 0)' }
+      to: { clipPath: 'inset(100% 0 0 0)' }
     },
     '@keyframes fx-wipe-in-up': {
-      from: { clipPath: 'inset(0 0 100% 0)' },
+      from: { clipPath: 'inset(100% 0 0 0)' },
       to: { clipPath: 'inset(0 0 0 0)' }
     },
     '@keyframes fx-wipe-out-up': {

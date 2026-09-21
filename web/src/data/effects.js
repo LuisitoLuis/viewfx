@@ -205,7 +205,7 @@ export const EFFECTS = [
     id: 'slide-up',
     className: 'slide-up',
     name: 'Slide Up',
-    desc: 'The same edge, falling from the top of the viewport.',
+    desc: 'A hard inset edge travelling from the bottom up.',
     technique: 'clip-path',
     durationMs: 600,
     css: usage('slide-up')
@@ -214,7 +214,7 @@ export const EFFECTS = [
     id: 'slide-down',
     className: 'slide-down',
     name: 'Slide Down',
-    desc: 'The edge travelling from top to bottom.',
+    desc: 'The same edge, falling from the top of the viewport.',
     technique: 'clip-path',
     durationMs: 600,
     css: usage('slide-down')

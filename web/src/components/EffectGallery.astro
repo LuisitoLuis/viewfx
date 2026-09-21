@@ -17,6 +17,9 @@ const restCount = Math.max(0, EFFECTS.length - PREVIEW_COUNT)
   class="fx-gallery relative z-0 overflow-hidden bg-inset"
   aria-labelledby="palette-heading"
 >
+  <script is:inline>
+    document.getElementById('palette')?.setAttribute('data-js', '')
+  </script>
   <div
     class="pointer-events-none h-24 bg-linear-to-b from-paper via-paper/80 to-transparent sm:h-32"
     aria-hidden="true"
@@ -25,16 +28,21 @@ const restCount = Math.max(0, EFFECTS.length - PREVIEW_COUNT)
   <div class="mx-auto w-full max-w-6xl px-4 py-10 text-center sm:px-6 sm:py-12 lg:px-8">
     <h2
       id="palette-heading"
-      class="motion-safe:animate-fade-up text-2xl font-semibold tracking-tight sm:text-4xl [animation-delay:600ms]"
+      class="fx-enter text-2xl font-semibold tracking-tight sm:text-4xl"
+      style="--enter-delay: 0ms"
     >
       Effect Collection
     </h2>
-    <p class="motion-safe:animate-fade-up mx-auto mt-3 max-w-xl text-base text-balance text-ink-2 sm:text-lg [animation-delay:700ms]">
+    <p
+      class="fx-enter mx-auto mt-3 max-w-xl text-base text-balance text-ink-2 sm:text-lg"
+      style="--enter-delay: 40ms"
+    >
       {EFFECTS.length} utilities. Hover to preview, click to copy.
     </p>
 
     <fieldset
-      class="timing-bar motion-safe:animate-fade-up mx-auto mt-8 [animation-delay:800ms]"
+      class="timing-bar fx-enter mx-auto mt-8"
+      style="--enter-delay: 70ms"
       aria-label="Animation preview options"
     >
       <legend class="sr-only">Customize animation duration, delay, and steps for previews</legend>
@@ -104,18 +112,23 @@ const restCount = Math.max(0, EFFECTS.length - PREVIEW_COUNT)
       class="mx-auto mt-10 grid max-w-5xl grid-cols-2 gap-3 sm:mt-14 sm:grid-cols-3 sm:gap-4 md:grid-cols-4 lg:grid-cols-5"
     >
       {EFFECTS.map((effect, index) => (
-        <EffectCard effect={effect} index={index} hidden={index >= PREVIEW_COUNT} />
+        <EffectCard
+          effect={effect}
+          index={index}
+          hidden={index >= PREVIEW_COUNT}
+        />
       ))}
     </ul>
     {
       restCount > 0 && (
-        <div class="flex justify-center pt-10 pb-2">
+        <div id="show-all-wrap" class="flex justify-center pt-10 pb-2">
           <button
             type="button"
             id="show-all-effects"
             aria-controls="effect-grid"
             aria-expanded="false"
-            class="group inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-ink-2 transition-colors hover:bg-inset hover:text-ink focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            class="fx-enter group inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium text-ink-2 transition-colors hover:bg-inset hover:text-ink focus-visible:ring-2 focus-visible:ring-accent focus-visible:outline-none"
+            style={`--enter-delay: ${90 + (PREVIEW_COUNT - 1) * 30}ms`}
           >
             <span>Show all {EFFECTS.length}</span>
             <svg
@@ -147,6 +160,17 @@ const restCount = Math.max(0, EFFECTS.length - PREVIEW_COUNT)
 </section>
 
 <style>
+  :global(.fx-gallery[data-js]:not([data-in-view]) .fx-enter) {
+    opacity: 0;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    :global(.fx-gallery[data-in-view] .fx-enter) {
+      animation: fade-in-up 0.45s var(--expo-out, ease-out) both;
+      animation-delay: var(--enter-delay, calc(90ms + var(--i, 0) * 30ms));
+    }
+  }
+
   .timing-bar {
     display: flex;
     flex-wrap: wrap;

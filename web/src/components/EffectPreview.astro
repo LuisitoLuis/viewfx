@@ -313,11 +313,11 @@ const TONES = ['dark', 'light'] as const
   }
 
   .fx-card[data-fx='slide-up'] {
-    --preview-anim: preview-wipe-down;
+    --preview-anim: preview-wipe-up;
   }
 
   .fx-card[data-fx='slide-down'] {
-    --preview-anim: preview-wipe-up;
+    --preview-anim: preview-wipe-down;
   }
 
   .fx-card[data-fx='venetian'] {
@@ -442,7 +442,7 @@ const TONES = ['dark', 'light'] as const
   @keyframes preview-wipe-down {
     0%,
     100% {
-      clip-path: inset(100% 0 0 0);
+      clip-path: inset(0 0 100% 0);
     }
     55%,
     85% {
@@ -453,7 +453,7 @@ const TONES = ['dark', 'light'] as const
   @keyframes preview-wipe-up {
     0%,
     100% {
-      clip-path: inset(0 0 100% 0);
+      clip-path: inset(100% 0 0 0);
     }
     55%,
     85% {

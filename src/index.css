@@ -268,7 +268,7 @@
 
 @keyframes fx-wipe-in-down {
   from {
-    clip-path: inset(100% 0 0 0);
+    clip-path: inset(0 0 100% 0);
   }
   to {
     clip-path: inset(0 0 0 0);
@@ -280,13 +280,13 @@
     clip-path: inset(0 0 0 0);
   }
   to {
-    clip-path: inset(0 0 100% 0);
+    clip-path: inset(100% 0 0 0);
   }
 }
 
 @keyframes fx-wipe-in-up {
   from {
-    clip-path: inset(0 0 100% 0);
+    clip-path: inset(100% 0 0 0);
   }
   to {
     clip-path: inset(0 0 0 0);
@@ -700,19 +700,19 @@
 }
 
 @utility slide-up {
-  --fx-anim: fx-wipe-in-down;
-  --fx-anim-old: fx-wipe-out-down;
-  --fx-duration: 0.6s;
-}
-
-@utility slide-down {
   --fx-anim: fx-wipe-in-up;
   --fx-anim-old: fx-wipe-out-up;
   --fx-duration: 0.6s;
 }
 
+@utility slide-down {
+  --fx-anim: fx-wipe-in-down;
+  --fx-anim-old: fx-wipe-out-down;
+  --fx-duration: 0.6s;
+}
+
 @utility venetian {
-  --fx-anim: fx-wipe-in-up;
+  --fx-anim: fx-wipe-in-down;
   --fx-anim-old: fx-venetian-out;
   --fx-duration: 0.8s;
 }

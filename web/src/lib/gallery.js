@@ -9,8 +9,42 @@ const visibleSelects = () =>
   Array.from(document.querySelectorAll('.fx-card:not([hidden]) .fx-select'))
 
 function revealAllEffects() {
-  for (const card of cards()) card.hidden = false
-  document.getElementById('show-all-effects')?.remove()
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  let i = 0
+
+  for (const card of cards()) {
+    if (!card.hidden) continue
+    if (!reduced) {
+      card.style.setProperty('--i', String(i++))
+      card.classList.add('fx-enter')
+    }
+    card.hidden = false
+  }
+
+  document.getElementById('show-all-wrap')?.remove()
+}
+
+function initSectionEnter(gallery) {
+  gallery.setAttribute('data-js', '')
+
+  const show = () => gallery.setAttribute('data-in-view', '')
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)')
+
+  if (reduced.matches) {
+    show()
+    return
+  }
+
+  const io = new IntersectionObserver(
+    ([entry]) => {
+      if (!entry?.isIntersecting) return
+      show()
+      io.disconnect()
+    },
+    { rootMargin: '0px 0px -10% 0px', threshold: 0.08 }
+  )
+
+  io.observe(gallery)
 }
 
 function markCurrent(id) {
@@ -156,6 +190,9 @@ function initPreviewControls() {
 }
 
 export function initGallery() {
+  const gallery = document.querySelector('.fx-gallery')
+  if (gallery) initSectionEnter(gallery)
+
   let stored = null
   try {
     stored = localStorage.getItem(EFFECT_KEY)
