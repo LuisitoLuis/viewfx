@@ -187,24 +187,6 @@ html:not(.theme-swap) #header {
   view-transition-name: site-header;
 }
 
-/* Keep the effect list out of ViewFX wipes so the mask does not cut through it. */
-html.theme-swap #effect-picker {
-  view-transition-name: effect-picker;
-}
-
-html.theme-swap::view-transition-group(effect-picker) {
-  z-index: 40;
-  animation: none;
-}
-
-html.theme-swap::view-transition-old(effect-picker) {
-  display: none;
-}
-
-html.theme-swap::view-transition-new(effect-picker) {
-  animation: none;
-}
-
 .gif-ink {
   filter: grayscale(1) contrast(1.35);
 }
