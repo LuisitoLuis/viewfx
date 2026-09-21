@@ -85,6 +85,13 @@ module.exports = {
     '--fx-mask-size': '240vmax',
     '--fx-duration': '0.8s'
   },
+  '.mosaic': {
+    '--fx-anim': 'fx-mosaic',
+    '--fx-anim-old': 'none',
+    '--fx-old-z': '-1',
+    '--fx-duration': '0.7s',
+    '--fx-ease': 'ease-in-out'
+  },
   '.soft': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',

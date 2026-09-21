@@ -64,8 +64,17 @@ function commit(dark, persist, mode) {
  * `persist` is false when the change comes from the OS rather than the
  * visitor, so following the system preference stays sticky.
  */
+function isEffectClass(cls) {
+  if (EFFECT_CLASSES.has(cls)) return true
+  for (const name of EFFECT_CLASSES) {
+    if (cls.startsWith(`${name}-duration-`)) return true
+  }
+  return false
+}
+
 function activeEffect() {
-  return [...root().classList].find((cls) => EFFECT_CLASSES.has(cls)) ?? PAGE_EFFECT
+  const classes = [...root().classList]
+  return classes.find((cls) => isEffectClass(cls)) ?? PAGE_EFFECT
 }
 
 /**
@@ -77,7 +86,7 @@ export function playTransition(dark = !isDark(), persist = true, mode) {
   const el = root()
   const keep = activeEffect()
   for (const cls of [...el.classList]) {
-    if (EFFECT_CLASSES.has(cls) && cls !== keep) {
+    if (isEffectClass(cls) && cls !== keep) {
       el.classList.remove(cls)
     }
   }

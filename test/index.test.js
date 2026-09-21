@@ -56,6 +56,19 @@ describe('viewfx plugins', () => {
     expect(css).toContain('@keyframes fx-shutter-in')
   })
 
+  it('use a tiled mosaic mask', async () => {
+    const css = await generatePluginCSS({
+      content: '<html class="mosaic"></html>'
+    })
+
+    expect(css).toContain(
+      '.mosaic{--fx-anim:fx-mosaic;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.7s;--fx-ease:ease-in-out;}'
+    )
+    expect(css).toContain('@keyframes fx-mosaic')
+    expect(css).toContain('--fx-mosaic')
+    expect(css).toContain('mask-composite:intersect')
+  })
+
   it('flips the polygon clip with the dark class', async () => {
     const css = await generatePluginCSS({
       content: '<html class="dark polygon"></html>'

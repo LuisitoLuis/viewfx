@@ -197,6 +197,69 @@ const TONES = ['dark', 'light'] as const
     --preview-mask: var(--mask-square);
   }
 
+  .fx-card[data-fx='mosaic'] {
+    --preview-anim: preview-mosaic;
+  }
+
+  @property --preview-mosaic {
+    syntax: '<number>';
+    inherits: false;
+    initial-value: 0;
+  }
+
+  .fx-card[data-fx='mosaic']:hover .fx-scene--light,
+  .fx-gallery[data-play-all] .fx-card[data-fx='mosaic']:not([hidden]) .fx-scene--light {
+    mask: none;
+    -webkit-mask-image:
+      repeating-linear-gradient(
+        #0000 0,
+        #0000 calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 25%
+      ),
+      repeating-linear-gradient(
+        90deg,
+        #0000 0,
+        #0000 calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 25%
+      );
+    mask-image:
+      repeating-linear-gradient(
+        #0000 0,
+        #0000 calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 25%
+      ),
+      repeating-linear-gradient(
+        90deg,
+        #0000 0,
+        #0000 calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 16%),
+        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 calc(12.5% + var(--preview-mosaic) * 16%),
+        #0000 25%
+      );
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .fx-card[data-fx='mosaic']:hover .fx-scene--light,
+    .fx-gallery[data-play-all] .fx-card[data-fx='mosaic']:not([hidden]) .fx-scene--light {
+      mask: none;
+      -webkit-mask-image: none;
+    }
+  }
+
   .fx-card[data-fx='soft'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-soft);
@@ -274,6 +337,17 @@ const TONES = ['dark', 'light'] as const
 
   .fx-card:is([data-fx='rotate'], [data-fx='spiral']) {
     --preview-anim: preview-rotate;
+  }
+
+  @keyframes preview-mosaic {
+    0%,
+    100% {
+      --preview-mosaic: 0;
+    }
+    55%,
+    85% {
+      --preview-mosaic: 1;
+    }
   }
 
   @keyframes preview-mask {

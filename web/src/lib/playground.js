@@ -65,8 +65,8 @@ export function applyHtmlClasses(state) {
     if (isEffectOrTimingClass(cls)) el.classList.remove(cls)
   }
 
+  el.classList.add(state.e)
   if (state.d !== 'none') el.classList.add(`${state.e}-duration-${state.d}`)
-  else el.classList.add(state.e)
   if (!isDefaultDelay(state.delay)) el.classList.add(`fx-delay-${state.delay}`)
   if (state.s !== 'none') el.classList.add(`fx-steps-${state.s}`)
 }

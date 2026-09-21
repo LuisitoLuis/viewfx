@@ -37,6 +37,17 @@ describe('viewfx tailwind v3 plugin', () => {
     expect(css).toContain('@keyframes fx-expand-in')
   })
 
+  it('use a tiled mosaic mask', async () => {
+    const css = await generatePluginCSSv3({
+      content: '<html class="mosaic"></html>'
+    })
+
+    expect(css).toContain('--fx-anim:fx-mosaic')
+    expect(css).toContain('--fx-old-z:-1')
+    expect(css).toContain('@keyframes fx-mosaic')
+    expect(css).toContain('mask-composite:intersect')
+  })
+
   it('flips the polygon clip with the dark class', async () => {
     const css = await generatePluginCSSv3({
       content: '<html class="dark polygon"></html>'

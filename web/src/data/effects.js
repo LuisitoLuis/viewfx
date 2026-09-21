@@ -112,6 +112,15 @@ export const EFFECTS = [
     css: usage('square')
   },
   {
+    id: 'mosaic',
+    className: 'mosaic',
+    name: 'Mosaic',
+    desc: 'A 25×25 grid of squares scaling out from each cell — a tiled theme wipe.',
+    technique: 'mask',
+    durationMs: 700,
+    css: usage('mosaic')
+  },
+  {
     id: 'soft',
     className: 'soft',
     name: 'Soft Bloom',

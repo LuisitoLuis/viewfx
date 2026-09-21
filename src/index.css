@@ -137,6 +137,68 @@
    Keyframes
    ============================================ */
 
+@property --fx-mosaic {
+  syntax: '<number>';
+  inherits: false;
+  initial-value: 1;
+}
+
+:root.mosaic::view-transition-new(root),
+:root[class*='mosaic-duration']::view-transition-new(root) {
+  mask: none;
+  -webkit-mask-image:
+    repeating-linear-gradient(
+      #0000 0,
+      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 4%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #0000 0,
+      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 4%
+    );
+  mask-image:
+    repeating-linear-gradient(
+      #0000 0,
+      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 4%
+    ),
+    repeating-linear-gradient(
+      90deg,
+      #0000 0,
+      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% - var(--fx-mosaic) * 2.5%),
+      #fff calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
+      #0000 4%
+    );
+  -webkit-mask-size: 100% 100%;
+  mask-size: 100% 100%;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+
+@keyframes fx-mosaic {
+  from {
+    --fx-mosaic: 0;
+  }
+  to {
+    --fx-mosaic: 1;
+  }
+}
+
 @keyframes fx-mask-grow {
   to {
     mask-size: var(--fx-mask-size);
@@ -539,6 +601,14 @@
   --fx-mask: var(--mask-square);
   --fx-mask-size: 240vmax;
   --fx-duration: 0.8s;
+}
+
+@utility mosaic {
+  --fx-anim: fx-mosaic;
+  --fx-anim-old: none;
+  --fx-old-z: -1;
+  --fx-duration: 0.7s;
+  --fx-ease: ease-in-out;
 }
 
 @utility soft {
