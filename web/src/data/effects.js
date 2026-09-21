@@ -81,7 +81,7 @@ export const EFFECTS = [
     name: 'Star Iris',
     desc: 'A five-pointed star opening like a camera iris.',
     technique: 'mask',
-    durationMs: 900,
+    durationMs: 1600,
     css: usage('iris')
   },
   {
@@ -90,7 +90,7 @@ export const EFFECTS = [
     name: 'Diamond',
     desc: 'A rotated square mask scaling out from the centre.',
     technique: 'mask',
-    durationMs: 900,
+    durationMs: 1600,
     css: usage('diamond')
   },
   {
@@ -99,7 +99,7 @@ export const EFFECTS = [
     name: 'Hexagon',
     desc: 'A six-sided mask — subtler than the circle, still geometric.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('hexagon')
   },
   {
@@ -108,7 +108,7 @@ export const EFFECTS = [
     name: 'Square',
     desc: 'An axis-aligned square growing from the centre. Cleaner than the diamond.',
     technique: 'mask',
-    durationMs: 800,
+    durationMs: 1600,
     css: usage('square')
   },
   {
@@ -126,7 +126,7 @@ export const EFFECTS = [
     name: 'Soft Bloom',
     desc: 'A wide ellipse with a heavy Gaussian edge — cinematic, not geometric.',
     technique: 'mask',
-    durationMs: 1100,
+    durationMs: 1600,
     css: usage('soft')
   },
   {
@@ -135,7 +135,7 @@ export const EFFECTS = [
     name: 'Heart',
     desc: 'A heart-shaped path mask. Use responsibly.',
     technique: 'mask',
-    durationMs: 1000,
+    durationMs: 1600,
     css: usage('heart')
   },
   {
@@ -171,7 +171,7 @@ export const EFFECTS = [
     name: 'Ink Bleed',
     desc: 'feTurbulence warps the circle edge like ink on paper.',
     technique: 'mask',
-    durationMs: 1200,
+    durationMs: 1800,
     css: usage('ink')
   },
   {
@@ -180,7 +180,7 @@ export const EFFECTS = [
     name: 'Spiral',
     desc: 'A conic-gradient mask unwinding around the centre.',
     technique: 'mask',
-    durationMs: 1200,
+    durationMs: 1800,
     css: usage('spiral')
   },
   {

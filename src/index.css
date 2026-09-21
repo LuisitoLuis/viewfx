@@ -576,8 +576,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-star);
-  --fx-mask-size: 300vmax;
-  --fx-duration: 0.9s;
+  --fx-mask-size: 320vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility diamond {
@@ -585,8 +586,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-diamond);
-  --fx-mask-size: 280vmax;
-  --fx-duration: 0.9s;
+  --fx-mask-size: 300vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility hexagon {
@@ -594,8 +596,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-hexagon);
-  --fx-mask-size: 300vmax;
-  --fx-duration: 1s;
+  --fx-mask-size: 320vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility square {
@@ -603,8 +606,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-square);
-  --fx-mask-size: 240vmax;
-  --fx-duration: 0.8s;
+  --fx-mask-size: 280vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility mosaic {
@@ -620,8 +624,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-soft);
-  --fx-mask-size: 280vmax;
-  --fx-duration: 1.1s;
+  --fx-mask-size: 300vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility heart {
@@ -629,8 +634,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-heart);
-  --fx-mask-size: 280vmax;
-  --fx-duration: 1s;
+  --fx-mask-size: 300vmax;
+  --fx-duration: 1.6s;
+  --fx-ease: ease-in-out;
 }
 
 @utility expand {
@@ -659,8 +665,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: var(--mask-ink);
-  --fx-mask-size: 250vmax;
-  --fx-duration: 1.2s;
+  --fx-mask-size: 280vmax;
+  --fx-duration: 1.8s;
+  --fx-ease: ease-in-out;
 }
 
 @utility spiral {
@@ -668,8 +675,9 @@
   --fx-anim-old: none;
   --fx-old-z: -1;
   --fx-mask: conic-gradient(from 0deg, #fff 0%, transparent 0%);
-  --fx-mask-size: 250vmax;
-  --fx-duration: 1.2s;
+  --fx-mask-size: 280vmax;
+  --fx-duration: 1.8s;
+  --fx-ease: ease-in-out;
 }
 
 @utility polygon {

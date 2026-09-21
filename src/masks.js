@@ -41,11 +41,11 @@ export const MASK_SVG = {
     `${blur(0.6)}<circle cx="40" cy="40" r="40" fill="#fff" filter="url(#b)"/>`
   ),
 
-  square: svg('0 0 40 40', '<rect x="4" y="4" width="32" height="32" fill="#fff"/>'),
+  square: svg('0 0 40 40', '<rect width="40" height="40" fill="#fff"/>'),
 
   soft: svg(
     '0 0 40 40',
-    `${blur(3.2)}<ellipse cx="20" cy="20" rx="16" ry="12" fill="#fff" filter="url(#b)"/>`
+    `${blur(1.4)}<ellipse cx="20" cy="20" rx="18" ry="16" fill="#fff" filter="url(#b)"/>`
   ),
 
   diamond: svg('0 0 40 40', '<polygon points="20,0 40,20 20,40 0,20" fill="#fff"/>'),
@@ -63,15 +63,15 @@ export const MASK_SVG = {
   ink: svg(
     '0 0 100 100',
     '<defs><filter id="t">' +
-      '<feTurbulence type="fractalNoise" baseFrequency="0.02" numOctaves="3" result="n"/>' +
-      '<feDisplacementMap in="SourceGraphic" in2="n" scale="15" xChannelSelector="R" yChannelSelector="G"/>' +
+      '<feTurbulence type="fractalNoise" baseFrequency="0.045" numOctaves="4" result="n"/>' +
+      '<feDisplacementMap in="SourceGraphic" in2="n" scale="28" xChannelSelector="R" yChannelSelector="G"/>' +
       '</filter></defs>' +
-      '<circle cx="50" cy="50" r="50" fill="#fff" filter="url(#t)"/>'
+      '<circle cx="50" cy="50" r="42" fill="#fff" filter="url(#t)"/>'
   ),
 
   heart: svg(
     '0 0 100 100',
-    '<path fill="#fff" d="M50 88C25 65 5 50 5 30 5 15 15 5 30 5c10 0 18 7 20 13 2-6 10-13 20-13 15 0 25 10 25 25 0 20-20 35-45 58Z"/>'
+    '<path fill="#fff" d="M50 96C16 68 2 50 2 28 2 12 14 2 32 2c10 0 15 7 18 14 3-7 8-14 18-14 18 0 30 10 30 26 0 22-14 40-48 68Z"/>'
   )
 }
 

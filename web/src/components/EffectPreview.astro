@@ -187,22 +187,33 @@ const TONES = ['dark', 'light'] as const
   .fx-card[data-fx='iris'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-star);
-    --preview-mask-peak: 380%;
+    --preview-mask-peak: 200%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='diamond'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-diamond);
+    --preview-mask-peak: 165%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='hexagon'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-hexagon);
+    --preview-mask-peak: 175%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='square'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-square);
+    --preview-mask-peak: 155%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='mosaic'] {
@@ -273,13 +284,17 @@ const TONES = ['dark', 'light'] as const
   .fx-card[data-fx='soft'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-soft);
-    --preview-mask-peak: 320%;
-    --preview-duration: 2.1s;
+    --preview-mask-peak: 190%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='heart'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-heart);
+    --preview-mask-peak: 170%;
+    --preview-duration: 2.6s;
+    --gallery-duration: 2.6s;
   }
 
   .fx-card[data-fx='expand'] {
@@ -297,7 +312,9 @@ const TONES = ['dark', 'light'] as const
   .fx-card[data-fx='ink'] {
     --preview-anim: preview-mask;
     --preview-mask: var(--mask-ink);
-    --preview-duration: 2s;
+    --preview-mask-peak: 175%;
+    --preview-duration: 2.8s;
+    --gallery-duration: 2.8s;
   }
 
   .fx-card[data-fx='polygon'] {
@@ -345,8 +362,15 @@ const TONES = ['dark', 'light'] as const
     --preview-anim: preview-blur;
   }
 
-  .fx-card:is([data-fx='rotate'], [data-fx='spiral']) {
+  .fx-card[data-fx='rotate'] {
     --preview-anim: preview-rotate;
+  }
+
+  .fx-card[data-fx='spiral'] {
+    --preview-anim: preview-spiral;
+    --preview-mask: conic-gradient(from -90deg, #fff 0deg, transparent 0deg);
+    --preview-duration: 2.8s;
+    --gallery-duration: 2.8s;
   }
 
   @keyframes preview-mosaic {
@@ -370,6 +394,23 @@ const TONES = ['dark', 'light'] as const
     }
     100% {
       mask-size: 0;
+    }
+  }
+
+  @keyframes preview-spiral {
+    0%,
+    100% {
+      mask-size: 30%;
+      mask-image: conic-gradient(from -90deg, #fff 0deg, transparent 0deg);
+    }
+    50% {
+      mask-size: 200%;
+      mask-image: conic-gradient(from -90deg, #fff 0deg, #fff 250deg, transparent 250deg);
+    }
+    72%,
+    88% {
+      mask-size: 240%;
+      mask-image: conic-gradient(from -90deg, #fff 0deg, #fff 360deg);
     }
   }
 

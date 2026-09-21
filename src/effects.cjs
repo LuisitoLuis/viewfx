@@ -62,32 +62,36 @@ module.exports = {
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-star)',
-    '--fx-mask-size': '300vmax',
-    '--fx-duration': '0.9s'
+    '--fx-mask-size': '320vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.diamond': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-diamond)',
-    '--fx-mask-size': '280vmax',
-    '--fx-duration': '0.9s'
+    '--fx-mask-size': '300vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.hexagon': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-hexagon)',
-    '--fx-mask-size': '300vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '320vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.square': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-square)',
-    '--fx-mask-size': '240vmax',
-    '--fx-duration': '0.8s'
+    '--fx-mask-size': '280vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.mosaic': {
     '--fx-anim': 'fx-mosaic',
@@ -101,16 +105,18 @@ module.exports = {
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-soft)',
-    '--fx-mask-size': '280vmax',
-    '--fx-duration': '1.1s'
+    '--fx-mask-size': '300vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.heart': {
     '--fx-anim': 'fx-mask-grow',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-heart)',
-    '--fx-mask-size': '280vmax',
-    '--fx-duration': '1s'
+    '--fx-mask-size': '300vmax',
+    '--fx-duration': '1.6s',
+    '--fx-ease': 'ease-in-out'
   },
   '.expand': {
     '--fx-anim': 'fx-expand-in',
@@ -135,16 +141,18 @@ module.exports = {
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'var(--mask-ink)',
-    '--fx-mask-size': '250vmax',
-    '--fx-duration': '1.2s'
+    '--fx-mask-size': '280vmax',
+    '--fx-duration': '1.8s',
+    '--fx-ease': 'ease-in-out'
   },
   '.spiral': {
     '--fx-anim': 'fx-spiral',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
     '--fx-mask': 'conic-gradient(from 0deg, #fff 0%, transparent 0%)',
-    '--fx-mask-size': '250vmax',
-    '--fx-duration': '1.2s'
+    '--fx-mask-size': '280vmax',
+    '--fx-duration': '1.8s',
+    '--fx-ease': 'ease-in-out'
   },
   '.polygon': {
     '--fx-anim': 'fx-reveal-light',
