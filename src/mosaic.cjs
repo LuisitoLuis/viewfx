@@ -1,5 +1,11 @@
+/** 8×8 lattice. Tiles bloom from each cell with a feathered edge. */
+const PERIOD = '12.5%'
+const CENTER = '6.25%'
+const GROW = '8%'
+const CORE = '6.6%'
+
 const mosaicStripe = (axis) =>
-  `repeating-linear-gradient(${axis}#0000 0,#0000 calc(2% - var(--fx-mosaic) * 2.5%),#fff calc(2% - var(--fx-mosaic) * 2.5%),#fff calc(2% + var(--fx-mosaic) * 2.5%),#0000 calc(2% + var(--fx-mosaic) * 2.5%),#0000 4%)`
+  `repeating-linear-gradient(${axis}#0000 0,#0000 calc(${CENTER} - var(--fx-mosaic) * ${GROW}),#fff calc(${CENTER} - var(--fx-mosaic) * ${CORE}),#fff calc(${CENTER} + var(--fx-mosaic) * ${CORE}),#0000 calc(${CENTER} + var(--fx-mosaic) * ${GROW}),#0000 ${PERIOD})`
 
 const mosaicMaskImage = `${mosaicStripe('')},${mosaicStripe('90deg,')}`
 

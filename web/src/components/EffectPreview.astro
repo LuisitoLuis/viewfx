@@ -207,6 +207,8 @@ const TONES = ['dark', 'light'] as const
 
   .fx-card[data-fx='mosaic'] {
     --preview-anim: preview-mosaic;
+    --preview-duration: 2.4s;
+    --gallery-duration: 2.4s;
   }
 
   @property --preview-mosaic {
@@ -222,8 +224,8 @@ const TONES = ['dark', 'light'] as const
       repeating-linear-gradient(
         #0000 0,
         #0000 calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 13%),
+        #fff calc(12.5% + var(--preview-mosaic) * 13%),
         #0000 calc(12.5% + var(--preview-mosaic) * 16%),
         #0000 25%
       ),
@@ -231,8 +233,8 @@ const TONES = ['dark', 'light'] as const
         90deg,
         #0000 0,
         #0000 calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 13%),
+        #fff calc(12.5% + var(--preview-mosaic) * 13%),
         #0000 calc(12.5% + var(--preview-mosaic) * 16%),
         #0000 25%
       );
@@ -240,8 +242,8 @@ const TONES = ['dark', 'light'] as const
       repeating-linear-gradient(
         #0000 0,
         #0000 calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 13%),
+        #fff calc(12.5% + var(--preview-mosaic) * 13%),
         #0000 calc(12.5% + var(--preview-mosaic) * 16%),
         #0000 25%
       ),
@@ -249,8 +251,8 @@ const TONES = ['dark', 'light'] as const
         90deg,
         #0000 0,
         #0000 calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% - var(--preview-mosaic) * 16%),
-        #fff calc(12.5% + var(--preview-mosaic) * 16%),
+        #fff calc(12.5% - var(--preview-mosaic) * 13%),
+        #fff calc(12.5% + var(--preview-mosaic) * 13%),
         #0000 calc(12.5% + var(--preview-mosaic) * 16%),
         #0000 25%
       );
@@ -302,15 +304,15 @@ const TONES = ['dark', 'light'] as const
     --preview-anim: preview-polygon;
   }
 
-  .fx-card[data-fx='wipe-h'] {
+  .fx-card[data-fx='slide-right'] {
     --preview-anim: preview-wipe-h;
   }
 
-  .fx-card[data-fx='wipe-left'] {
+  .fx-card[data-fx='slide-left'] {
     --preview-anim: preview-wipe-left;
   }
 
-  .fx-card[data-fx='wipe-v'] {
+  .fx-card[data-fx='slide-up'] {
     --preview-anim: preview-wipe-down;
   }
 

@@ -25,8 +25,11 @@ describe('playground class list', () => {
     expect(buildClasses({ e: 'mosaic', d: 'none', delay: '0', s: 'none' })).toEqual(['mosaic'])
   })
 
-  it('does not treat slide-down as the slide effect', () => {
+  it('does not treat slide-down or slide-left as the slide effect', () => {
     expect(isEffectOrTimingClass('slide-down-duration-1000')).toBe(true)
+    expect(isEffectOrTimingClass('slide-left-duration-1000')).toBe(true)
+    expect(isEffectOrTimingClass('slide-right-duration-1000')).toBe(true)
+    expect(isEffectOrTimingClass('slide-up-duration-1000')).toBe(true)
     expect(isEffectOrTimingClass('slide-duration-1000')).toBe(true)
     expect(isEffectOrTimingClass('scrollbar-thin')).toBe(false)
   })

@@ -62,7 +62,7 @@ describe('viewfx plugins', () => {
     })
 
     expect(css).toContain(
-      '.mosaic{--fx-anim:fx-mosaic;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:0.7s;--fx-ease:ease-in-out;}'
+      '.mosaic{--fx-anim:fx-mosaic;--fx-anim-old:none;--fx-old-z:-1;--fx-duration:1.2s;--fx-ease:cubic-bezier(0.4, 0, 0.15, 1);}'
     )
     expect(css).toContain('@keyframes fx-mosaic')
     expect(css).toContain('--fx-mosaic')

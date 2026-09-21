@@ -72,6 +72,14 @@ function engineBase() {
       from: { clipPath: 'inset(0 0 0 0)' },
       to: { clipPath: 'inset(0 0 0 100%)' }
     },
+    '@keyframes fx-wipe-in-left': {
+      from: { clipPath: 'inset(0 0 0 100%)' },
+      to: { clipPath: 'inset(0 0 0 0)' }
+    },
+    '@keyframes fx-wipe-out-left': {
+      from: { clipPath: 'inset(0 0 0 0)' },
+      to: { clipPath: 'inset(0 100% 0 0)' }
+    },
     '@keyframes fx-wipe-in-down': {
       from: { clipPath: 'inset(100% 0 0 0)' },
       to: { clipPath: 'inset(0 0 0 0)' }

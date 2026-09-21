@@ -93,8 +93,8 @@ module.exports = {
     '--fx-anim': 'fx-mosaic',
     '--fx-anim-old': 'none',
     '--fx-old-z': '-1',
-    '--fx-duration': '0.7s',
-    '--fx-ease': 'ease-in-out'
+    '--fx-duration': '1.2s',
+    '--fx-ease': 'cubic-bezier(0.4, 0, 0.15, 1)'
   },
   '.soft': {
     '--fx-anim': 'fx-mask-grow',
@@ -158,17 +158,17 @@ module.exports = {
   '.dark[class*="polygon-duration"]': {
     '--fx-anim': 'fx-reveal-dark'
   },
-  '.wipe-h': {
+  '.slide-right': {
     '--fx-anim': 'fx-wipe-in-h',
     '--fx-anim-old': 'fx-wipe-out-h',
     '--fx-duration': '0.6s'
   },
-  '.wipe-left': {
+  '.slide-left': {
     '--fx-anim': 'fx-wipe-in-left',
     '--fx-anim-old': 'fx-wipe-out-left',
     '--fx-duration': '0.6s'
   },
-  '.wipe-v': {
+  '.slide-up': {
     '--fx-anim': 'fx-wipe-in-down',
     '--fx-anim-old': 'fx-wipe-out-down',
     '--fx-duration': '0.6s'

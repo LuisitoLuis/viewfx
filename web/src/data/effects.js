@@ -115,9 +115,9 @@ export const EFFECTS = [
     id: 'mosaic',
     className: 'mosaic',
     name: 'Mosaic',
-    desc: 'A 25×25 grid of squares scaling out from each cell — a tiled theme wipe.',
+    desc: 'An 8×8 lattice of tiles blooming from each cell — quiet, then complete.',
     technique: 'mask',
-    durationMs: 700,
+    durationMs: 1200,
     css: usage('mosaic')
   },
   {
@@ -184,37 +184,37 @@ export const EFFECTS = [
     css: usage('spiral')
   },
   {
-    id: 'wipe-h',
-    className: 'wipe-h',
-    name: 'Wipe Right',
+    id: 'slide-right',
+    className: 'slide-right',
+    name: 'Slide Right',
     desc: 'A hard inset edge travelling left to right.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('wipe-h')
+    css: usage('slide-right')
   },
   {
-    id: 'wipe-left',
-    className: 'wipe-left',
-    name: 'Wipe Left',
+    id: 'slide-left',
+    className: 'slide-left',
+    name: 'Slide Left',
     desc: 'The hard edge travelling right to left.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('wipe-left')
+    css: usage('slide-left')
   },
   {
-    id: 'wipe-v',
-    className: 'wipe-v',
-    name: 'Wipe Down',
+    id: 'slide-up',
+    className: 'slide-up',
+    name: 'Slide Up',
     desc: 'The same edge, falling from the top of the viewport.',
     technique: 'clip-path',
     durationMs: 600,
-    css: usage('wipe-v')
+    css: usage('slide-up')
   },
   {
     id: 'slide-down',
     className: 'slide-down',
-    name: 'Wipe Up',
-    desc: 'The edge rising from the bottom instead.',
+    name: 'Slide Down',
+    desc: 'The edge travelling from top to bottom.',
     technique: 'clip-path',
     durationMs: 600,
     css: usage('slide-down')

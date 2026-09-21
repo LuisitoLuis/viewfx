@@ -149,38 +149,38 @@
   -webkit-mask-image:
     repeating-linear-gradient(
       #0000 0,
-      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 4%
+      #0000 calc(6.25% - var(--fx-mosaic) * 8%),
+      #fff calc(6.25% - var(--fx-mosaic) * 6.6%),
+      #fff calc(6.25% + var(--fx-mosaic) * 6.6%),
+      #0000 calc(6.25% + var(--fx-mosaic) * 8%),
+      #0000 12.5%
     ),
     repeating-linear-gradient(
       90deg,
       #0000 0,
-      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 4%
+      #0000 calc(6.25% - var(--fx-mosaic) * 8%),
+      #fff calc(6.25% - var(--fx-mosaic) * 6.6%),
+      #fff calc(6.25% + var(--fx-mosaic) * 6.6%),
+      #0000 calc(6.25% + var(--fx-mosaic) * 8%),
+      #0000 12.5%
     );
   mask-image:
     repeating-linear-gradient(
       #0000 0,
-      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 4%
+      #0000 calc(6.25% - var(--fx-mosaic) * 8%),
+      #fff calc(6.25% - var(--fx-mosaic) * 6.6%),
+      #fff calc(6.25% + var(--fx-mosaic) * 6.6%),
+      #0000 calc(6.25% + var(--fx-mosaic) * 8%),
+      #0000 12.5%
     ),
     repeating-linear-gradient(
       90deg,
       #0000 0,
-      #0000 calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% - var(--fx-mosaic) * 2.5%),
-      #fff calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 calc(2% + var(--fx-mosaic) * 2.5%),
-      #0000 4%
+      #0000 calc(6.25% - var(--fx-mosaic) * 8%),
+      #fff calc(6.25% - var(--fx-mosaic) * 6.6%),
+      #fff calc(6.25% + var(--fx-mosaic) * 6.6%),
+      #0000 calc(6.25% + var(--fx-mosaic) * 8%),
+      #0000 12.5%
     );
   -webkit-mask-size: 100% 100%;
   mask-size: 100% 100%;
@@ -611,8 +611,8 @@
   --fx-anim: fx-mosaic;
   --fx-anim-old: none;
   --fx-old-z: -1;
-  --fx-duration: 0.7s;
-  --fx-ease: ease-in-out;
+  --fx-duration: 1.2s;
+  --fx-ease: cubic-bezier(0.4, 0, 0.15, 1);
 }
 
 @utility soft {
@@ -687,19 +687,19 @@
   --fx-anim: fx-reveal-dark;
 }
 
-@utility wipe-h {
+@utility slide-right {
   --fx-anim: fx-wipe-in-h;
   --fx-anim-old: fx-wipe-out-h;
   --fx-duration: 0.6s;
 }
 
-@utility wipe-left {
+@utility slide-left {
   --fx-anim: fx-wipe-in-left;
   --fx-anim-old: fx-wipe-out-left;
   --fx-duration: 0.6s;
 }
 
-@utility wipe-v {
+@utility slide-up {
   --fx-anim: fx-wipe-in-down;
   --fx-anim-old: fx-wipe-out-down;
   --fx-duration: 0.6s;
