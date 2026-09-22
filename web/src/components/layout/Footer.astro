@@ -13,7 +13,7 @@ const columns = [
   {
     title: 'Documentation',
     links: [
-      { name: 'Installation', href: section('install-command') },
+      { name: 'Installation', href: isHome ? '#installation' : '/' },
       { name: 'Playground', href: '/playground' },
       { name: 'GIF studio', href: '/gif' },
       { name: 'Effect Collection', href: section('palette') },
@@ -121,7 +121,7 @@ const social = [
                     <li class:list={[index < column.links.length - 1 && 'mb-4']}>
                       <a
                         href={link.href}
-                        class="hover:text-ink hover:underline"
+                        class="hover:text-ink"
                         {...(isExternal
                           ? { target: '_blank', rel: 'noopener noreferrer' }
                           : {})}
@@ -145,7 +145,6 @@ const social = [
         </span>
         <p class="flex flex-wrap items-center gap-2">
           <span>Created with</span>
-          <span class="animate-pulse text-red-500">❤️</span>
           <span>by</span>
           <a
             href={SITE.author.url}

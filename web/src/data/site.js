@@ -13,8 +13,8 @@ export const SITE = {
   description: `A specimen catalogue of ${EFFECTS.length} dark/light theme transitions built on the native View Transitions API. Preview each effect, then copy a Tailwind class. One line of JavaScript.`,
   locale: 'en',
   author: {
-    name: 'Luis MC',
-    url: 'https://luismc.dev'
+    name: 'luisitoluis',
+    url: 'https://github.com/luisitoluis'
   },
   repo: 'https://github.com/LuisitoLuis/viewfx',
   package: 'viewfx',
