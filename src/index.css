@@ -1,7 +1,7 @@
 /**
  * viewfx
  * Tailwind CSS v4 entry — View Transitions theme effects.
- * Tailwind v3 uses `src/plugin.cjs` (`require('@luisitoluis/viewfx')`).
+ * Tailwind v3 uses `src/plugin.cjs` (`require('viewfx')`).
  * Keep `@utility` blocks in sync with `src/effects.cjs`.
  */
 

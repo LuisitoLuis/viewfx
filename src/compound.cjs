@@ -4,7 +4,7 @@
  *   circle-duration-1000-delay-300
  *
  * Tailwind v4 only allows one `*` in `@utility` names, so these are registered
- * from JS (`@plugin` in v4, `require('@luisitoluis/viewfx')` in v3).
+ * from JS (`@plugin` in v4, `require('viewfx')` in v3).
  */
 const plugin = require('tailwindcss/plugin')
 const effects = require('./effects.cjs')
