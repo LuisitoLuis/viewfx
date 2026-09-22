@@ -22,23 +22,80 @@ const {
 } = Astro.props
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url)
-const markdownPath =
-  Astro.url.pathname.replace(/\/$/, '') === '' || Astro.url.pathname === '/'
-    ? '/index.md'
-    : `${Astro.url.pathname.replace(/\/$/, '')}.md`
+const isHome = canonical.pathname === '/' || canonical.pathname === '/index.html'
+const pageUrl = canonical.href
+const markdownPath = isHome ? '/index.md' : `${canonical.pathname.replace(/\/$/, '')}.md`
 
-const structuredData = {
-  '@context': 'https://schema.org',
+const website = {
   '@type': 'WebSite',
+  '@id': new URL('/#website', SITE.url).href,
   name: SITE.name,
   url: SITE.url,
   description: SITE.description,
-  inLanguage: SITE.locale,
+  inLanguage: SITE.locale
+}
+
+const software = {
+  '@type': 'SoftwareApplication',
+  name: SITE.name,
+  applicationCategory: 'DeveloperApplication',
+  operatingSystem: 'Web',
+  url: SITE.url,
+  description: SITE.description,
+  image: SITE.image,
+  sameAs: [SITE.repo, SITE.npm],
+  downloadUrl: SITE.npm,
+  offers: {
+    '@type': 'Offer',
+    price: '0',
+    priceCurrency: 'USD'
+  },
   author: {
     '@type': 'Person',
     name: SITE.author.name,
     url: SITE.author.url
   }
+}
+
+const webPage = {
+  '@type': 'WebPage',
+  name: title,
+  description,
+  url: pageUrl,
+  inLanguage: SITE.locale,
+  isPartOf: { '@id': website['@id'] }
+}
+
+const crumbNames: Record<string, string> = {
+  '/playground': 'Playground',
+  '/playground/': 'Playground',
+  '/gif': 'GIF studio',
+  '/gif/': 'GIF studio'
+}
+const crumbName = crumbNames[canonical.pathname]
+const breadcrumb = crumbName
+  ? {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Home',
+          item: new URL('/', SITE.url).href
+        },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: crumbName,
+          item: pageUrl
+        }
+      ]
+    }
+  : null
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [website, webPage, ...(isHome ? [software] : []), ...(breadcrumb ? [breadcrumb] : [])]
 }
 
 /**
@@ -72,7 +129,8 @@ const bootstrap = `(() => {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="text/markdown" href={new URL(markdownPath, SITE.url)} />
-    {noindex && <meta name="robots" content="noindex, follow" />}
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="author" content={SITE.author.name} />
 
     <meta name="color-scheme" content="light dark" />
     <meta name="theme-color" content="#f8f6f1" />
@@ -81,13 +139,16 @@ const bootstrap = `(() => {
     <link rel="manifest" href="/site.webmanifest" />
 
     <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en" />
     <meta property="og:site_name" content={SITE.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content={SITE.image} />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={SITE.image} />
 
     <script is:inline set:html={bootstrap} />
     <script type="application/ld+json" is:inline set:html={JSON.stringify(structuredData)} />

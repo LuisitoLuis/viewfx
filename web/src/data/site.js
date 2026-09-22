@@ -8,9 +8,10 @@ import { EFFECTS } from './effects'
 export const SITE = {
   url: 'https://github.com/LuisitoLuis/viewfx',
   name: 'ViewFX',
-  title: `ViewFX — ${EFFECTS.length} theme transition effects for the View Transitions API`,
+  title: `Tailwind CSS Theme Transitions Plugin | ${EFFECTS.length}+ Effects`,
   tagline: 'A specimen catalogue of dark/light theme transitions',
-  description: `A specimen catalogue of ${EFFECTS.length} dark/light theme transitions built on the native View Transitions API. Preview each effect, then copy a Tailwind class. One line of JavaScript.`,
+  description: `Preview ${EFFECTS.length}+ Tailwind CSS theme transitions on the View Transitions API. Copy one class onto <html>.`,
+  image: 'https://pub-660dca4bd13944bd8c4a80be4489c81e.r2.dev/web.webp',
   locale: 'en',
   author: {
     name: 'luisitoluis',
