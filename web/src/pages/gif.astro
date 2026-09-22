@@ -3,13 +3,17 @@ import Layout from '@layouts/Layout.astro'
 import Header from '@components/layout/Header.astro'
 import Footer from '@components/layout/Footer.astro'
 import PlayIcon from '@components/icons/play.astro'
+import PauseIcon from '@components/icons/pause.astro'
 import CopyIcon from '@components/icons/copy.astro'
 import CloseIcon from '@components/icons/close.astro'
+import GifPicker from '@components/GifPicker.astro'
+import GifTiming from '@components/GifTiming.astro'
 import { SITE } from '../data/site'
-import { GIF_DURATION } from '../data/gif.js'
+import { GIF_DURATION, GIF_PRESETS } from '../data/gif.js'
 
 const durations = Object.keys(GIF_DURATION)
 const sizes = ['30%', '50%', '70%', '100%', 'cover']
+const gifIds = GIF_PRESETS.map((gif) => gif.id)
 
 const params = Astro.url.searchParams
 const pick = (key: string, allowed: string[], fallback: string) => {
@@ -17,10 +21,14 @@ const pick = (key: string, allowed: string[], fallback: string) => {
   return value && allowed.includes(value) ? value : fallback
 }
 
+const gifFromQuery = params.get('gif')
+const presetFromGif = GIF_PRESETS.find((gif) => gif.href === gifFromQuery)
+const initialId = presetFromGif?.id ?? pick('e', gifIds, '')
 const initial = {
+  e: initialId,
   d: pick('d', durations, '3s'),
   size: pick('size', sizes, '50%'),
-  gif: ' '
+  gif: gifFromQuery || GIF_PRESETS.find((gif) => gif.id === initialId)?.href || ''
 }
 
 const selectClass =
@@ -73,36 +81,56 @@ const initialSnippet = `::view-transition-group(root) {
         </p>
         <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl">Wipe between two GIFs</h1>
         <p class="mt-3 max-w-xl text-base leading-relaxed text-ink-2">
-          Load a light frame and a dark frame. Play wipes between them with the ViewFX class on
+          Pick a GIF, tune duration and mask size, then Play. The GIF masks
           {' '}
-          <code class="font-mono text-[0.95em]">&lt;html&gt;</code>
-          . Pick the effect in the
+          <code class="font-mono text-[0.95em]">::view-transition-new(root)</code>
           {' '}
-          <a class="font-medium text-accent-text underline-offset-2 hover:underline" href="/playground">playground</a>.
+          while
+          {' '}
+          <code class="font-mono text-[0.95em]">.dark</code>
+          {' '}
+          toggles. Paste any https link if you want your own file.
         </p>
       </div>
 
+      <div class="lg:min-h-[calc(100dvh+10rem)]">
       <div
         id="gif-studio"
-        class="grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-start xl:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)]"
+        class="grid gap-6 lg:sticky lg:top-24 lg:z-10 lg:max-h-[calc(100dvh-6.5rem)] lg:grid-cols-[minmax(0,1fr)_minmax(18rem,22rem)] lg:items-stretch lg:self-start lg:overflow-hidden lg:bg-paper xl:grid-cols-[minmax(0,1fr)_minmax(20rem,24rem)]"
       >
-        <section
-          class="flex min-h-112 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm"
-          aria-label="GIF mask preview"
-        >
+          <section
+            class="flex min-h-112 flex-col overflow-hidden rounded-2xl border border-line bg-surface shadow-sm lg:min-h-0"
+            aria-label="GIF mask preview"
+          >
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-line px-4 py-3">
             <p class="text-xs font-semibold tracking-wide text-ink-3 uppercase">Live page</p>
-            <button
-              type="button"
-              id="play-btn"
-              class="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:border-accent hover:text-accent-text"
-            >
-              <PlayIcon size={14} />
-              Play
-            </button>
+            <div class="flex flex-wrap items-center gap-2">
+              <button
+                type="button"
+                id="gif-pause"
+                class="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:border-accent hover:text-accent-text"
+                aria-pressed="false"
+              >
+                <span data-pause-icon class="inline-flex">
+                  <PauseIcon size={14} />
+                </span>
+                <span data-resume-icon class="inline-flex" hidden>
+                  <PlayIcon size={14} />
+                </span>
+                <span data-label>Pause</span>
+              </button>
+              <button
+                type="button"
+                id="play-btn"
+                class="inline-flex min-h-9 items-center gap-1.5 rounded-full border border-line px-3 py-1.5 text-xs font-semibold text-ink-2 transition-colors hover:border-accent hover:text-accent-text"
+              >
+                <PlayIcon size={14} />
+                Play
+              </button>
+            </div>
           </div>
 
-          <div class="relative flex min-h-80 flex-1 items-center justify-center overflow-hidden bg-paper p-8 sm:min-h-112 sm:p-12">
+          <div class="relative flex min-h-80 flex-1 items-center justify-center overflow-hidden bg-paper p-8 sm:min-h-112 sm:p-12 lg:min-h-0 lg:p-8">
             <div
               class="pointer-events-none absolute inset-0 opacity-40"
               style="background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 32px 32px;"
@@ -114,7 +142,7 @@ const initialSnippet = `::view-transition-group(root) {
               id="gif-empty"
               class="relative z-10 max-w-xs text-center text-sm text-ink-3"
             >
-              Paste a GIF link to preview it as ink.
+              Pick a GIF or paste a link to preview it as ink.
             </p>
             <img
               id="gif-stage"
@@ -123,9 +151,59 @@ const initialSnippet = `::view-transition-group(root) {
               decoding="async"
               hidden
             />
+            <canvas
+              id="gif-stage-canvas"
+              class="gif-ink relative z-10 max-h-[min(28rem,65vh)] w-auto max-w-full object-contain"
+              role="img"
+              aria-label="GIF used as the theme wipe mask"
+              hidden
+            >
+            </canvas>
           </div>
 
-          <div class="border-t border-line bg-inset p-4">
+          <div class="flex flex-col gap-4 border-t border-line p-4 lg:hidden">
+            <GifPicker searchId="gif-search" selectedHref={initial.gif} />
+            <GifTiming
+              durationId="ctrl-duration"
+              sizeId="ctrl-size"
+              duration={initial.d}
+              size={initial.size}
+              durations={durations}
+              sizes={sizes}
+              selectClass={selectClass}
+            />
+            <p class="text-xs leading-relaxed text-ink-3">
+              Pick a preset or paste a Tenor, Giphy, or any https URL. Transparency works best as a
+              mask. One GIF for both light and dark.
+            </p>
+          </div>
+        </section>
+
+        <aside class="hidden flex-col gap-4 lg:flex lg:min-h-0 lg:overflow-y-auto">
+          <div class="rounded-2xl border border-line bg-surface p-4">
+            <GifPicker searchId="gif-search-lg" selectedHref={initial.gif} />
+          </div>
+
+          <div class="rounded-2xl border border-line bg-surface p-4">
+            <GifTiming
+              durationId="ctrl-duration-lg"
+              sizeId="ctrl-size-lg"
+              duration={initial.d}
+              size={initial.size}
+              durations={durations}
+              sizes={sizes}
+              selectClass={selectClass}
+            />
+          </div>
+
+          <p class="text-xs leading-relaxed text-ink-3">
+            Pick a preset or paste a Tenor, Giphy, or any https URL. Transparency works best as a
+            mask. One GIF for both light and dark.
+          </p>
+        </aside>
+
+        <div class="overflow-hidden rounded-2xl border border-line bg-surface shadow-sm lg:col-span-2">
+          <div class="border-b border-line bg-inset p-4">
             <div class="flex min-h-20 items-center gap-3 rounded-xl border border-line bg-surface px-3 py-3">
               <img id="gif-thumb" class="gif-ink size-12 shrink-0 rounded-lg object-cover" alt="" hidden />
               <div class="min-w-0 flex-1">
@@ -156,7 +234,7 @@ const initialSnippet = `::view-transition-group(root) {
             </div>
           </div>
 
-          <div class="border-t border-line px-4 py-3">
+          <div class="px-4 py-3">
             <div class="flex items-start justify-between gap-3">
               <div class="min-w-0 flex-1">
                 <p class="mb-1 text-[10px] font-semibold tracking-wider text-ink-3 uppercase">
@@ -164,7 +242,7 @@ const initialSnippet = `::view-transition-group(root) {
                 </p>
                 <code
                   id="class-snippet"
-                  class="block max-h-96 overflow-auto font-mono text-[12px] leading-relaxed whitespace-pre text-ink"
+                  class="block max-h-48 overflow-auto font-mono text-[12px] leading-relaxed whitespace-pre text-ink lg:max-h-40"
                 >
                   {initialSnippet}
                 </code>
@@ -195,43 +273,8 @@ const initialSnippet = `::view-transition-group(root) {
 document.startViewTransition(switchTheme);`}
             </code>
           </div>
-        </section>
-
-        <aside class="flex flex-col gap-4 lg:sticky lg:top-24">
-          <div class="rounded-2xl border border-line bg-surface p-4">
-            <div class="grid gap-3">
-              <label class="block">
-                <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">
-                  Duration
-                </span>
-                <select id="ctrl-duration" class={selectClass}>
-                  {durations.map((key) => (
-                    <option value={key} selected={key === initial.d}>
-                      {key}
-                    </option>
-                  ))}
-                </select>
-              </label>
-              <label class="block">
-                <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">
-                  Mask size
-                </span>
-                <select id="ctrl-size" class={selectClass}>
-                  {sizes.map((key) => (
-                    <option value={key} selected={key === initial.size}>
-                      {key}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
-          </div>
-
-          <p class="text-xs leading-relaxed text-ink-3">
-            One GIF link for both light and dark. Paste a Tenor, Giphy, or any https URL.
-            Transparency works best as a mask.
-          </p>
-        </aside>
+        </div>
+      </div>
       </div>
     </div>
   </main>
@@ -242,3 +285,11 @@ document.startViewTransition(switchTheme);`}
   import { initGifStudio } from '../lib/gif'
   initGifStudio()
 </script>
+
+<style>
+  .effect-option.is-selected {
+    background: color-mix(in oklab, var(--accent) 14%, var(--inset));
+    color: var(--accent-text);
+    font-weight: 600;
+  }
+</style>

@@ -1,0 +1,48 @@
+---
+import SearchIcon from './icons/search.astro'
+import { GIF_PRESETS } from '../data/gif.js'
+
+interface Props {
+  searchId: string
+  selectedHref?: string
+}
+
+const { searchId, selectedHref } = Astro.props
+---
+
+<div class="gif-picker">
+  <label class="mb-2 block text-xs font-semibold tracking-wide text-ink-3 uppercase" for={searchId}>
+    GIF
+  </label>
+  <div class="relative mb-3">
+    <SearchIcon size={14} class="pointer-events-none absolute top-1/2 left-3 -translate-y-1/2 text-ink-3" />
+    <input
+      id={searchId}
+      class="gif-search w-full min-h-11 rounded-[0.625rem] border border-line bg-surface pr-3.5 pl-10 font-mono text-[0.8125rem] text-ink placeholder:text-ink-3 focus-visible:border-accent"
+      type="search"
+      placeholder="Search GIFs"
+      autocomplete="off"
+    />
+  </div>
+  <div class="gif-list flex max-h-64 flex-col gap-0.5 overflow-y-auto" role="listbox" aria-label="GIF masks">
+    {
+      GIF_PRESETS.map((gif) => (
+        <button
+          type="button"
+          role="option"
+          data-gif={gif.id}
+          data-name={gif.name}
+          data-href={gif.href}
+          aria-selected={gif.href === selectedHref ? 'true' : 'false'}
+          class:list={[
+            'effect-option min-h-10 rounded-lg px-3 py-2 text-left text-sm text-ink-2 transition-colors hover:bg-inset hover:text-ink',
+            gif.href === selectedHref && 'is-selected'
+          ]}
+        >
+          <span class="block font-mono text-[13px] font-semibold">{gif.id}</span>
+          <span class="block text-[11px] text-ink-3">{gif.name}</span>
+        </button>
+      ))
+    }
+  </div>
+</div>

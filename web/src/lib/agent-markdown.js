@@ -168,10 +168,10 @@ Playground: ${SITE.url}/playground/
 
 ## What you can do
 
-1. Paste a GIF URL — the same link wipes to dark and back to light
+1. Pick a GIF from the list, or paste a GIF URL
 2. Tune duration and mask size
 3. Play — the GIF masks \`::view-transition-new(root)\` while \`.dark\` toggles
-4. Copy the CSS or share the page URL (\`?gif=\`)
+4. Copy the CSS or share the page URL (\`?e=\` for a preset, \`?gif=\` for a custom link)
 
 Transparent GIF frames reveal the incoming theme. One file is enough for both directions.
 

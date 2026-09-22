@@ -1,7 +1,8 @@
 import { playTransition, isDark } from './theme'
 import { announce } from './live-region'
 import { toastSuccess } from './toast'
-import { GIF_DURATION } from '../data/gif'
+import { GIF_DURATION, GIF_PRESETS, DEFAULT_GIF_ID } from '../data/gif'
+import { createGifPlayer } from './gif-player'
 
 const SIZE_KEYS = ['30%', '50%', '70%', '100%', 'cover']
 
@@ -52,6 +53,14 @@ function parseDurationKey(value) {
   if (value && value in GIF_DURATION) return value
   if (value === '1000' || value === '900' || value === '800' || value === '700') return '1s'
   return '3s'
+}
+
+function presetById(id) {
+  return GIF_PRESETS.find((gif) => gif.id === id) ?? null
+}
+
+function presetByHref(href) {
+  return GIF_PRESETS.find((gif) => gif.href === href) ?? null
 }
 
 export function buildSnippet(gifHref, hold, duration) {
@@ -164,22 +173,32 @@ export function initGifStudio() {
   const input = document.getElementById('gif-url')
   const thumb = document.getElementById('gif-thumb')
   const stage = document.getElementById('gif-stage')
+  const canvas = document.getElementById('gif-stage-canvas')
   const empty = document.getElementById('gif-empty')
   const play = document.getElementById('play-btn')
-  const duration = document.getElementById('ctrl-duration')
-  const size = document.getElementById('ctrl-size')
+  const pauseBtn = document.getElementById('gif-pause')
   const snippet = document.getElementById('class-snippet')
   const htmlSnippet = document.getElementById('html-snippet')
   const copyClasses = document.getElementById('copy-classes')
   const copyUrl = document.getElementById('copy-url')
   const clear = document.getElementById('gif-clear')
+  const searches = document.querySelectorAll('.gif-search')
+  const lists = document.querySelectorAll('.gif-list')
+  const durationSelects = [...document.querySelectorAll('.ctrl-duration')].filter(
+    (el) => el instanceof HTMLSelectElement
+  )
+  const sizeSelects = [...document.querySelectorAll('.ctrl-size')].filter(
+    (el) => el instanceof HTMLSelectElement
+  )
 
   if (
     !(input instanceof HTMLInputElement) ||
     !(thumb instanceof HTMLImageElement) ||
     !(stage instanceof HTMLImageElement) ||
-    !(duration instanceof HTMLSelectElement) ||
-    !(size instanceof HTMLSelectElement) ||
+    !(canvas instanceof HTMLCanvasElement) ||
+    !pauseBtn ||
+    durationSelects.length === 0 ||
+    sizeSelects.length === 0 ||
     !play ||
     !snippet ||
     !htmlSnippet ||
@@ -190,39 +209,64 @@ export function initGifStudio() {
     return
   }
 
+  const durationValue = () => durationSelects[0]?.value ?? '3s'
+  const sizeValue = () => sizeSelects[0]?.value ?? '50%'
+
   const params = new URLSearchParams(window.location.search)
-  duration.value = parseDurationKey(params.get('d'))
-  if (SIZE_KEYS.includes(params.get('size') ?? '')) size.value = params.get('size') ?? '50%'
-  input.value = ''
+  const nextDuration = parseDurationKey(params.get('d'))
+  const nextSize = SIZE_KEYS.includes(params.get('size') ?? '') ? params.get('size') : '50%'
+  for (const select of durationSelects) select.value = nextDuration
+  for (const select of sizeSelects) select.value = nextSize
+
+  const fromQuery = parseGifLink(params.get('gif') ?? '')
+  const fromId = presetById(params.get('e') ?? '')
+  input.value = fromQuery || fromId?.href || ''
 
   root.classList.add('gif-mask')
 
-  const durationCss = () => GIF_DURATION[duration.value] ?? '3s'
+  const durationCss = () => GIF_DURATION[durationValue()] ?? '3s'
   const gifHref = () => parseGifLink(input.value)
+  const player = createGifPlayer({ canvas, img: stage })
+  let paintedHref = ''
 
   const syncClear = () => {
     clear.hidden = !input.value.trim()
   }
 
+  const syncPauseUi = () => {
+    const paused = player.paused
+    pauseBtn.setAttribute('aria-pressed', String(paused))
+    const label = pauseBtn.querySelector('[data-label]')
+    const pauseIcon = pauseBtn.querySelector('[data-pause-icon]')
+    const resumeIcon = pauseBtn.querySelector('[data-resume-icon]')
+    if (label instanceof HTMLElement) label.textContent = paused ? 'Resume' : 'Pause'
+    if (pauseIcon instanceof HTMLElement) pauseIcon.hidden = paused
+    if (resumeIcon instanceof HTMLElement) resumeIcon.hidden = !paused
+  }
+
   const paint = (href) => {
     if (!href) {
+      paintedHref = ''
+      player.stop()
       thumb.removeAttribute('src')
-      stage.removeAttribute('src')
       thumb.hidden = true
-      stage.hidden = true
       if (empty) empty.hidden = false
+      syncPauseUi()
       return
     }
 
     thumb.src = href
-    stage.src = href
     thumb.hidden = false
-    stage.hidden = false
     if (empty) empty.hidden = true
+    if (href !== paintedHref) {
+      paintedHref = href
+      void player.load(href).then(syncPauseUi)
+    }
+    syncPauseUi()
   }
 
   const syncVars = () => {
-    root.style.setProperty('--gif-hold', holdSize(size.value))
+    root.style.setProperty('--gif-hold', holdSize(sizeValue()))
     root.style.setProperty('--gif-duration', durationCss())
   }
 
@@ -247,7 +291,7 @@ export function initGifStudio() {
       sheet.id = 'gif-mask-sheet'
       document.head.appendChild(sheet)
     }
-    sheet.textContent = maskSheet(playHref, holdSize(size.value), durationCss())
+    sheet.textContent = maskSheet(playHref, holdSize(sizeValue()), durationCss())
 
     await decodeImage(playHref)
     return playHref
@@ -255,38 +299,92 @@ export function initGifStudio() {
 
   const updateUrl = () => {
     const url = new URL(window.location.href)
-    if (duration.value === '3s') url.searchParams.delete('d')
-    else url.searchParams.set('d', duration.value)
-    if (size.value === '50%') url.searchParams.delete('size')
-    else url.searchParams.set('size', size.value)
+    if (durationValue() === '3s') url.searchParams.delete('d')
+    else url.searchParams.set('d', durationValue())
+    if (sizeValue() === '50%') url.searchParams.delete('size')
+    else url.searchParams.set('size', sizeValue())
     url.searchParams.delete('gif')
     url.searchParams.delete('gif2')
+    const preset = presetByHref(gifHref())
+    if (preset && preset.id !== DEFAULT_GIF_ID) url.searchParams.set('e', preset.id)
+    else url.searchParams.delete('e')
     history.replaceState(null, '', url)
   }
 
   const shareHref = () => {
     const url = new URL(window.location.href)
     const gif = gifHref()
-    if (gif) url.searchParams.set('gif', gif)
-    else url.searchParams.delete('gif')
+    const preset = presetByHref(gif)
+    if (preset) {
+      url.searchParams.delete('gif')
+      if (preset.id === DEFAULT_GIF_ID) url.searchParams.delete('e')
+      else url.searchParams.set('e', preset.id)
+    } else if (gif) {
+      url.searchParams.set('gif', gif)
+      url.searchParams.delete('e')
+    } else {
+      url.searchParams.delete('gif')
+      url.searchParams.delete('e')
+    }
     url.searchParams.delete('gif2')
     return url.href
   }
 
   const updateSnippet = () => {
-    snippet.textContent = buildSnippet(gifHref(), holdSize(size.value), durationCss())
+    snippet.textContent = buildSnippet(gifHref(), holdSize(sizeValue()), durationCss())
     htmlSnippet.textContent = `if (!document.startViewTransition) switchTheme()
 document.startViewTransition(switchTheme);`
   }
 
-  const refresh = () => {
+  const markGif = () => {
+    const href = gifHref()
+    document.querySelectorAll('[data-gif]').forEach((button) => {
+      const selected = button.getAttribute('data-href') === href
+      button.setAttribute('aria-selected', String(selected))
+      button.classList.toggle('is-selected', selected)
+    })
+  }
+
+  const refresh = ({ play: shouldPlay } = { play: false }) => {
     paint(gifHref())
     syncClear()
     syncVars()
     updateSnippet()
     updateUrl()
-    void armMask()
+    markGif()
+    void armMask({ restart: shouldPlay }).then(() => {
+      if (shouldPlay && gifHref()) {
+        playTransition(!isDark())
+        announce('GIF mask transition played')
+      }
+    })
   }
+
+  lists.forEach((list) => {
+    list.addEventListener('click', (event) => {
+      const button = event.target instanceof Element ? event.target.closest('[data-gif]') : null
+      const href = button?.getAttribute('data-href')
+      if (!href) return
+      input.value = href
+      refresh({ play: true })
+    })
+  })
+
+  searches.forEach((search) => {
+    search.addEventListener('input', () => {
+      if (!(search instanceof HTMLInputElement)) return
+      const query = search.value.trim().toLowerCase()
+      searches.forEach((other) => {
+        if (other instanceof HTMLInputElement && other !== search) other.value = search.value
+      })
+      document.querySelectorAll('[data-gif]').forEach((button) => {
+        const id = button.getAttribute('data-gif') ?? ''
+        const name = button.getAttribute('data-name') ?? ''
+        const match = query === '' || id.includes(query) || name.toLowerCase().includes(query)
+        button.classList.toggle('hidden', !match)
+      })
+    })
+  })
 
   input.addEventListener('input', syncClear)
   input.addEventListener('change', refresh)
@@ -298,8 +396,22 @@ document.startViewTransition(switchTheme);`
     }
   })
 
-  duration.addEventListener('change', refresh)
-  size.addEventListener('change', refresh)
+  const syncSelects = (selects, value) => {
+    for (const select of selects) select.value = value
+  }
+
+  durationSelects.forEach((select) => {
+    select.addEventListener('change', () => {
+      syncSelects(durationSelects, select.value)
+      refresh()
+    })
+  })
+  sizeSelects.forEach((select) => {
+    select.addEventListener('change', () => {
+      syncSelects(sizeSelects, select.value)
+      refresh()
+    })
+  })
 
   clear.addEventListener('click', () => {
     input.value = ''
@@ -308,10 +420,25 @@ document.startViewTransition(switchTheme);`
     announce('GIF removed')
   })
 
+  pauseBtn.addEventListener('click', () => {
+    if (!gifHref()) {
+      toastSuccess('Pick a GIF first')
+      return
+    }
+    if (player.paused) {
+      player.resume()
+      announce('GIF preview resumed')
+    } else {
+      player.pause()
+      announce('GIF preview paused')
+    }
+    syncPauseUi()
+  })
+
   play.addEventListener('click', async () => {
     const href = gifHref()
     if (!href) {
-      toastSuccess('Paste a GIF link first')
+      toastSuccess('Pick a GIF first')
       return
     }
 
@@ -328,7 +455,7 @@ document.startViewTransition(switchTheme);`
 
   copyClasses.addEventListener('click', async () => {
     try {
-      await navigator.clipboard.writeText(buildSnippet(gifHref(), holdSize(size.value), durationCss()))
+      await navigator.clipboard.writeText(buildSnippet(gifHref(), holdSize(sizeValue()), durationCss()))
       announce('CSS copied to clipboard')
       flashLabel(copyClasses, 'Copied!')
       toastSuccess('CSS copied to clipboard')

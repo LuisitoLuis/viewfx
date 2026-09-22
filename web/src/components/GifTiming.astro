@@ -1,0 +1,40 @@
+---
+interface Props {
+  durationId: string
+  sizeId: string
+  duration: string
+  size: string
+  durations: string[]
+  sizes: string[]
+  selectClass: string
+}
+
+const { durationId, sizeId, duration, size, durations, sizes, selectClass } = Astro.props
+---
+
+<div class="grid gap-3">
+  <label class="block">
+    <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">Duration</span>
+    <select id={durationId} class={`ctrl-duration ${selectClass}`}>
+      {
+        durations.map((key) => (
+          <option value={key} selected={key === duration}>
+            {key}
+          </option>
+        ))
+      }
+    </select>
+  </label>
+  <label class="block">
+    <span class="mb-1.5 block text-xs font-semibold tracking-wide text-ink-3 uppercase">Mask size</span>
+    <select id={sizeId} class={`ctrl-size ${selectClass}`}>
+      {
+        sizes.map((key) => (
+          <option value={key} selected={key === size}>
+            {key}
+          </option>
+        ))
+      }
+    </select>
+  </label>
+</div>
