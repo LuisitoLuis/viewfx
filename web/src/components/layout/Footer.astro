@@ -9,9 +9,7 @@ const isHome =
   Astro.url.pathname === '/' || Astro.url.pathname === '/index.html'
 const section = (id: string) => (isHome ? `#${id}` : `/#${id}`)
 
-const authorHost = new URL(SITE.author.url).host
-
-const FOOTER_LINKS = [
+const columns = [
   {
     title: 'Documentation',
     links: [
@@ -19,10 +17,7 @@ const FOOTER_LINKS = [
       { name: 'Playground', href: '/playground' },
       { name: 'GIF studio', href: '/gif' },
       { name: 'Effect Collection', href: section('palette') },
-      { name: 'FAQ', href: section('faq') },
-      { name: 'Usage', href: `${SITE.repo}#usage` },
-      { name: 'Effects', href: `${SITE.repo}#effects` },
-      { name: 'Add an effect', href: `${SITE.repo}#add-an-effect` }
+      { name: 'FAQ', href: section('faq') }
     ]
   },
   {
@@ -30,123 +25,109 @@ const FOOTER_LINKS = [
     links: [
       { name: 'Contributors', href: `${SITE.repo}/graphs/contributors` },
       { name: 'GitHub Issues', href: `${SITE.repo}/issues` },
-      { name: 'Source', href: SITE.repo }
+      { name: 'GitHub PR', href: `${SITE.repo}/pulls` }
     ]
   },
   {
     title: 'Links',
     links: [
       { name: 'npm Package', href: SITE.npm },
-      { name: authorHost, href: SITE.author.url },
-      {
-        name: 'View Transitions API',
-        href: 'https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API'
-      }
+      { name: 'View Transitions API', href: 'https://developer.mozilla.org/en-US/docs/Web/API/View_Transitions_API' }
     ]
   }
 ]
 
-const socialClass =
-  'inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-paper text-ink-3 shadow-sm ring-1 ring-line transition-all hover:text-ink hover:ring-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent'
+const social = [
+  {
+    name: 'GitHub account',
+    href: SITE.repo,
+    icon: 'github'
+  },
+  {
+    name: `${SITE.author.name} website`,
+    href: SITE.author.url,
+    icon: 'site'
+  }
+]
 ---
 
-<footer
-  class="relative z-0 overflow-hidden bg-inset"
-  role="contentinfo"
->
+<footer class="relative z-0 overflow-hidden bg-inset" role="contentinfo">
   <div
     class="pointer-events-none h-24 bg-linear-to-b from-paper via-paper/80 to-transparent sm:h-32"
     aria-hidden="true"
   >
   </div>
-  <div
-    class="absolute -top-24 left-1/4 size-64 rounded-full bg-accent/5 blur-[100px]"
-  >
-  </div>
-  <div
-    class="absolute right-1/4 -bottom-24 size-64 rounded-full bg-accent/5 blur-[100px]"
-  >
-  </div>
-
-  <div class="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 relative pb-10">
-    <div class="grid grid-cols-1 gap-12 lg:grid-cols-12">
-      <div class="group flex flex-col gap-6 lg:col-span-5">
-        <div class="flex items-center gap-3">
+  <div class="relative mx-auto w-full max-w-6xl p-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+    <div class="md:flex md:justify-between">
+      <div class="mb-6 max-w-sm md:mb-0">
+        <div class="group flex w-fit items-center gap-3">
           <Logo
-            class="size-10 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-accent/40"
-            iconClass="size-6 animate-float-subtle group-hover:animate-pulse"
+            class="size-7 group-hover:scale-110 group-hover:rotate-3 group-hover:shadow-accent/40"
+            iconClass="size-4 animate-float-subtle group-hover:animate-pulse"
           />
-          <span
-            class="text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-accent-text"
-          >
+          <span class="self-center text-2xl font-semibold whitespace-nowrap text-ink transition-colors group-hover:text-accent-text">
             View<span class="text-accent-text">FX</span>
           </span>
         </div>
-
-        <p class="max-w-sm text-base leading-relaxed text-ink-2">
+        <p class="mt-4 text-base leading-relaxed text-ink-2">
           Free Tailwind CSS plugin with {EFFECTS.length} theme transitions on the View
           Transitions API. Open source, and built to copy one class onto
           {' '}
           <code class="font-mono text-[0.95em]">&lt;html&gt;</code>.
         </p>
-
-        <div class="flex items-center gap-3">
-          <a
-            href={SITE.repo}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="GitHub repository, opens in a new tab"
-            class={socialClass}
-          >
-            <GithubIcon size={20} class="size-5" />
-          </a>
-          <a
-            href={SITE.author.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${SITE.author.name} website, opens in a new tab`}
-            class={socialClass}
-          >
-            <svg
-              viewBox="0 0 24 24"
-              class="size-5"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.75"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              aria-hidden="true"
-            >
-              <circle cx="12" cy="12" r="9"></circle>
-              <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"></path>
-            </svg>
-          </a>
+        <div class="mt-4 flex gap-3">
+          {
+            social.map((item) => (
+              <a
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex size-11 min-h-11 min-w-11 items-center justify-center rounded-full bg-paper text-ink-3 shadow-sm ring-1 ring-line transition-all hover:text-ink hover:ring-line-strong focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+              >
+                {item.icon === 'github' ? (
+                  <GithubIcon size={20} class="size-5" />
+                ) : (
+                  <svg
+                    class="size-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.75"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    aria-hidden="true"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18" />
+                  </svg>
+                )}
+                <span class="sr-only">{item.name}, opens in a new tab</span>
+              </a>
+            ))
+          }
         </div>
       </div>
-
-      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 lg:col-span-7">
+      <div class="grid grid-cols-2 gap-8 sm:grid-cols-3 sm:gap-6">
         {
-          FOOTER_LINKS.map((column) => (
-            <div class="flex flex-col gap-4">
-              <h3 class="text-xs font-bold tracking-[0.2em] whitespace-nowrap text-ink uppercase">
+          columns.map((column) => (
+            <div>
+              <h2 class="mb-6 text-sm font-semibold tracking-wide text-ink uppercase">
                 {column.title}
-              </h3>
-              <ul class="flex flex-col gap-3">
-                {column.links.map((link) => {
+              </h2>
+              <ul class="font-medium text-ink-3">
+                {column.links.map((link, index) => {
                   const isExternal = link.href.startsWith('http')
                   return (
-                    <li>
+                    <li class:list={[index < column.links.length - 1 && 'mb-4']}>
                       <a
                         href={link.href}
-                        class="text-sm text-ink-3 transition-colors hover:text-accent-text"
+                        class="hover:text-ink hover:underline"
                         {...(isExternal
                           ? { target: '_blank', rel: 'noopener noreferrer' }
                           : {})}
                       >
                         {link.name}
-                        {isExternal && (
-                          <span class="sr-only"> (opens in a new tab)</span>
-                        )}
+                        {isExternal && <span class="sr-only"> (opens in a new tab)</span>}
                       </a>
                     </li>
                   )
@@ -157,29 +138,12 @@ const socialClass =
         }
       </div>
     </div>
-
-    <div
-      class="mt-20 flex flex-col items-center justify-between gap-6 border-t border-dashed border-line pt-10 md:flex-row"
-    >
-      <a
-        href={`${SITE.repo}/issues`}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="group/community flex flex-col items-center gap-2 md:items-start"
-      >
-        <p
-          class="text-sm font-bold text-ink transition-colors group-hover/community:text-accent-text"
-        >
-          Join the project
-        </p>
-        <p class="max-w-50 text-center text-xs text-ink-3 md:text-left">
-          Opening an issue or sending a pull request is the best way to support
-          ViewFX.
-        </p>
-      </a>
-
-      <div class="flex flex-col items-center gap-4 md:items-end">
-        <div class="flex items-center gap-2 text-sm text-ink-3">
+    <hr class="my-6 border-line sm:mx-auto lg:my-8" />
+    <div class="flex flex-col gap-3 text-sm text-ink-3 sm:flex-row sm:items-center sm:justify-between">
+        <span>
+          © {currentYear} {SITE.name}. MIT License.
+        </span>
+        <p class="flex flex-wrap items-center gap-2">
           <span>Created with</span>
           <span class="animate-pulse text-red-500">❤️</span>
           <span>by</span>
@@ -187,15 +151,12 @@ const socialClass =
             href={SITE.author.url}
             target="_blank"
             rel="noopener noreferrer"
-            class="font-bold text-ink transition-all hover:scale-105 hover:text-accent-text"
+            class="font-bold text-ink hover:text-accent-text"
           >
             {SITE.author.name}
+            <span class="sr-only"> (opens in a new tab)</span>
           </a>
-        </div>
-        <p class="text-[10px] tracking-widest whitespace-nowrap text-ink-3 uppercase">
-          © {currentYear} {SITE.name} • MIT License
         </p>
-      </div>
     </div>
   </div>
 </footer>
