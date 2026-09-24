@@ -11,12 +11,18 @@ export const SITE = {
   tagline: 'A specimen catalogue of dark/light theme transitions',
   description: `Preview ${EFFECTS.length}+ Tailwind CSS theme transitions on the View Transitions API. Copy one class onto <html>.`,
   image: 'https://pub-660dca4bd13944bd8c4a80be4489c81e.r2.dev/og.webp',
+  imageWidth: 1200,
+  imageHeight: 630,
+  imageAlt:
+    'ViewFX catalogue: Tailwind CSS theme transitions on the View Transitions API',
   locale: 'en',
+  ogLocale: 'en_US',
+  twitter: '',
   author: {
     name: 'luisitoluis',
     url: 'https://github.com/luisitoluis'
   },
-  repo: 'https://github.com/LuisitoLuis/viewfx',
+  repo: 'https://github.com/luisitoluis/viewfx',
   package: 'viewfx',
   npm: 'https://www.npmjs.com/package/viewfx'
 }

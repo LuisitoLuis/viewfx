@@ -1,68 +1,16 @@
 ---
 /**
  * Decorative theme snapshot. Hidden from AT — the card button names the effect.
- * Layout uses Tailwind like tailwind-animations gallery cards; the wipe itself
- * is component CSS because ViewFX effects live on `::view-transition-*`, not
- * on the preview box.
+ * Chrome is CSS so 31 cards do not repeat the same markup in the HTML document.
  */
-const TONES = ['dark', 'light'] as const
 ---
 
 <span
   class="fx-preview relative isolate block aspect-[5/4] w-full overflow-hidden rounded-2xl border border-line bg-[var(--scene-dark)] shadow-[inset_0_1px_0_color-mix(in_oklab,white_8%,transparent)] transition-[border-color,box-shadow] duration-200 [contain:paint]"
   aria-hidden="true"
 >
-  {
-    TONES.map((tone) => (
-      <span class:list={['fx-scene', `fx-scene--${tone}`]}>
-        <span class="fx-chrome flex shrink-0 items-center gap-[0.45rem] border-b border-[var(--chrome-line)] bg-[var(--chrome)] px-[0.6rem] py-[0.45rem]">
-          <span class="flex shrink-0 gap-[0.22rem]">
-            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.7_0.12_25))]" />
-            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.78_0.12_90))]" />
-            <span class="size-[0.4rem] rounded-full bg-[color-mix(in_oklab,var(--line-strong)_70%,oklch(0.72_0.12_145))]" />
-          </span>
-          <span class="h-[0.35rem] flex-1 rounded-full bg-[var(--chrome-bar)]" />
-        </span>
-        <span class="grid min-h-0 flex-1 grid-rows-[auto_1fr_auto] gap-[0.4rem] px-[0.6rem] pt-[0.55rem] pb-[0.6rem]">
-          <span class="flex items-center gap-[0.4rem]">
-            <span class="grid size-[1.35rem] shrink-0 place-items-center rounded-full bg-[var(--theme-fill)] text-[var(--theme)] shadow-[inset_0_0_0_1px_color-mix(in_oklab,var(--theme)_22%,transparent)]">
-              {
-                tone === 'dark' ? (
-                  <svg viewBox="0 0 16 16" width="14" height="14">
-                    <path
-                      fill="currentColor"
-                      d="M11.2 2.1A6.4 6.4 0 1 0 13.9 12 4.9 4.9 0 0 1 11.2 2.1Z"
-                    />
-                  </svg>
-                ) : (
-                  <svg viewBox="0 0 16 16" width="14" height="14">
-                    <circle cx="8" cy="8" r="3.05" fill="currentColor" />
-                    <g
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.35"
-                      stroke-linecap="round"
-                    >
-                      <path d="M8 1.4v1.7M8 12.9v1.7M1.4 8h1.7M12.9 8h1.7M3.05 3.05l1.2 1.2M11.75 11.75l1.2 1.2M3.05 12.95l1.2-1.2M11.75 4.25l1.2-1.2" />
-                    </g>
-                  </svg>
-                )
-              }
-            </span>
-            <span class="flex flex-1 flex-col gap-[0.22rem]">
-              <span class="block h-[0.28rem] w-[72%] rounded-full bg-[var(--bar-alt)]" />
-              <span class="block h-[0.28rem] w-[46%] rounded-full bg-[var(--bar)]" />
-            </span>
-          </span>
-          <span class="min-h-0 rounded-[0.4rem] bg-[var(--pane)]" />
-          <span class="grid grid-cols-2 gap-[0.35rem]">
-            <span class="h-[0.7rem] rounded-[0.3rem] bg-[var(--tile)]" />
-            <span class="h-[0.7rem] rounded-[0.3rem] bg-[var(--tile)]" />
-          </span>
-        </span>
-      </span>
-    ))
-  }
+  <span class="fx-scene fx-scene--dark"></span>
+  <span class="fx-scene fx-scene--light"></span>
 </span>
 
 <style is:global>
@@ -100,6 +48,53 @@ const TONES = ['dark', 'light'] as const
     z-index: 1;
     background: var(--scene-light);
     visibility: hidden;
+  }
+
+  .fx-scene::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image:
+      radial-gradient(circle, color-mix(in oklab, var(--line-strong) 70%, oklch(0.7 0.12 25)) 62%, transparent 63%),
+      radial-gradient(circle, color-mix(in oklab, var(--line-strong) 70%, oklch(0.78 0.12 90)) 62%, transparent 63%),
+      radial-gradient(circle, color-mix(in oklab, var(--line-strong) 70%, oklch(0.72 0.12 145)) 62%, transparent 63%),
+      linear-gradient(var(--chrome-bar), var(--chrome-bar)),
+      linear-gradient(var(--chrome-line), var(--chrome-line)),
+      linear-gradient(var(--chrome), var(--chrome)),
+      radial-gradient(circle, var(--theme-fill) 66%, transparent 67%),
+      linear-gradient(var(--bar-alt), var(--bar-alt)),
+      linear-gradient(var(--bar), var(--bar)),
+      linear-gradient(var(--pane), var(--pane)),
+      linear-gradient(var(--tile), var(--tile)),
+      linear-gradient(var(--tile), var(--tile));
+    background-size:
+      0.4rem 0.4rem,
+      0.4rem 0.4rem,
+      0.4rem 0.4rem,
+      calc(100% - 2.4rem) 0.35rem,
+      100% 1px,
+      100% 1.55rem,
+      1.35rem 1.35rem,
+      36% 0.28rem,
+      23% 0.28rem,
+      calc(100% - 1.2rem) calc(100% - 4.55rem),
+      calc(50% - 0.775rem) 0.7rem,
+      calc(50% - 0.775rem) 0.7rem;
+    background-position:
+      0.6rem 0.52rem,
+      1.22rem 0.52rem,
+      1.84rem 0.52rem,
+      2.2rem 0.6rem,
+      0 1.55rem,
+      0 0,
+      0.6rem 2.1rem,
+      2.15rem 2.22rem,
+      2.15rem 2.72rem,
+      0.6rem 3.65rem,
+      0.6rem calc(100% - 0.6rem),
+      calc(50% + 0.175rem) calc(100% - 0.6rem);
+    background-repeat: no-repeat;
   }
 
   .fx-card {

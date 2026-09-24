@@ -8,7 +8,7 @@ export default defineConfig({
   site: SITE.url,
   compressHTML: true,
   build: {
-    inlineStylesheets: 'auto'
+    inlineStylesheets: 'never'
   },
   integrations: [
     sitemap({
