@@ -2,7 +2,7 @@
 import Layout from '@layouts/Layout.astro'
 import Header from '@components/layout/Header.astro'
 import Footer from '@components/layout/Footer.astro'
-import ArrowDownIcon from '@components/icons/arrow-down.astro'
+import ArrowRightIcon from '@components/icons/arrow-right.astro'
 import { SITE } from '../data/site'
 ---
 
@@ -21,9 +21,12 @@ import { SITE } from '../data/site'
       <p class="mt-9">
         <a
           href="/"
-          class="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-[0.625rem] bg-accent px-[1.125rem] font-mono text-xs font-medium tracking-[0.06em] text-accent-ink uppercase transition-colors hover:bg-[color-mix(in_oklab,var(--accent)_88%,var(--ink))]"
+          class="group inline-flex min-h-11 items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all hover:bg-[color-mix(in_oklab,var(--accent)_82%,black)] hover:shadow-accent/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:ring-offset-paper"
         >
-          <ArrowDownIcon size={14} class="-rotate-90" />
+          <ArrowRightIcon
+            size={16}
+            class="stroke-2 rotate-180 transition-transform group-hover:-translate-x-0.5"
+          />
           Back to the catalogue
         </a>
       </p>
