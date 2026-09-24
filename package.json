@@ -1,6 +1,6 @@
 {
   "name": "viewfx",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Tailwind CSS v3/v4 plugin for View Transitions theme effects",
   "style": "./src/index.css",
   "main": "./src/plugin.cjs",
@@ -25,7 +25,7 @@
     "type": "git",
     "url": "git+https://github.com/LuisitoLuis/viewfx.git"
   },
-  "homepage": "https://github.com/LuisitoLuis/viewfx",
+  "homepage": "https://viewfx.luismc.dev",
   "type": "module",
   "scripts": {
     "emit:masks": "node scripts/emit-masks.mjs",

@@ -100,7 +100,7 @@ Theme is expected as a `.dark` class on `<html>` (the `polygon` wipe reverses in
 
 ### Effects
 
-31 utilities. Hover to preview and click to copy on the [catalogue](https://github.com/LuisitoLuis/viewfx#effects).
+31 utilities. Hover to preview and click to copy on the [catalogue](https://viewfx.luismc.dev).
 
 `circle`, `circle-blur`, `polygon`, `corner-tl`, `corner-tr`, `corner-bl`, `corner-br`, `iris`, `diamond`, `hexagon`, `square`, `mosaic`, `soft`, `heart`, `expand`, `split`, `shutter`, `ink`, `spiral`, `slide-right`, `slide-left`, `slide-up`, `slide-down`, `venetian`, `glitch`, `slide`, `lift`, `zoom`, `rotate`, `fade`, `dissolve`.
 

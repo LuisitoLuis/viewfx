@@ -2,11 +2,10 @@ import { EFFECTS } from './effects'
 
 /**
  * Single source of truth for site-wide metadata.
- * Change `url` here when the catalogue has a public domain — canonical links,
- * Open Graph tags and the JSON-LD payload all derive from it.
+ * Canonical links, Open Graph tags, the sitemap and the JSON-LD payload derive from `url`.
  */
 export const SITE = {
-  url: 'https://github.com/LuisitoLuis/viewfx',
+  url: 'https://viewfx.luismc.dev',
   name: 'ViewFX',
   title: `Tailwind CSS Theme Transitions Plugin | ${EFFECTS.length}+ Effects`,
   tagline: 'A specimen catalogue of dark/light theme transitions',
